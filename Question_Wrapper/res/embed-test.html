@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Exponentiation / Multiplication</title>
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <!-- MathJax -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <!-- MathJax Configuration -->
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Register.StartupHook("TeX Jax Ready", function () {
+      var MML = MathJax.ElementJax.mml;
+      var TEX = MathJax.InputJax.TeX;
+      TEX.Definitions.macros.insertHTML = 'InsertHTML';
+      TEX.Parse.Augment({
+        InsertHTML: function (name) {
+          var html = this.GetArgument(name).replace(/^\s*<!--\s*/,'').replace(/\s*-->\s*$/,'');
+          var span = MathJax.HTML.Element('mjx-reset', {style: {display:'inline-block'}});
+          span.innerHTML = html;
+          var mml = MML["annotation-xml"](MML.xml(span)).With({encoding:"application/xhtml+xml",isToken:true});
+          this.Push(MML.semantics(mml));
+        }
+      });
+    });
+    </script>
+    <!-- Custom styles -->
+    <style>
+        .formulas_number {
+            width: 60px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h3 style="margin-top:5px;">Exponentiation / Multiplication</h3>
+    <p>Rewrite the expression in the form <span class="notranslate">\({a}^n\)</span>:</p>
+
+    <p>Example: \( 2 \times 2 \times 2 = \insertHTML{<!--<input type="text" class="formulas_number" />-->}\)</p>
+
+
+    <span class="notranslate">\(\large{{a}^{n1} \times {a}^{n2} = {a}^{\,
+        \insertHTML{<!--
+        {_0}
+        <style>
+        input.formulas_number:first-of-type {
+        width:18px !important;
+        height:18px;
+        background-color:#FFF;
+        text-align:center;
+        border:1px solid #CCC;
+        outline:none;
+        font-family:Times New Roman;
+        font-size:17px;
+        }
+        </style>
+        -->}
+        }}\) &nbsp;
+        </span>
+
+    <button value="Check">Check</button>
+
+    <script>
+    $(window).on("load", function() {
+        $("input[value='Check']").click(function(){
+            var L =  $("input.formulas_number").length;
+            var i;
+            for (i = 0; i < $(".formulas_number").length-1; i++) { 
+                var j=i+1;
+                var answer = $("input.formulas_number:eq("+i+")").val();
+                $("input.formulas_number:eq("+j+")").val(answer );
+            }
+        });
+    });
+    </script>
+</body>
+</html>

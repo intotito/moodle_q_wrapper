@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+	<!-- question: 4913670 -->
+	<question type="formulas">
+		<name>
+			<text>
+				Calorimetry week 6 post Lab question finished
+			</text>
+		</name>
+		<questiontext format="html">
+			<text>
+				<![CDATA[<p>{#a}</p><p>{#b}</p><p>{#e}</p><p>{#f}<br></p><p>{#c}</p><p>{#d}<br></p>]]>
+			</text>
+		</questiontext>
+		<generalfeedback format="html">
+			<text>
+			</text>
+		</generalfeedback>
+		<defaultgrade>
+			7.5
+		</defaultgrade>
+		<penalty>
+			0.3333333
+		</penalty>
+		<hidden>
+			0
+		</hidden>
+		<idnumber>
+		</idnumber>
+		<correctfeedback format="html">
+			<text>
+				<![CDATA[Your answer is correct.<br>]]>
+			</text>
+		</correctfeedback>
+		<partiallycorrectfeedback format="html">
+			<text>
+				Your answer is partially correct.
+			</text>
+		</partiallycorrectfeedback>
+		<incorrectfeedback format="html">
+			<text>
+				Your answer is incorrect.
+			</text>
+		</incorrectfeedback>
+		<shownumcorrect />
+		<varsrandom>
+			<text>
+			</text>
+		</varsrandom>
+		<varsglobal>
+			<text>
+				<![CDATA[a = ["heat_capacity"]]]>
+			</text>
+		</varsglobal>
+		<answernumbering>
+			<text>
+				none
+			</text>
+		</answernumbering>
+		<answers> 
+			<partindex>
+				<text>
+					0
+				</text>
+			</partindex>
+			<placeholder>
+				<text>
+					#a
+				</text>
+			</placeholder>
+			<answermark>
+				<text>
+					2.5
+				</text>
+			</answermark>
+			<answertype>
+				<text>
+					0
+				</text>
+			</answertype>
+			<numbox>
+				<text>
+					4
+				</text>
+			</numbox>
+			<vars1>
+				<text>
+				</text>
+			</vars1>
+			<answer>
+				<text>
+					[4.18,4.18,4.18,4.18]
+				</text>
+			</answer>
+			<vars2>
+				<text>
+					<![CDATA[
+					criterion1 = abs(_0-_1) < 0.01;
+					criterion2 = abs(_0-_2) < 0.01;
+					criterion3 = abs(_1-_2) < 0.01;
+					criterion4 = abs(_3 - ((_0+_1+_2)/3)) < 0.005;
+					]]>
+				</text>
+			</vars2>
+			<correctness>
+				<text>
+					<![CDATA[max((_relerr < 0.1 && criterion1 && criterion2 && criterion3 && criterion4),0.5*(_relerr < 0.1 && criterion4))]]>
+				</text>
+			</correctness>
+			<unitpenalty>
+				<text>
+					1
+				</text>
+			</unitpenalty>
+			<postunit>
+				<text>
+				</text>
+			</postunit>
+			<ruleid>
+				<text>
+					1
+				</text>
+			</ruleid>
+			<otherrule>
+				<text>
+				</text>
+			</otherrule>
+			<subqtext format="html">
+				<text>
+					<![CDATA[<p>What were your three heat capacity values? <br></p><p>{_0} J/g°C, {_1} J/g°C, {_2} J/g°C</p><p><br></p><p>What is the average heat capacity value? {_3} J/g°C<br></p><p><br></p>]]>
+				</text>
+			</subqtext>
+			<feedback format="html">
+				<text>
+				</text>
+			</feedback>
+			<correctfeedback format="html">
+				<text>
+					<![CDATA[Correct, you have achieved a precise measurement.<br>]]>
+				</text>
+			</correctfeedback>
+			<

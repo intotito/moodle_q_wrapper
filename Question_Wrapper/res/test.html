@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>LaTeX Equations in Choices</title>
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <!-- MathJax -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <!-- Custom styles (optional) -->
+    <style>
+        .choice {
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+        .flex-fill {
+            flex: 1;
+            padding: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-4">
+        <h3 class="mb-3">Choices containing LaTeX equations</h3>
+        <p>Select the fraction that is equal to: &nbsp; \( \dfrac{1}{x} \)</p>
+        
+        <!-- Hidden answers -->
+        <div style="display: none;">
+            <span id="a1">\( \dfrac{1}{x} \)</span>
+            <span id="a2">\( \dfrac{1}{x+1} \)</span>
+            <span id="a3">\( \dfrac{1}{x-1} \)</span>
+        </div>
+
+        <!-- Choices -->
+        <div class="choice r0">
+            <div class="flex-fill"></div>
+        </div>
+        <div class="choice r1">
+            <div class="flex-fill"></div>
+        </div>
+        <div class="choice r0">
+            <div class="flex-fill"></div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and Popper.js -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.min.js"></script>
+
+    <script>
+    $(document).ready(function() {
+        $(".r0,.r1").hide();
+        $(".r0,.r1").css("align-items", "center");
+        $(".r0 .flex-fill, .r1 .flex-fill").css("padding-top", "5px");
+        $(".r0 .flex-fill, .r1 .flex-fill").css("padding-bottom", "5px");
+
+        // Wait 1 second before substituting the LaTeX equations
+        // into the choice fields.
+        var checkExist = setInterval(function() {
+            if ($('#a1').length) {
+                var a1 = $("#a1").html();
+                var a2 = $("#a2").html();
+                var a3 = $("#a3").html();
+                $(".r0:eq(0) .flex-fill").html(a1);
+                $(".r1:eq(0) .flex-fill").html(a2);
+                $(".r0:eq(1) .flex-fill").html(a3);
+                MathJax.typesetPromise();
+                $(".r0,.r1").show();
+                clearInterval(checkExist);
+           }
+        }, 1000);
+    });
+    </script>
+</body>
+</html>
