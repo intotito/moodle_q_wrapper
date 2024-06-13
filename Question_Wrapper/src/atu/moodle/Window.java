@@ -2,28 +2,37 @@ package atu.moodle;
 
 import java.io.File;
 
+import atu.moodle.question.Question;
+import atu.moodle.question.QuestionImpl;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
+import javafx.scene.control.TreeItem;
+import javafx.scene.control.TreeView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 public class Window extends Application{
 	private Stage stage;
+	private Question question;
 	@Override
 	public void start(Stage stage) throws Exception {
 		stage.setTitle("Moodle - Formula Question Wrapper");
 		stage.setHeight(600);
 		stage.setWidth(860);
 		
+		question = new QuestionImpl();
+		
 		BorderPane borderPane = new BorderPane();
 		borderPane.setTop(getMenu());
 		borderPane.setLeft(new HBox());
-		borderPane.setCenter(getWebView());
+		borderPane.setCenter(new HBox());
+		
 		
 		Scene scene = new Scene(borderPane);
 		stage.setScene(scene);
@@ -32,6 +41,21 @@ public class Window extends Application{
 		
 		
 		this.stage = stage;
+		setupTree(question);
+		setupMain(question);
+	//	stage.getScene().getRoot();
+		
+
+	}
+	
+	private void setupTree(Question question) {
+		Pane leftPane = (Pane)((BorderPane)stage.getScene().getRoot()).getLeft();
+		leftPane.getChildren().add(new TreeView<String>(question.getGUI()));
+	}
+	
+	private void setupMain(Question question) {
+		Pane center = (Pane)((BorderPane)stage.getScene().getRoot()).getCenter();
+		center.getChildren().add(question.getControl());
 	}
 	
 	protected MenuBar getMenu() {
