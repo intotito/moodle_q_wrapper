@@ -1,5 +1,7 @@
 package atu.moodle.question;
 
+import java.util.List;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -31,11 +33,41 @@ public interface Node {
 	 */
 	public boolean isLeaf();
 	
+	
+	/**
+	 * Get all the child nodes for this Node.
+	 * @return list of children nodes.
+	 */
+	public List<Node> getChildren();
+	
 	/**
 	 * Add a child Node to this Node.
 	 * @param node The child to be added.
 	 */
 	public void addChild(Node child);
+	
+	/**
+	 * Searches for Node with specified TreeItem.
+	 * 
+	 * Performs a recursive search for Node that owns the tree. The search is passed
+	 * from parent to children, until the owner is found by comparing the trees.
+	 * @param tree The TreeItem to search for the owner.
+	 * @return The owner (Node) of the specified TreeeItem. 
+	 */
+	public default Node searchTree(TreeItem<String> tree) {
+		if(getGUI() == tree) {
+			return this;
+		}
+		if(!isLeaf()){
+			for(Node n : getChildren()) {
+				if(n.searchTree(tree) != null) {
+					return n;
+				}
+			}
+		}	
+		return null;
+	}
+	
 	
 	public default String getTextElement(Element element, boolean isNested) {
 		return isNested 

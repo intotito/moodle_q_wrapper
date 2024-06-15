@@ -36,7 +36,7 @@ public class HtmlNodeItem extends NodeItem{
 		});
 
 		VBox container = new VBox();
-		box.getChildren().add(browser);
+		box.getChildren().add(new TitledPane("Preview", browser));
 		box.getChildren().add(field);
 
 		container.getChildren().add(new TitledPane(title, box));

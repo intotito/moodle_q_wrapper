@@ -2,6 +2,7 @@ package atu.moodle;
 
 import java.io.File;
 
+import atu.moodle.question.Node;
 import atu.moodle.question.Question;
 import atu.moodle.question.QuestionImpl;
 import javafx.application.Application;
@@ -50,7 +51,15 @@ public class Window extends Application{
 	
 	private void setupTree(Question question) {
 		Pane leftPane = (Pane)((BorderPane)stage.getScene().getRoot()).getLeft();
-		leftPane.getChildren().add(new TreeView<String>(question.getGUI()));
+		TreeView<String> tView = new TreeView<String>(question.getGUI());
+		tView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+			System.out.println("Selected Text : " + newValue.getValue());
+			Node xnode = question.searchTree(newValue);
+			Pane center = (Pane)((BorderPane)stage.getScene().getRoot()).getCenter();
+			center.getChildren().set(0, xnode.getControl());
+		});
+
+		leftPane.getChildren().add(tView);
 	}
 	
 	private void setupMain(Question question) {

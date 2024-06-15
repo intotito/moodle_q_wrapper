@@ -5,7 +5,7 @@ import java.util.List;
 import org.w3c.dom.Element;
 
 public abstract class Question implements Node{
-	List<Node> children;
+	protected List<Node> children;
 	/**
 	 * Type of question.
 	 * @return the type of question.

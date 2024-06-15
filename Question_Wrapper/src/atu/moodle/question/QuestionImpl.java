@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.ProcessHandle.Info;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -20,10 +21,11 @@ import org.xml.sax.SAXException;
 
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.Control;
+import javafx.scene.control.ScrollPane;
 
 public class QuestionImpl extends Question{
 	protected Element xml;
-	protected TreeItem<String> gui;
+	protected TreeItem<String> treeGUI;
 	protected String type;
 //	protected String name;
 	protected Control pane;
@@ -38,7 +40,7 @@ public class QuestionImpl extends Question{
 				Element question = (Element)list.item(i);
 				xml = question;
 				type = question.getAttribute("type");
-				gui = new TreeItem<String>("Question");
+				treeGUI = new TreeItem<String>("Question");
 				for (int j = 0; j < question.getChildNodes().getLength(); j++) {
 					org.w3c.dom.Node node = question.getChildNodes().item(j);
 					if(node.getNodeType() == org.w3c.dom.Node.ELEMENT_NODE) {
@@ -90,8 +92,7 @@ public class QuestionImpl extends Question{
 
 	@Override
 	public TreeItem<String> getGUI() {
-		
-		return gui;
+		return treeGUI;
 	}
 
 	@Override
@@ -106,22 +107,40 @@ public class QuestionImpl extends Question{
 
 	@Override
 	public String getType() {
-		// TODO Auto-generated method stub
 		return type;
 	}
 
 	@Override
 	public Region getControl() {
+		ScrollPane scroll = new ScrollPane();
 		VBox vbox = new VBox();
 		for(int i = 0; i < children.size(); i++) {
 			vbox.getChildren().add(children.get(i).getControl());
 		}
-		return vbox;
+		scroll.setContent(vbox);
+		return scroll;
 	}
 
 	@Override
 	public void addChild(Node child) {
 		children.add(child);
-		gui.getChildren().add(child.getGUI());
+		TreeItem<String> item = child.getGUI();
+		treeGUI.getChildren().add(item);
+	}
+
+	/*
+	@Override
+	public Node searchTree(TreeItem<String> tree) {
+		for(Node n : children) {
+			if(n.searchTree(tree) != null) {
+				return n;
+			}
+		}
+		return null;
+	}
+	*/
+	@Override
+	public List<Node> getChildren() {
+		return children;
 	}
 }

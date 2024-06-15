@@ -1,5 +1,7 @@
 package atu.moodle.question;
 
+import java.util.List;
+
 import org.w3c.dom.Element;
 
 import javafx.scene.control.Control;
@@ -12,17 +14,20 @@ import javafx.scene.layout.VBox;
 public class NodeItem implements Node{
 	protected Element xml;
 	protected String title, value;
+	protected TreeItem<String> treeGUI;
 	protected boolean isNested = false;
 	public NodeItem(Element element, String title, boolean isNested) {
 		this.xml = element;
 		this.title = title;
+		treeGUI = new TreeItem<String>(title);
 		this.isNested = isNested;
 		value = getTextElement(xml, isNested);
 	}
 
 	@Override
 	public TreeItem<String> getGUI() {
-		return new TreeItem<String>(title);
+//		TreeItem<String> item = new TreeItem<String>(title);
+		return treeGUI;
 	}
 
 	@Override
@@ -50,8 +55,17 @@ public class NodeItem implements Node{
 
 	@Override
 	public void addChild(Node child) {
-		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public Node searchTree(TreeItem<String> tree) {
+		return tree == treeGUI ? this : null;
+	}
+
+	@Override
+	public List<Node> getChildren() {
+		return null;
 	}
 
 }
