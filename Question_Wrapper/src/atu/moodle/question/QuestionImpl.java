@@ -24,14 +24,11 @@ import javafx.scene.control.Control;
 import javafx.scene.control.ScrollPane;
 
 public class QuestionImpl extends Question{
-	protected Element xml;
-	protected TreeItem<String> treeGUI;
-	protected String type;
-//	protected String name;
-	protected Control pane;
+	protected Answer answers;
 	public QuestionImpl() {
 		Document document = readDocument("C:\\Users\\intot\\moodle_q_wrapper\\Question_Wrapper\\res\\chem-titration.xml");
 		children = new ArrayList<Node>();
+//		answer = new AnswerImpl();
 //		org.w3c.dom.Node node  = document.getDocumentElement().getChildNodes().item(0);
 		pane = new TitledPane("Awumen", new HBox());
 		NodeList list = document.getDocumentElement().getChildNodes();
@@ -66,6 +63,13 @@ public class QuestionImpl extends Question{
 							addChild(new NodeItem((Element)node, "Global Variables", true));
 						}else if(node.getNodeName().equals("answernumbering")) {
 							addChild(new NodeItem((Element)node, "Answer Numbering", true));
+						}else if(node.getNodeName().equals("answers")) {
+							if(answers == null) {
+								answers = new AnswerImpl((Element)node);
+								addChild(answers);
+							} else {
+								answers.addChild((Element)node);
+							}
 						}
 					}
 				}
