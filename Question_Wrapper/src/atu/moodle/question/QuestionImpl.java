@@ -24,7 +24,6 @@ import javafx.scene.control.Control;
 import javafx.scene.control.ScrollPane;
 
 public class QuestionImpl extends Question{
-	protected Answer answers;
 	public QuestionImpl() {
 		Document document = readDocument("C:\\Users\\intot\\moodle_q_wrapper\\Question_Wrapper\\res\\chem-titration.xml");
 		children = new ArrayList<Node>();
@@ -42,33 +41,34 @@ public class QuestionImpl extends Question{
 					org.w3c.dom.Node node = question.getChildNodes().item(j);
 					if(node.getNodeType() == org.w3c.dom.Node.ELEMENT_NODE) {
 						if(node.getNodeName().equals("name")) {
-							addChild(new NodeItem((Element)node, "Name", true));
+							addChild(new NodeItem(this, (Element)node, "Name", true));
 						} else if(node.getNodeName().equals("questiontext")) {
-							addChild(new HtmlNodeItem((Element)node, "Question Text", true));
+							addChild(new HtmlNodeItem(this, (Element)node, "Question Text", true));
 						}else if(node.getNodeName().equals("generalfeedback")) {
-							addChild(new NodeItem((Element)node, "Feedback (General)", true));
+							addChild(new NodeItem(this, (Element)node, "Feedback (General)", true));
 						} else if(node.getNodeName().equals("defaultgrade")) {
-							addChild(new NodeItem((Element)node, "Default Grade", false));
+							addChild(new NodeItem(this, (Element)node, "Default Grade", false));
 						}else if(node.getNodeName().equals("penalty")) {
-							addChild(new NodeItem((Element)node, "Penalty", false));
+							addChild(new NodeItem(this, (Element)node, "Penalty", false));
 						}else if(node.getNodeName().equals("correctfeedback")) {
-							addChild(new NodeItem((Element)node, "Feedback (Correct)", true));
+							addChild(new NodeItem(this, (Element)node, "Feedback (Correct)", true));
 						}else if(node.getNodeName().equals("partiallycorrectfeedback")) {
-							addChild(new NodeItem((Element)node, "Feedback (Partially Correct)", true));
+							addChild(new NodeItem(this, (Element)node, "Feedback (Partially Correct)", true));
 						}else if(node.getNodeName().equals("incorrectfeedback")) {
-							addChild(new NodeItem((Element)node, "Feedback (Incorrect)", true));
+							addChild(new NodeItem(this, (Element)node, "Feedback (Incorrect)", true));
 						}else if(node.getNodeName().equals("varsrandom")) {
-							addChild(new NodeItem((Element)node, "Random Variables", true));
+							addChild(new NodeItem(this, (Element)node, "Random Variables", true));
 						}else if(node.getNodeName().equals("varsglobal")) {
-							addChild(new NodeItem((Element)node, "Global Variables", true));
+							addChild(new NodeItem(this, (Element)node, "Global Variables", true));
 						}else if(node.getNodeName().equals("answernumbering")) {
-							addChild(new NodeItem((Element)node, "Answer Numbering", true));
+							addChild(new NodeItem(this, (Element)node, "Answer Numbering", true));
 						}else if(node.getNodeName().equals("answers")) {
 							if(answers == null) {
-								answers = new AnswerImpl((Element)node);
+								answers = new AnswerImpl(this);
+								answers.addChild(new AnswerBot(answers, (Element)node));
 								addChild(answers);
 							} else {
-								answers.addChild((Element)node);
+								answers.addChild(new AnswerBot(answers, (Element)node));
 							}
 						}
 					}

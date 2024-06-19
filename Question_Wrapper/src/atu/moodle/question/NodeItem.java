@@ -16,7 +16,9 @@ public class NodeItem implements Node{
 	protected String title, value;
 	protected TreeItem<String> treeGUI;
 	protected boolean isNested = false;
-	public NodeItem(Element element, String title, boolean isNested) {
+	protected Node parent;
+	public NodeItem(Node parent, Element element, String title, boolean isNested) {
+		this.parent = parent;
 		this.xml = element;
 		this.title = title;
 		treeGUI = new TreeItem<String>(title);
@@ -66,6 +68,11 @@ public class NodeItem implements Node{
 	@Override
 	public List<Node> getChildren() {
 		return null;
+	}
+
+	@Override
+	public Node getParent() {
+		return parent;
 	}
 
 }

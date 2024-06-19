@@ -1,6 +1,7 @@
 package atu.moodle.question;
 
 import java.util.List;
+import java.util.regex.Pattern;
 
 import org.w3c.dom.Element;
 
@@ -13,8 +14,9 @@ public abstract class Answer implements Node {
 	protected Element xml;
 	protected TreeItem<String> treeGUI;
 	protected Control pane;
+	protected Node parent;
 
-	public abstract void addChild(Element child);
+//	public abstract void addChild(Element child);
 
 	@Override
 	public boolean isLeaf() {
@@ -37,5 +39,22 @@ public abstract class Answer implements Node {
 		return treeGUI;
 	}
 	
-
+	public String getText(String placeholder) {
+//		System.out.println("PLaceholder;:: " + placeholder);
+		for(int i = 0; i < children.size(); i++) {
+			AnswerBot an = (AnswerBot)children.get(i);
+			String botPlaceH = an.getPlaceHolder();
+	//		System.out.println("Bot Place Holder::: " + botPlaceH);
+			if(botPlaceH.matches(Pattern.quote(placeholder))){
+	//			System.out.println(botPlaceH + "\tMAtch+++++++++++++++++++++++++++++++ " + Pattern.quote(placeholder) + "\n" + an.getSubqText());
+				return an.getSubqText();
+			}
+		}
+		return null;
+	}
+	
+	public Node getParent() {
+		return parent;
+	}
+	
 }

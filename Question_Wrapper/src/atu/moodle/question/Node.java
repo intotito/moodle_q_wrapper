@@ -60,14 +60,33 @@ public interface Node {
 		}
 		if(!isLeaf()){
 			for(Node n : getChildren()) {
-				if(n.searchTree(tree) != null) {
-					return n;
+				Node m = n.searchTree(tree);
+				if(m != null) {
+					return m;
 				}
 			}
 		}	
 		return null;
 	}
+	/**
+	 * Get the parent of the current node. 
+	 * 
+	 * @return Parent of the current or null if root node. 
+	 */
+	public Node getParent();
 	
+	public default Node getRoot() {
+		Node parent = getParent();
+		if(parent == null) {
+			return this;
+		} 
+		Node tempNode = null;
+		while(parent != null) {
+			tempNode = parent;
+			parent = parent.getParent();
+		}
+		return tempNode;
+	}
 	
 	public default String getTextElement(Element element, boolean isNested) {
 		return isNested 

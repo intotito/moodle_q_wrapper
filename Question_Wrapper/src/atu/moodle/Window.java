@@ -53,10 +53,10 @@ public class Window extends Application{
 		Pane leftPane = (Pane)((BorderPane)stage.getScene().getRoot()).getLeft();
 		TreeView<String> tView = new TreeView<String>(question.getGUI());
 		tView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-			System.out.println("Selected Text : " + newValue.getValue());
 			Node xnode = question.searchTree(newValue);
 			Pane center = (Pane)((BorderPane)stage.getScene().getRoot()).getCenter();
 			center.getChildren().set(0, xnode.getControl());
+			System.out.println("Selected Text : " + newValue.getValue() + " - " + xnode);
 		});
 
 		leftPane.getChildren().add(tView);
