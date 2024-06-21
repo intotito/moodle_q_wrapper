@@ -132,17 +132,6 @@ public class QuestionImpl extends Question{
 		treeGUI.getChildren().add(item);
 	}
 
-	/*
-	@Override
-	public Node searchTree(TreeItem<String> tree) {
-		for(Node n : children) {
-			if(n.searchTree(tree) != null) {
-				return n;
-			}
-		}
-		return null;
-	}
-	*/
 	@Override
 	public List<Node> getChildren() {
 		return children;

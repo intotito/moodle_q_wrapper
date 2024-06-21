@@ -33,7 +33,11 @@ public class HtmlNodeItem extends NodeItem{
 		return matches;
 	}
 	
-	public String replace(String value, List<String> placeHolders) {
+	public String replaceFieldPlaceHolders(String value) {
+		return value.replaceAll("\\{\s*?\\_[0-9]*?\s*?\\}", "<input size=\"5\" type=\"text\">");
+	}
+	
+	public String replaceTextPlaceHolders(String value, List<String> placeHolders) {
 		String content = new String(value);
 		for(int i = 0; i < placeHolders.size(); i++) {
 			Question question = ((Question)getRoot());//.getAnswers()
@@ -44,7 +48,7 @@ public class HtmlNodeItem extends NodeItem{
 			content = content.replace(placeHolders.get(i), text);
 			System.out.println("Content:: " + content);
 		}
-		return content;
+		return replaceFieldPlaceHolders(content);
 	}
 	
 	@Override
@@ -53,17 +57,8 @@ public class HtmlNodeItem extends NodeItem{
 		browser.setPrefHeight(120);
 		WebEngine webEngine = browser.getEngine();
 		List<String> placeHolders = getPlaceHolders(value);
-/*		String content = value;
-		for(int i = 0; i < placeHolders.size(); i++) {
-			Question question = ((Question)getRoot());//.getAnswers()
-			Answer answers = question.getAnswers();
-			String text = answers.getText(placeHolders.get(i));
-			System.out.println("Text:: " + text);
-			content = content.replace(placeHolders.get(i), text);
-			System.out.println("Content:: " + content);
-		}
-*/		
-		webEngine.loadContent(replace(value, placeHolders));
+	
+		webEngine.loadContent(replaceTextPlaceHolders(value, placeHolders));
 		
 		VBox box = new VBox();
 		TextArea field = new TextArea(value);
@@ -72,7 +67,7 @@ public class HtmlNodeItem extends NodeItem{
 		field.textProperty().addListener((observable, oldValue, newValue) -> {
 		    System.out.println("textfield changed from " + oldValue + " to " + newValue);
 		    setTextElement(xml, newValue, isNested);
-		    webEngine.loadContent(replace(newValue, getPlaceHolders(value)));
+		    webEngine.loadContent(replaceTextPlaceHolders(newValue, getPlaceHolders(value)));
 		});
 
 		VBox container = new VBox();

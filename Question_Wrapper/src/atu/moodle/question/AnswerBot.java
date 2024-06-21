@@ -90,8 +90,13 @@ public class AnswerBot implements Node{
 	public Region getControl() {
 		
 		VBox vbox = new VBox();
-		vbox.getChildren().add(new TextField("Awumenically " + placeholder));
-		
+		TextField field = new TextField(getSubqText());
+		field.setPrefWidth(480);
+		field.textProperty().addListener((observable, oldValue, newValue) -> {
+		 //   System.out.println("textfield changed from " + oldValue + " to " + newValue);
+		  //  setTextElement(xml, newValue, isNested);
+		});
+		vbox.getChildren().add(field);
 		return vbox;
 	}
 
