@@ -1,0 +1,27 @@
+
+
+
+    <div class="container h-100 d-flex flex-column atu-img py-5">
+        <div class="row h-25 mb-5">
+            <div class="col-4 offset-4 my-3">
+                <img src="atu.png" alt="/assets/atu.png">
+            </div>
+        </div>
+        <div class="row flex-grow-1">
+            <div class="col-10 offset-1">
+                <form class="form-inline py-4 bg-warning mt-5" action="#">
+                    <div class="input-group">   
+                        <!-- Make label h1 text-->
+                        <label for="question" class="h5 px-4">Import XML</label>
+                        <input type="file" class="file-upload hidden" onchange="console.log(event.target.files)" accept=".xml" (change)="onFileSelected($event)" #browseFile>
+                        <input type="text" class="form-control" id="question" placeholder="Enter XML URI" [(ngModel)]="msg" name="fileInput">
+                        <button type="button" class="btn btn-success mx-4" (click)="browseFile.click()">Browse</button>
+                    </div>
+                    <div class="input-group d-flex justify-content-center mt-4">
+                        <button type="submit" class="btn btn-primary px-4">Import</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+

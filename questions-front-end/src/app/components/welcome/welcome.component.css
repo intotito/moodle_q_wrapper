@@ -1,0 +1,14 @@
+.atu-color{
+    background-color: #005D62;
+}
+
+.hidden{
+    display: none;
+}
+
+.atu-img{
+    background-image: url('/atu-brand.png');
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: 100% 100%;
+}
