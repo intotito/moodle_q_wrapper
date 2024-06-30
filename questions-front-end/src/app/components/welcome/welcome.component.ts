@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import {FormsModule} from '@angular/forms';
+import { Router } from '@angular/router';
 import { readFileSync } from 'fs';
 
 @Component({
@@ -16,7 +17,7 @@ export class WelcomeComponent {
   msg = 'No File Selected';
   xml = '';
 
-  constructor() { }
+  constructor(private router: Router) { }
 
   async onFileSelected(event: any) {
     const file:File = event?.target?.files[0];
@@ -26,6 +27,10 @@ export class WelcomeComponent {
       this.msg = 'No File Selected';
     }
     this.xml = await file.text();
-    console.log(this.xml);
+ //   console.log(this.xml);
+  }
+
+  loadXML(event: any){
+    this.router.navigate(['/main'], {state: {xml: this.xml}});
   }
 }

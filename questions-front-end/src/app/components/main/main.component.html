@@ -1,1 +1,61 @@
-<p>main works!</p>
+<div class="container-fluid my-5">
+    <div class="row">
+        <nav class="col-md-3 d-none d-md-block bg-light sidebar">
+            <div class="sidebar-sticky">
+                <ul id="treeUI">
+                    <li><span class="caret">Question</span>
+                        <ul class="nested">
+                            @for (element of elements; track element){
+                            <li class="nodeItem" (click)="itemClicked($event)">
+                                @if(element.getElementsByTagName('text').item(0) != null){
+                                {{element.nodeName}}
+                                } @else{
+                                {{element.nodeName}}
+                                }
+                            </li>
+                            }
+                            <li><span class="caret">Answers</span>
+                                <ul class="nested">
+                                    @for (answer of answers; track answer){
+                                    <li class="answerItem" (click)="answerClicked($event)">
+                                        {{answer.nodeName}}
+                                    </li>
+                                    }
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <main role="main" class="col-md-9 ml-sm-auto pt-3 px-4 bg-primary">
+            @for(item of currentItem; track item){
+            <div class="card col-sm-10 mb-2">
+
+                <div class="card">
+                    <div class="card-header py-0">
+                        {{item.nodeName}}
+                    </div>
+                    <div class="card-body py-1">
+                        <input class="col-sm-12" type="text" name="{{item.nodeName}}"
+                            value="{{item.getElementsByTagName('text').item(0) != null ? item.getElementsByTagName('text').item(0).textContent : item.textContent}}"
+                            (change)="inputValueChanged($event)">
+                    </div>
+                </div>
+                @if(item.getAttributeNode('format') != null && item.getAttributeNode('format').value == 'html'){
+                <div class="card mt-2">
+                    <div class="card-header py-0">
+                        Preview
+                    </div>
+                    <div class="card-body py-1 preview"
+                        [innerHTML]="r(item.getElementsByTagName('text').item(0) != null ? item.getElementsByTagName('text').item(0).textContent : item.textContent)">
+
+                    </div>
+                </div>
+                }
+            </div>
+            }
+        </main>
+    </div>
+
+</div>
