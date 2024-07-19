@@ -1,0 +1,181 @@
+<div class="card">
+    <div class="card-header py-0">
+        Answer {{getIndex()}}
+    </div>
+    <div class="card-body py-1 container-fluid">
+        <div class="row">
+            <div class="col-sm-3">
+                <div class="card-header py-0">
+                    Index
+                </div>
+                <input class="col-sm-12" type="number" name="partindex" value="{{getNodeValue('partindex')}}" 
+                    (change)="inputValueChanged($event)" disabled>
+            </div>
+            <div class="col-sm-3">
+                <div class="card-header py-0">
+                    Placeholder
+                </div>
+                <input class="col-sm-12" type="text" name="placeholder" value="{{getNodeValue('placeholder')}}"
+                    (change)="inputValueChanged($event)">
+            </div>
+            <div class="col-sm-3">
+                <div class="card-header py-0">
+                    Rule ID
+                </div>
+                <input class="col-sm-12" type="text" name="ruleid" value="{{getNodeValue('ruleid')}}"
+                    (change)="inputValueChanged($event)">
+            </div>
+            <div class="col-sm-3">
+                <div class="card-header py-0">
+                    Other Rule
+                </div>
+                <input class="col-sm-12" type="text" name="otherrule" value="{{getNodeValue('otherrule')}}"
+                    (change)="inputValueChanged($event)">
+            </div>
+
+        </div>
+        <div class="row mt-2">
+            <div class="col-sm-12">
+                <div class="card-header py-0">
+                    Question
+                </div>
+                <textarea class="col-sm-12" type="text" name="subqtext"
+                    (change)="inputValueChanged($event)">{{getNodeValue('subqtext')}}</textarea>
+            </div>
+            <div class="mt-2 col-sm-10 offset-1">
+                <div class="card-header py-0">
+                    Preview
+                </div>
+                <div class="card-body py-1 preview bg-light" [innerHTML]="getNodeValue('subqtext') | input">
+                </div>
+            </div>
+        </div>
+        <div class="row pt-1">
+            <div class="col-sm-2">
+                <div class="card-header py-0">
+                    Marks
+                </div>
+                <input class="col-sm-12" type="number" name="answermark" value="{{getNodeValue('answermark')}}"
+                    (change)="inputValueChanged($event)">
+            </div>
+            <div class="col-sm-3">
+                <div class="card-header py-0">
+                    Answer Type
+                </div>
+                <input class="col-sm-12" type="number" name="answertype" value="{{getNodeValue('answertype')}}"
+                    (change)="inputValueChanged($event)">
+            </div>
+            <div class="col-sm-3">
+                <div class="card-header py-0">
+                    Number of Box
+                </div>
+                <input class="col-sm-12" type="number" name="numbox" value="{{getNodeValue('numbox')}}"
+                    (change)="inputValueChanged($event)">
+            </div>
+            <div class="col-sm-2">
+                <div class="card-header py-0">
+                    Penalty
+                </div>
+                <input class="col-sm-12" type="number" name="unitpenalty" value="{{getNodeValue('unitpenalty')}}"
+                    (change)="inputValueChanged($event)">
+            </div>
+            <div class="col-sm-2">
+                <div class="card-header py-0">
+                    Post Unit
+                </div>
+                <input class="col-sm-12" type="text" name="postunit" value="{{getNodeValue('postunit')}}"
+                    (change)="inputValueChanged($event)">
+            </div>
+        </div>
+        <div class="row pt-1 bg-light">
+            <div class="col-sm-12">
+                <div class="card-header py-0">
+                    Answers
+                </div>
+                <input class="col-sm-12" type="text" name="answer" value="{{getNodeValue('answer')}}"
+                    (change)="inputValueChanged($event)">
+            </div>
+            <div class="col-sm-12 row">
+                <div class="col-sm-6">
+                    <div class="card-header py-0">
+                        Variable 1
+                    </div>
+                    <textarea class="col-sm-12" type="text" name="vars1"
+                        (change)="inputValueChanged($event)">{{getNodeValue('vars1')}}</textarea>
+                </div>
+                <div class="col-sm-6">
+                    <div class="card-header py-0">
+                        Variable 2
+                    </div>
+                    <textarea class="col-sm-12" type="text" name="vars2"
+                        (change)="inputValueChanged($event)">{{getNodeValue('vars2')}}</textarea>
+                </div>
+            </div>
+            <div class="col-sm-12">
+                <div class="card-header py-0">
+                    Correctness
+                </div>
+                <textarea class="col-sm-12" type="text" name="correctness"
+                    (change)="inputValueChanged($event)">{{getNodeValue('correctness')}}</textarea>
+            </div>
+        </div>
+        <div class="row pt-1 bg-light mx-1">
+            <div class="col-sm-12">
+                <div class="card-header py-0">
+                    Feedback
+                </div>
+            </div>
+            <div class="col-sm-12 card-body row">
+                <div class="col-sm-6">
+                    <div class="card-header py-0">
+                        Correct
+                    </div>
+                    <textarea class="col-sm-12" type="text" name="correctfeedback"
+                        (change)="inputValueChanged($event)">{{getNodeValue('correctfeedback')}}</textarea>
+                </div>
+                <div class="col-sm-6">
+                    <div class="card-header py-0">
+                        Preview
+                    </div>
+                    <div class="card-body py-1 preview bg-light"
+                        [innerHTML]="getNodeValue('correctfeedback')">
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12 card-body row">
+                <div class="col-sm-6">
+                    <div class="card-header py-0">
+                        Partially Correct
+                    </div>
+                    <textarea class="col-sm-12" type="text" name="partiallycorrectfeedback"
+                        (change)="inputValueChanged($event)">{{getNodeValue('partiallycorrectfeedback')}}</textarea>
+                </div>
+                <div class="col-sm-6">
+                    <div class="card-header py-0">
+                        Preview
+                    </div>
+                    <div class="card-body py-1 preview bg-light"
+                        [innerHTML]="getNodeValue('partiallycorrectfeedback')">
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12 card-body row">
+                <div class="col-sm-6">
+                    <div class="card-header py-0">
+                        Incorrect
+                    </div>
+                    <textarea class="col-sm-12" type="text" name="incorrectfeedback"
+                        (change)="inputValueChanged($event)">{{getNodeValue('incorrectfeedback')}}</textarea>
+                </div>
+                <div class="col-sm-6">
+                    <div class="card-header py-0">
+                        Preview
+                    </div>
+                    <div class="card-body py-1 preview bg-light"
+                        [innerHTML]="getNodeValue('incorrectfeedback')">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

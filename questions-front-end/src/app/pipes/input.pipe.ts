@@ -2,15 +2,16 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { XmlParserService } from '../services/xml-parser.service';
 
 @Pipe({
-  name: 'placeholder',
+  name: 'input',
   standalone: true
 })
-export class PlaceholderPipe implements PipeTransform {
-  constructor(private parser: XmlParserService) {
+export class InputPipe implements PipeTransform {
+
+  constructor(private xmlService: XmlParserService) {
   }
 
   transform(value: unknown, ...args: unknown[]): unknown {
-    return this.parser.injectTextPlaceholders(value);
+    return this.xmlService.injectInputFields(value);
   }
 
 }

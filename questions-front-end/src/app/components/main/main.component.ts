@@ -1,37 +1,39 @@
 import { Component } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Router } from '@angular/router';
-import { last } from 'rxjs';
+import { ItemComponent } from "../item/item.component";
+import { XmlParserService } from '../../services/xml-parser.service';
+import { AnswerItemComponent } from "../answer-item/answer-item.component";
 
 @Component({
-  selector: 'app-main',
-  standalone: true,
-  imports: [],
-  templateUrl: './main.component.html',
-  styleUrl: './main.component.css'
+    selector: 'app-main',
+    standalone: true,
+    templateUrl: './main.component.html',
+    styleUrl: './main.component.css',
+    imports: [ItemComponent, AnswerItemComponent]
 })
 export class MainComponent {
   public elements: any[] = [];
   public answers: any[] = [];
-  public currentItem: any[] = [];
+  public currentItem: any = null;
   public lastItem: any = null;
   private xmlDocument: any = null;
 
-  constructor(private router: Router, private sanitizer: DomSanitizer) {
+  constructor(private router: Router, private sanitizer: DomSanitizer, private xmlService: XmlParserService) {
     const navigation = this.router.getCurrentNavigation();
-    console.log('Navigation:', this.router);
     if (navigation?.extras.state) {
       const xml = navigation.extras.state['xml'];
-      this.processXML(xml);
-      //     console.log('Received XML:', xml);
-      // Use the xml as needed
+      const xmlData = this.xmlService.processXML(xml);
+      this.xmlDocument = xmlData.document;
+      this.elements = xmlData.elements;
+      this.answers = xmlData.answers;
     } else {
       // Handle the case where no state is passed
       console.log('No XML state passed');
     }
   }
   ngOnInit(): void {
-    var toggler = document.getElementsByClassName("caret");
+    var toggler = document?.getElementsByClassName("caret");
     console.log('Toggler:', toggler);
     var i: number;
 
@@ -65,8 +67,32 @@ export class MainComponent {
 
   }
 
-  answerClicked(event: any): void {
+  answerClicked(event: any, index: any): void {
+    const target: any = event.currentTarget;
+    if (this.lastItem == target) {
+      console.log('Same Item Clicked:', target);
+      return;
+    } else if (this.lastItem != null) {
+      this.lastItem.classList.remove('selected');
+    }
+    console.log('Item Clicked:', event.currentTarget);
 
+    const name = target.textContent;
+    console.log('Search', name);
+    const found = this.answers.find((answer) => answer.tagName.trim() == name.trim() && answer.getElementsByTagName('partindex').item(0).firstElementChild.textContent.trim() == index.trim());
+    target.classList.toggle('selected');
+    if (found) {
+      this.currentItem = [];
+      this.currentItem.push(found);
+      console.log('Found:', found);
+    } else {
+      console.log('Not Found:', name);
+    }
+    this.lastItem = target;
+  }
+
+  public isAnswer(element: any): boolean {
+    return element.tagName == 'answers';
   }
 
   itemClicked(event: any): void {
@@ -115,61 +141,22 @@ export class MainComponent {
     return placeholders;
   }
 
-  r(text: any): any {
-    // use regular expression to check if text contains {#a}, {#b}, {#c}, {_0}, {_1}, {_2}
-
-    const regx = /\{#[a-zA-Z]+?\}|\{_[0-9]+?\}/g;
-    if (!text.match(regx)) {
-      return text;
-    }
-
-    let str: string = text.toString();
-    this.answers.forEach((node: any) => {
-      let pH: string = '';
-      let quest: string = '';
-      node.childNodes.forEach((child: any) => {
-
-        if (child.nodeType == 1 && child.tagName == 'placeholder') {
-          pH = '{' + child.firstElementChild.textContent.trim() + '}';
-        } else if (child.nodeType == 1 && child.tagName == 'subqtext') {
-          quest = child.firstElementChild.textContent.trim();
-          str = str.replace(pH, quest);
-        }
-
-
-      });
-    });
-    const regex = /{_[0-9]}/g;
-    const matches = str.match(regex);
-    if (matches) {
-      matches.forEach((match: string) => {
-        str = str.replace(match, "<input size=\"5\" type=\"text\">");
-      });
-    }
-    return this.sanitizer.bypassSecurityTrustHtml(str);
-  }
-
-  processXML(xml: string): void {
-    const parser = new DOMParser();
-    const document = parser.parseFromString(xml, 'text/xml');
-    const name = document.getElementsByTagName('name')[0];
-    var text = name.firstElementChild;
-
-    var question = document.firstElementChild?.firstElementChild;
-    question?.childNodes.forEach((node) => {
-      if (node.nodeType == 1) {
-        //      console.log('Node:', node);
-        if (node.nodeName == 'answers') {
-          this.answers.push(node);
+  answerValueChanged(event: any): void {
+    console.log('Answer Value Changed:', event.index, event.name, event.value);
+    const found = this.answers.find((answer) => answer.getElementsByTagName('partindex').item(0).firstElementChild.textContent.trim() == event.index);
+    console.log('Found:', found);
+    if (found) {
+      const target = found.getElementsByTagName(event.name).item(0);
+      console.log('Target:', target);
+      if (target) {
+        if (target.firstElementChild && target.firstElementChild.nodeName == 'text') {
+          target.firstElementChild.textContent = event.value;
         } else {
-          this.elements.push(node);
+          target.textContent = event.value;
         }
+        console.log('XML:', this.xmlDocument);
       }
-    });
-    //   this.currentItem = this.elements;
-    console.log('------------------', this.elements[1]);
-    //  placeholders: [] = this.getPlaceHolders(this.elements);
-    this.xmlDocument = document;
+    }
   }
 
   inputValueChanged(event: any): void {

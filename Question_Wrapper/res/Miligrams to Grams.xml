@@ -1,92 +1,144 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <quiz>
-<!-- question: 5127548  -->
-  <question type="formulas">
-    <name>
-      <text>Miligrams to Grams</text>
-    </name>
-    <questiontext format="html">
-      <text><![CDATA[<p dir="ltr">Convert {mg} milligrams (mg) to grams (g) using the appropriate metric prefix conversion factor.</p>]]></text>
-    </questiontext>
-    <generalfeedback format="html">
-      <text></text>
-    </generalfeedback>
-    <defaultgrade>1</defaultgrade>
-    <penalty>0.3333333</penalty>
-    <hidden>0</hidden>
-    <idnumber></idnumber>
-    <correctfeedback format="html">
-      <text>Your answer is correct.</text>
-    </correctfeedback>
-    <partiallycorrectfeedback format="html">
-      <text>Your answer is partially correct.</text>
-    </partiallycorrectfeedback>
-    <incorrectfeedback format="html">
-      <text>Your answer is incorrect.</text>
-    </incorrectfeedback>
-    <shownumcorrect/>
-<varsrandom><text>mg = {100:5000:100}</text>
-</varsrandom>
-<varsglobal><text></text>
-</varsglobal>
-<answernumbering><text>abc</text>
-</answernumbering>
-<answers>
- <partindex>
-  <text>0</text>
- </partindex>
- <placeholder>
-  <text></text>
- </placeholder>
- <answermark>
-  <text>1</text>
- </answermark>
- <answertype>
-  <text>0</text>
- </answertype>
- <numbox>
-  <text>1</text>
- </numbox>
- <vars1>
-  <text></text>
- </vars1>
- <answer>
-  <text>mg*0.001</text>
- </answer>
- <vars2>
-  <text></text>
- </vars2>
- <correctness>
-  <text><![CDATA[_relerr < 0.01]]></text>
- </correctness>
- <unitpenalty>
-  <text>1</text>
- </unitpenalty>
- <postunit>
-  <text></text>
- </postunit>
- <ruleid>
-  <text>1</text>
- </ruleid>
- <otherrule>
-  <text></text>
- </otherrule>
- <subqtext format="html">
-<text></text>
- </subqtext>
- <feedback format="html">
-<text></text>
- </feedback>
- <correctfeedback format="html">
-<text></text>
- </correctfeedback>
- <partiallycorrectfeedback format="html">
-<text></text>
- </partiallycorrectfeedback>
- <incorrectfeedback format="html">
-<text></text>
- </incorrectfeedback>
-</answers>
-  </question>
-
+	<!-- question: 5127548 -->
+	<question type="formulas">
+		<name>
+			<text>
+				Miligrams to Grams
+			</text>
+		</name>
+		<questiontext format="html">
+			<text>
+				<![CDATA[<p dir="ltr">Convert {mg} milligrams (mg) to grams (g) using the appropriate metric prefix conversion factor.</p>]]>
+			</text>
+		</questiontext>
+		<generalfeedback format="html">
+			<text>
+			</text>
+		</generalfeedback>
+		<defaultgrade>
+			1
+		</defaultgrade>
+		<penalty>
+			0.3333333
+		</penalty>
+		<hidden>
+			0
+		</hidden>
+		<idnumber>
+		</idnumber>
+		<correctfeedback format="html">
+			<text>
+				Your answer is correct.
+			</text>
+		</correctfeedback>
+		<partiallycorrectfeedback format="html">
+			<text>
+				Your answer is partially correct.
+			</text>
+		</partiallycorrectfeedback>
+		<incorrectfeedback format="html">
+			<text>
+				Your answer is incorrect.
+			</text>
+		</incorrectfeedback>
+		<shownumcorrect />
+		<varsrandom>
+			<text>
+				mg = {100:5000:100}
+			</text>
+		</varsrandom>
+		<varsglobal>
+			<text>
+			</text>
+		</varsglobal>
+		<answernumbering>
+			<text>
+				abc
+			</text>
+		</answernumbering>
+		<answers>
+			<partindex>
+				<text>
+					0
+				</text>
+			</partindex>
+			<placeholder>
+				<text>
+				</text>
+			</placeholder>
+			<answermark>
+				<text>
+					1
+				</text>
+			</answermark>
+			<answertype>
+				<text>
+					0
+				</text>
+			</answertype>
+			<numbox>
+				<text>
+					1
+				</text>
+			</numbox>
+			<vars1>
+				<text>
+				</text>
+			</vars1>
+			<answer>
+				<text>
+					mg*0.001
+				</text>
+			</answer>
+			<vars2>
+				<text>
+				</text>
+			</vars2>
+			<correctness>
+				<text>
+					<![CDATA[_relerr < 0.01]]>
+				</text>
+			</correctness>
+			<unitpenalty>
+				<text>
+					1
+				</text>
+			</unitpenalty>
+			<postunit>
+				<text>
+				</text>
+			</postunit>
+			<ruleid>
+				<text>
+					1
+				</text>
+			</ruleid>
+			<otherrule>
+				<text>
+				</text>
+			</otherrule>
+			<subqtext format="html">
+				<text>
+				</text>
+			</subqtext>
+			<feedback format="html">
+				<text>
+				</text>
+			</feedback>
+			<correctfeedback format="html">
+				<text>
+				</text>
+				F
+			</correctfeedback>
+			<partiallycorrectfeedback format="html">
+				<text>
+				</text>
+			</partiallycorrectfeedback>
+			<incorrectfeedback format="html">
+				<text>
+				</text>
+			</incorrectfeedback>
+		</answers>
+	</question>
 </quiz>

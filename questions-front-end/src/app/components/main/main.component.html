@@ -17,7 +17,7 @@
                             <li><span class="caret">Answers</span>
                                 <ul class="nested">
                                     @for (answer of answers; track answer){
-                                    <li class="answerItem" (click)="answerClicked($event)">
+                                    <li class="answerItem" (click)="answerClicked($event, answer.getElementsByTagName('partindex').item(0).firstElementChild.textContent.trim())">
                                         {{answer.nodeName}}
                                     </li>
                                     }
@@ -28,32 +28,17 @@
                 </ul>
             </div>
         </nav>
-        <main role="main" class="col-md-9 ml-sm-auto pt-3 px-4 bg-primary">
+        <main role="main" class="col-md-9 ml-sm-auto pt-3 px-4">
             @for(item of currentItem; track item){
-            <div class="card col-sm-10 mb-2">
-
-                <div class="card">
-                    <div class="card-header py-0">
-                        {{item.nodeName}}
-                    </div>
-                    <div class="card-body py-1">
-                        <input class="col-sm-12" type="text" name="{{item.nodeName}}"
-                            value="{{item.getElementsByTagName('text').item(0) != null ? item.getElementsByTagName('text').item(0).textContent : item.textContent}}"
-                            (change)="inputValueChanged($event)">
-                    </div>
+            @if(isAnswer(item)){
+                <div class="card col-sm-10 mb-2">
+                    <app-answer-item [element]="item" (event)="answerValueChanged($event)"></app-answer-item>
                 </div>
-                @if(item.getAttributeNode('format') != null && item.getAttributeNode('format').value == 'html'){
-                <div class="card mt-2">
-                    <div class="card-header py-0">
-                        Preview
-                    </div>
-                    <div class="card-body py-1 preview"
-                        [innerHTML]="r(item.getElementsByTagName('text').item(0) != null ? item.getElementsByTagName('text').item(0).textContent : item.textContent)">
-
-                    </div>
-                </div>
-                }
-            </div>
+            } @else{
+                <div class="card col-sm-10 mb-2">
+                    <app-item [element]="item" (event)="inputValueChanged($event)"></app-item>
+                </div>   
+            }
             }
         </main>
     </div>

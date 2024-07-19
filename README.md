@@ -7,13 +7,18 @@
 - [Usage](#usage)
 - [Configuration](#configuration)
 - [Testing](#testing)
-- [Contributing](#contributing)
+- [Contributing](#contributing)  
 - [License](#license)
 - [Contact](#contact)
 
 ## Project Description
 
-This project focuses on developing and managing formula-based questions for Moodle, an open-source learning platform. It aims to enhance Moodle's assessment capabilities by providing an efficient and scalable solution for creating dynamic and interactive formula questions, making assessments more flexible and responsive to educational needs.
+This project focuses on developing and managing formula-based questions for Moodle, an open-source learning platform. 
+It aims to provide educators a user-friendly and flexible means of creating dynamic and interactive questions for Moodle's assessments. This project aims to assessments more flexible and responsive to educational needs.
+
+## Repository Contents
+- [Java Desktop Application](https://github.com/intotito/moodle_q_wrapper.git/blob/main/Question_Wrapper/README.md)
+- [Angular Web Application](https://github.com/intotito/moodle_q_wrapper.git/blob/main/questions-front-end/README.md)
 
 ## Features
 
@@ -38,3 +43,10 @@ Ensure you have the following installed:
    ```sh
    git clone https://github.com/intotito/moodle_q_wrapper.git
    cd moodle_q_wrapper
+
+
+
+## References
+[Moodle XML Format](https://docs.moodle.org/404/en/Moodle_XML_format)
+
+[Formula Question Documentation](https://dynamiccourseware.org/course/view.php?id=22#section-0)

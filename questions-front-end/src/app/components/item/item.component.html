@@ -1,21 +1,20 @@
     <div class="card">
         <div class="card-header py-0">
-            {{element.nodeName}}
+            {{getName()}}
         </div>
         <div class="card-body py-1">
             <input class="col-sm-12" type="text" name="{{element.nodeName}}"
-                value="{{element.getElementsByTagName('text').item(0) != null ? element.getElementsByTagName('text').item(0).textContent : element.textContent}}"
+                value="{{getTextContent()}}"
                 (change)="inputValueChanged($event)">
         </div>
     </div>
-    @if(element.getAttributeNode('format') != null && element.getAttributeNode('format').value == 'html'){
+    @if(isHtml()){
     <div class="card mt-2">
         <div class="card-header py-0">
             Preview
         </div>
         <div class="card-body py-1 preview"
-            [innerHTML]="r(element.getElementsByTagName('text').item(0) != null ? element.getElementsByTagName('text').item(0).textContent : element.textContent)">
-
+            [innerHTML]="getTextContent() | placeholder | input">
         </div>
     </div>
     }

@@ -1,3 +1,26 @@
+# Moodle Formula Questions Wrapper - Web Application
+
+### Requirements
+
+- Node.js
+- Angular CLI
+
+### Installation
+
+1. Clone the repository
+2. Run `npm install` to install the dependencies
+3. Run `ng serve` to start the development server
+4. Navigate to `http://localhost:4200/` to view the application
+
+### Running on GitHub code spaces
+
+1. Open the repository in GitHub code spaces
+2. Run `npm install` to install the dependencies
+3. Run `ng serve --host
+4. Navigate to `https://4200-<your-username>.githubpreview.dev/` to view the application
+
+
+
 # QuestionsFrontEnd
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.0.4.
