@@ -1,6 +1,6 @@
 <div class="container-fluid my-5">
     <div class="row">
-        <nav class="col-md-3 d-none d-md-block bg-light sidebar">
+        <nav class="col-md-3 d-none d-md-block bg-dark m_foreground sidebar pt-3">
             <div class="sidebar-sticky">
                 <ul id="treeUI">
                     <li><span class="caret">Question</span>
@@ -17,7 +17,8 @@
                             <li><span class="caret">Answers</span>
                                 <ul class="nested">
                                     @for (answer of answers; track answer){
-                                    <li class="answerItem" (click)="answerClicked($event, answer.getElementsByTagName('partindex').item(0).firstElementChild.textContent.trim())">
+                                    <li class="answerItem"
+                                        (click)="answerClicked($event, answer.getElementsByTagName('partindex').item(0).firstElementChild.textContent.trim())">
                                         {{answer.nodeName}}
                                     </li>
                                     }
@@ -28,18 +29,26 @@
                 </ul>
             </div>
         </nav>
-        <main role="main" class="col-md-9 ml-sm-auto pt-3 px-4">
-            @for(item of currentItem; track item){
-            @if(isAnswer(item)){
-                <div class="card col-sm-10 mb-2">
-                    <app-answer-item [element]="item" (event)="answerValueChanged($event)"></app-answer-item>
+        <main role="main" class="col-md-9 ml-sm-auto pt-3 px-4 bg-dark">
+            <div class="card col-sm-12 mb-2">
+                <div class="card-header">
+                    <h4>{{this.getName()}}</h4>
                 </div>
-            } @else{
-                <div class="card col-sm-10 mb-2">
-                    <app-item [element]="item" (event)="inputValueChanged($event)"></app-item>
-                </div>   
-            }
-            }
+                <div class="card-body py-1 m_background">
+                    @for(item of currentItem; track item){
+                        @if(isAnswer(item)){
+                        <div class="card mb-2">
+                            <app-answer-item [element]="item" (event)="answerValueChanged($event)"></app-answer-item>
+                        </div>
+                        } @else{
+                        <div class="card mb-2">
+                            <app-item [element]="item" (event)="inputValueChanged($event)"></app-item>
+                        </div>
+                        }
+                    }
+                </div>
+
+            </div>
         </main>
     </div>
 

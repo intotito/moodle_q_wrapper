@@ -8,8 +8,8 @@ export class XmlParserService {
   private answers: any[] = [];
   private elements: any[] = [];
   private document: any = null;
+  private blackList: string[] = ['name', 'generalfeedback', 'hidden'];
   constructor(private sanitizer: DomSanitizer) {
-
   }
 
   public getAnswers(): any[] {
@@ -30,7 +30,7 @@ export class XmlParserService {
       if (node.nodeType == 1) {
         if (node.nodeName == 'answers') {
           this.answers.push(node);
-        } else {
+        } else if(this.blackList.indexOf(node.nodeName) == -1) {
           this.elements.push(node);
         }
       }

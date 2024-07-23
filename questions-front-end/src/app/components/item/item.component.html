@@ -1,19 +1,21 @@
-    <div class="card">
-        <div class="card-header py-0">
-            {{getName()}}
-        </div>
+    <!-- <div class="card"> -->
+        <h6 class="card-title p-2 col-4 bg-light m_foreground">
+            {{getName() | pretty}}
+        </h6>
+        
         <div class="card-body py-1">
             <input class="col-sm-12" type="text" name="{{element.nodeName}}"
                 value="{{getTextContent()}}"
                 (change)="inputValueChanged($event)">
         </div>
-    </div>
+   <!--  </div> -->
     @if(isHtml()){
     <div class="card mt-2">
-        <div class="card-header py-0">
-            Preview
+        <div class="card-header py-0 d-flex justify-content-between">
+            <span>Preview</span>
+            <span class="p-caret" (click)="togglePreview($event)"></span>
         </div>
-        <div class="card-body py-1 preview"
+        <div class="card-body py-1 preview nested"
             [innerHTML]="getTextContent() | placeholder | input">
         </div>
     </div>

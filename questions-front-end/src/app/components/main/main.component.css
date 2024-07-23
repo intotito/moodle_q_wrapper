@@ -4,6 +4,14 @@ ul,
     list-style-type: none;
 }
 
+/* Moodle Color theme */
+.m_background {
+    background-color: #6666FF;
+}
+.m_foreground{
+    color: #F27F22;
+}
+
 /* Remove margins and padding from the parent ul */
 #treeUI {
     margin: 0;

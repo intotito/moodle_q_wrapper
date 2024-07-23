@@ -1,29 +1,35 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { PlaceholderPipe } from "../../pipes/placeholder.pipe";
 import { InputPipe } from "../../pipes/input.pipe";
+import { PrettyPipe } from "../../pipes/pretty.pipe";
 
 @Component({
-    selector: 'app-item',
-    standalone: true,
-    templateUrl: './item.component.html',
-    styleUrl: './item.component.css',
-    imports: [PlaceholderPipe, InputPipe]
+  selector: 'app-item',
+  standalone: true,
+  templateUrl: './item.component.html',
+  styleUrl: './item.component.css',
+  imports: [PlaceholderPipe, InputPipe, PrettyPipe]
 })
 export class ItemComponent {
   private nested: boolean = false;
-  
+
   @Input()
   public element: any;
 
-  @Output() 
+  @Output()
   public event = new EventEmitter();
 
-  constructor(){
+  constructor() {
+  }
 
+  public togglePreview(event: any): void {
+    const target = event.currentTarget as HTMLElement;
+    target.parentElement?.parentElement?.querySelector(".nested")?.classList?.toggle("active");
+    target.classList?.toggle("p-caret-down");
   }
 
   ngOnInit(): void {
-    this.nested = this.element.getElementsByTagName('text').item(0) != null
+    this.nested = this.element.getElementsByTagName('text').item(0) != null;
   }
 
   public isNested(): boolean {
@@ -41,8 +47,8 @@ export class ItemComponent {
   public getName(): string {
     return this.element.nodeName;
   }
-  
-  public inputValueChanged(event: any){
+
+  public inputValueChanged(event: any) {
     this.event.emit(event);
   }
 }

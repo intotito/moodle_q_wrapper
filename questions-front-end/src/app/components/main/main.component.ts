@@ -95,6 +95,21 @@ export class MainComponent {
     return element.tagName == 'answers';
   }
 
+  public getName(): string{
+    var question = this.xmlDocument.firstElementChild?.firstElementChild;
+    let value = '';
+    question?.childNodes.forEach((node : any) => {
+      if (node.nodeType == 1) {
+        if (node.nodeName == 'name') {
+          console.log("Node", node.firstElementChild.textContent.trim());
+          value = node.firstElementChild?.textContent.trim();
+          return;
+        }
+      }
+    });
+    return value;
+  }
+
   itemClicked(event: any): void {
     const target: any = event.currentTarget;
     if (this.lastItem == target) {
