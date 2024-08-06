@@ -1,0 +1,23 @@
+.web-viewer-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+  }
+  
+  .web-viewer-container .form-control {
+    width: 100%;
+    max-width: 600px;
+    margin-bottom: 10px;
+  }
+  
+  .web-viewer-container .btn {
+    margin-bottom: 10px;
+  }
+  
+  .web-viewer-frame {
+    width: 100%;
+    height: 80vh;
+    border: none;
+  }
+  

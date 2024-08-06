@@ -1,8 +1,3 @@
-/* Remove default bullets */
-ul,
-#treeUI {
-    list-style-type: none;
-}
 
 /* Moodle Color theme */
 .m_background {
@@ -12,35 +7,6 @@ ul,
     color: #F27F22;
 }
 
-/* Remove margins and padding from the parent ul */
-#treeUI {
-    margin: 0;
-    padding: 0;
-}
-
-#treeUI li {
-    cursor: pointer;
-}
-
-/* Style the caret/arrow */
-.caret {
-    cursor: pointer;
-    user-select: none;
-    /* Prevent text selection */
-}
-
-/* Create the caret/arrow with a unicode, and style it */
-.caret::before {
-    content: "\25B6";
-    color: black;
-    display: inline-block;
-    margin-right: 6px;
-}
-
-/* Rotate the caret/arrow icon when clicked on (using JavaScript) */
-.caret-down::before {
-    transform: rotate(90deg);
-}
 
 /* Hide the nested list */
 .nested {
@@ -61,8 +27,180 @@ ul,
 }
 
 .preview {
-    max-height: 250px;
+    min-height: 150px;
+    max-height: 300px;
     overflow-x: hidden;
     overflow-y: auto;
     text-align: justify;
+    box-sizing: border-box;
 }
+.img {
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+.bg-wrap {
+    width: 100%;
+    position: relative;
+    z-index: 0;
+}
+.bg-wrap:after {
+    z-index: -1;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    content: '';
+    background: #000;
+    opacity: .3;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+
+#main {
+    transition: margin-left 0.3s;
+}
+
+#sidebar {
+    position: sticky;
+    height: 100%;
+    background: #333;
+    color: #fff;
+    transition: all 0.3s;
+    z-index: 999;
+}
+
+#sidebar.active {
+    left: 0; /* Visible when active */
+}
+
+
+/* Styles for the toggle button */
+#sidebarToggle {
+    display: none; /* Hide by default */
+}
+
+@media (max-width: 768px) {
+    #sidebar {
+        position:fixed;
+        height: 100%;
+        left: -100%;
+    }
+
+    #sidebar.active {
+        width: 90%;
+        height: 100%;
+        left: 0; /* Show sidebar */
+    }
+
+    #sidebarToggle {
+        display: block; /* Show toggle button on mobile */
+        position: fixed;
+        top: 0px;
+        left: 0px;
+        z-index: 1000; /* Ensure it's above other content */
+    }
+    #main{
+        width:100%;
+    }
+}
+
+.sidebar {
+
+    background-color: #2c2f34;
+    padding-top: 20px;
+    
+}
+
+.sidebar ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.sidebar ul li {
+    width: 100%;
+    border-bottom: 1px solid #444;
+}
+
+.sidebar ul li a {
+    display: flex;
+    align-items: center;
+    padding: 15px 20px;
+    text-decoration: none;
+    color: white;
+    font-size: 18px;
+    position: relative;
+}
+
+.sidebar ul li a i {
+    margin-right: 15px;
+    font-size: 20px;
+}
+
+.sidebar ul li a .notif {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    background-color: #3f307f; /* Notification badge background color */
+    color: white;
+    border-radius: 50%;
+    padding: 2px 6px;
+    font-size: 12px;
+}
+
+.sidebar ul li.active a {
+    background-color: #4285f4; /* Highlight color for the active menu */
+}
+
+.sidebar ul li.active a, .sidebar ul li.active a i {
+    color: white;
+}
+
+.sidebar ul li a:hover {
+    background-color: #1c1e22; /* Background color on hover */
+    color: #aaff; /* Text and icon color on hover */
+}
+
+.sidebar ul li a:hover i {
+    color: #00aaff; /* Icon color on hover */
+}
+
+.sidebar ul .sub a{
+    font-size: 16px;
+    background-color: #2c2e32;
+
+    display: flex;
+    align-items: center;
+    padding: 15px 0px 15px 40px;
+    text-decoration: none;
+    color: white;
+    position: relative;
+}
+a{
+    cursor: pointer;
+}
+.sidebar ul .btn-bar {
+    background-color: #1c1e22;
+    display: flex;
+ 
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px;
+}
+
+.sidebar ul .btn-bar a:hover{
+    background-color: #202DF2 !important;
+}
+
+a.disabled {
+    pointer-events: none;
+    background-color: #4c4e52 !important;
+    cursor: wait !important;
+}
+
+

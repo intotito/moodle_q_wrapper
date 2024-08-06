@@ -8,7 +8,7 @@ export class XmlParserService {
   private answers: any[] = [];
   private elements: any[] = [];
   private document: any = null;
-  private blackList: string[] = ['name', 'generalfeedback', 'hidden'];
+  private blackList: string[] = ['name', 'generalfeedback', 'hidden', 'defaultgrade', 'shownumcorrect', 'hint'];
   constructor(private sanitizer: DomSanitizer) {
   }
 
@@ -18,6 +18,10 @@ export class XmlParserService {
 
   public getElements(): any[] {
     return this.elements;
+  }
+
+  public isBlacklisted(element: string): boolean {
+    return this.blackList.indexOf(element) == -1 ? false : true;
   }
 
   public processXML(xml: string): any {
@@ -30,7 +34,8 @@ export class XmlParserService {
       if (node.nodeType == 1) {
         if (node.nodeName == 'answers') {
           this.answers.push(node);
-        } else if(this.blackList.indexOf(node.nodeName) == -1) {
+   //     } else if(this.blackList.indexOf(node.nodeName) == -1) {
+        }else{
           this.elements.push(node);
         }
       }
@@ -41,7 +46,7 @@ export class XmlParserService {
 
   private hasTextPlaceholders(text: any): boolean {
     // use regular expression to check if text contains {#a}, {#b}, {#c}, {_0}, {_1}, {_2}
-    const regex = /\{#[a-zA-Z]+?\}/g;
+    const regex = /\{#[a-zA-Z0-9]+?\}/g;
     return text.match(regex) ? true : false;
   }
 
@@ -73,7 +78,7 @@ export class XmlParserService {
   public injectTextPlaceholders(text: any): any {
     if (this.hasTextPlaceholders(text)) {
       let str: string = text.toString();
-      const regex = /\{#[a-zA-Z]+?\}/g;
+      const regex = /\{#[a-zA-Z0-9]+?\}/g;
       const matches = str.match(regex);
       if (matches) {
         matches.forEach((match: string) => {

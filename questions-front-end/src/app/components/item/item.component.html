@@ -4,9 +4,15 @@
         </h6>
         
         <div class="card-body py-1">
+            @if(isLayered()){
             <input class="col-sm-12" type="text" name="{{element.nodeName}}"
                 value="{{getTextContent()}}"
                 (change)="inputValueChanged($event)">
+            }
+            @else {
+                <textarea class="col-sm-12" type="text" name="{{element.nodeName}}"
+                (change)="inputValueChanged($event)">{{getTextContent()}}</textarea>
+            }
         </div>
    <!--  </div> -->
     @if(isHtml()){
@@ -16,7 +22,7 @@
             <span class="p-caret" (click)="togglePreview($event)"></span>
         </div>
         <div class="card-body py-1 preview nested"
-            [innerHTML]="getTextContent() | placeholder | input">
+            [innerHTML]="getTextContent() | placeholder | input" #htmlElement>
         </div>
     </div>
     }

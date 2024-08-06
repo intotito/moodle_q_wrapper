@@ -1,0 +1,8 @@
+<div class="web-viewer-container">
+  <input type="text" class="form-control" placeholder="Enter URL" [(ngModel)]="url" (keyup.enter)="loadUrl()" disabled="true">
+  <button class="btn btn-primary" (click)="loadUrl()" hidden>Load</button>
+  <iframe name="iframe" [src]="sanitizedUrl" class="web-viewer-frame" (load)="onIframeLoad($event)"></iframe>
+</div>
+<div *ngIf="clickedLinkUrl" class="alert alert-info">
+    Clicked URL: {{ clickedLinkUrl }}
+</div>

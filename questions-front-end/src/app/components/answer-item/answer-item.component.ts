@@ -1,5 +1,6 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { InputPipe } from "../../pipes/input.pipe";
+declare var MathJax: any;  // Declare MathJax if included via CDN
 
 @Component({
     selector: 'app-answer-item',
@@ -10,13 +11,28 @@ import { InputPipe } from "../../pipes/input.pipe";
 })
 export class AnswerItemComponent {
 
+  @ViewChild('htmlElement') 
+  htmlElement: ElementRef | undefined;
+
   @Input()
   public element: any;
 
   @Output() 
   public event = new EventEmitter();
 
+
+  ngAfterViewInit() {
+    this.renderMath();
+  }
+
+  renderMath() {
+    if (MathJax) {
+      MathJax.typesetPromise([this.htmlElement?.nativeElement]);
+    }
+  }
+
   public getNodeValue(nodeName: string): any {
+  //  console.log('getNodeValue:', nodeName);
     return this.element.getElementsByTagName(nodeName).item(0).firstElementChild.textContent.trim();
   }
 

@@ -1,53 +1,182 @@
 <div class="container-fluid my-5">
     <div class="row">
-        <nav class="col-md-3 d-none d-md-block bg-dark m_foreground sidebar pt-3">
-            <div class="sidebar-sticky">
-                <ul id="treeUI">
-                    <li><span class="caret">Question</span>
-                        <ul class="nested">
-                            @for (element of elements; track element){
-                            <li class="nodeItem" (click)="itemClicked($event)">
-                                @if(element.getElementsByTagName('text').item(0) != null){
-                                {{element.nodeName}}
-                                } @else{
-                                {{element.nodeName}}
-                                }
-                            </li>
-                            }
-                            <li><span class="caret">Answers</span>
-                                <ul class="nested">
-                                    @for (answer of answers; track answer){
-                                    <li class="answerItem"
-                                        (click)="answerClicked($event, answer.getElementsByTagName('partindex').item(0).firstElementChild.textContent.trim())">
-                                        {{answer.nodeName}}
-                                    </li>
-                                    }
-                                </ul>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
+        <nav id="sidebar" class="col-3 bg-dark text-info sidebar pt-3">
+            <div class="img bg-wrap text-center py-2" style="background-image: url(atu_night.jpg);height: 300px;">
+                <div class="text-center">
+                    <div class="img" style="background-image: url(moodle.png); height: 150px; width: 150px"></div>
+                    <h3>Formulas Question</h3>
+                </div>
             </div>
+            <ul class="list-unstyled components mb-5">
+                <li>
+                    <a class="selected" name="question" (click)="itemXClicked($event)"><i class="fa fa-clipboard"></i> Question</a>
+                </li>
+                <li>
+                    <a name="answers" (click)="itemXClicked($event)"><span class="notif"><span
+                                class="d-flex align-items-center justify-content-center">{{answers.length}}</span></span>
+                        Answers</a>
+                </li>
+                <li class="divider pb-2"></li>
+                @for (answer of answers; track answer){
+                <li class="sub">
+                    <a (click)="answerXClicked($event, answer)"> Answer -
+                        {{answer.getElementsByTagName('partindex').item(0).firstElementChild.textContent.trim()}}</a>
+                </li>
+                }
+                <li class="btn-bar">
+                    <a class="py-3 bg-success" (click)="addAnswer($event)"><i class="fa fa-plus"></i> Add Answer</a>
+                    <a class="py-3 bg-success" (click)="validate($event)"><i class="fa fa-check"></i> Validate</a>
+
+                </li>
+                <li class="nested">
+                    <div class="progress">
+                        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
+                      </div>
+                </li>
+            </ul>
         </nav>
-        <main role="main" class="col-md-9 ml-sm-auto pt-3 px-4 bg-dark">
-            <div class="card col-sm-12 mb-2">
-                <div class="card-header">
-                    <h4>{{this.getName()}}</h4>
+        <main id="main" role="main" class="col-9 pt-3 px-4 bg-dark">
+            <button id="sidebarToggle" class="btn btn-primary d-md-none mt-5">☰</button> <!-- Sidebar Toggle Button -->
+            <div class="card col-sm-12 mb-2 active" #questionElement>
+                <div class="card-header d-flex justify-content-between">
+                    <h4 class="naming">{{this.getName()}}</h4>
+                    <input name="name" type="text" class="col-10 naming" value="{{this.getName()}}"
+                        (change)="inputValueChanged($event)" hidden>
+                    <button class="btn btn-dark" (click)="editName($event)">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                            class="bi bi-pencil" viewBox="0 0 16 16">
+                            <path
+                                d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325" />
+                        </svg>
+                    </button>
+                    <button class="btn btn-dark" (click)="editName($event)" hidden>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                            class="bi bi-check-lg" viewBox="0 0 16 16">
+                            <path
+                                d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425z" />
+                        </svg>
+                    </button>
+                </div>
+                <div class="card-body py-1">
+                    <div class="row px-3 py-2 card-body">
+                        <div class="card col-4">
+                            <div class="card-header py-0">
+                                ID Number
+                            </div>
+                            <input class="col-12" type="text" name="idnumber" value="{{getElementValue('idnumber')}}"
+                                (change)="inputValueChanged($event)">
+                        </div>
+                        <div class="col-4 card">
+                            <div class="card-header py-0">
+                                Penalty
+                            </div>
+                            <input class="col-12" type="number" name="penalty" value="{{getElementValue('penalty')}}"
+                                (change)="inputValueChanged($event)">
+                        </div>
+                        <div class="col-4 card">
+                            <div class="card-header py-0">
+                                Answer Numbering
+                            </div>
+                            <select name="answernumbering" class="form-select form-select-md mb-3 col-12"
+                                aria-label=".form-select-lg example" (change)="inputValueChanged($event)">
+                                <option value="none" [selected]="getElementValue('answernumbering') == 'none'"> None -
+                                    [No Numbering]</option>
+                                <option value="abc" [selected]="getElementValue('answernumbering') == 'abc'"> abc -
+                                    [Alphabetical]</option>
+                                <option value="123" [selected]="getElementValue('answernumbering') == '123'"> 123 -
+                                    [Numerical]</option>
+                            </select>
+
+                        </div>
+                    </div>
+                    <div class="row mt-2 px-3 ">
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-12 col-lg-7 col-xl-7 card">
+                            <div class="card-header py-0">
+                                Question
+                            </div>
+                            <textarea class="col-sm-12" type="text" name="questiontext"
+                                (change)="inputValueChanged($event)">{{getElementValue('questiontext')}}</textarea>
+                            <div class="col-sm-12">
+                                <div class="card-header py-0">
+                                    Preview
+                                </div>
+                                <div class="card-body py-1 preview bg-light"
+                                    [innerHTML]="getElementValue('questiontext') | placeholder | input" #htmlElement>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-12 col-lg-5 col-xl-5 bg-light py-0 card">
+                            <div class="card-header py-0 text-center">
+                                Feedback
+                            </div>
+                            <div>
+                                <div class="card-header py-0">
+                                    Correct
+                                </div>
+                                <textarea class="col-sm-12" type="text" name="correctfeedback"
+                                    (change)="inputValueChanged($event)">{{getElementValue('correctfeedback')}}</textarea>
+                            </div>
+                            <div>
+                                <div class="card-header py-0">
+                                    Partially Correct
+                                </div>
+                                <textarea class="col-sm-12" type="text" name="partiallycorrectfeedback"
+                                    (change)="inputValueChanged($event)">{{getElementValue('partiallycorrectfeedback')}}</textarea>
+                            </div>
+                            <div>
+                                <div class="card-header py-0">
+                                    Incorrect
+                                </div>
+                                <textarea class="col-sm-12" type="text" name="incorrectfeedback"
+                                    (change)="inputValueChanged($event)">{{getElementValue('incorrectfeedback')}}</textarea>
+                            </div>
+                            <div>
+                                <div class="card-header py-0">
+                                    General
+                                </div>
+                                <textarea class="col-sm-12" type="text" name="generalfeedback"
+                                    (change)="inputValueChanged($event)">{{getElementValue('generalfeedback')}}</textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-2 px-3">
+                        <div class="col-6 bg-light card">
+                            <div class="card-header py-1">
+                                Random Variables
+                            </div>
+                            <textarea class="col-sm-12" type="text" name="varsrandom"
+                                (change)="inputValueChanged($event)">{{getElementValue('varsrandom')}}</textarea>
+                        </div>
+                        <div class="col-6 bg-light card">
+                            <div class="card-header py-1">
+                                Global Variables
+                            </div>
+                            <textarea class="col-sm-12" type="text" name="varsglobal"
+                                (change)="inputValueChanged($event)">{{getElementValue('varsglobal')}}</textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card col-sm-12 mb-2 nested" #answerElement>
+                <div class="card-header d-flex justify-content-between">
+                    <h4 class="naming">Answers</h4>
+                    <button class="btn btn-dark">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                            class="bi bi-plus-square" viewBox="0 0 16 16">
+                            <path
+                                d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z" />
+                            <path
+                                d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
+                        </svg>
+                    </button>
                 </div>
                 <div class="card-body py-1 m_background">
-                    @for(item of currentItem; track item){
-                        @if(isAnswer(item)){
-                        <div class="card mb-2">
-                            <app-answer-item [element]="item" (event)="answerValueChanged($event)"></app-answer-item>
-                        </div>
-                        } @else{
-                        <div class="card mb-2">
-                            <app-item [element]="item" (event)="inputValueChanged($event)"></app-item>
-                        </div>
-                        }
+                    @for (answer of currentItem; track answer){
+                    <div class="card mb-2">
+                        <app-answer-item [element]="answer" (event)="answerValueChanged($event)"></app-answer-item>
+                    </div>
                     }
                 </div>
-
             </div>
         </main>
     </div>

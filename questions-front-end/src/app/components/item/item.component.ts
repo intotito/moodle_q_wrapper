@@ -1,7 +1,8 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
 import { PlaceholderPipe } from "../../pipes/placeholder.pipe";
 import { InputPipe } from "../../pipes/input.pipe";
 import { PrettyPipe } from "../../pipes/pretty.pipe";
+declare var MathJax: any;  // Declare MathJax if included via CDN
 
 @Component({
   selector: 'app-item',
@@ -11,8 +12,13 @@ import { PrettyPipe } from "../../pipes/pretty.pipe";
   imports: [PlaceholderPipe, InputPipe, PrettyPipe]
 })
 export class ItemComponent {
+  private layeredList: any[] = ['questiontext', 'varsrandom', 'varsglobal'];
   private nested: boolean = false;
+  private layered: boolean = false;
 
+  @ViewChild('htmlElement') 
+  htmlElement: ElementRef | undefined;
+  
   @Input()
   public element: any;
 
@@ -30,6 +36,22 @@ export class ItemComponent {
 
   ngOnInit(): void {
     this.nested = this.element.getElementsByTagName('text').item(0) != null;
+    this.layered = this.layeredList.indexOf(this.element.nodeName) == -1 ? true : false;
+    console.log('Layered:', this.layered, 'Name:', this.element.nodeName);
+  }
+
+  ngAfterViewInit() {
+    this.renderMath();
+  }
+
+  renderMath() {
+    if (MathJax) {
+      MathJax.typesetPromise([this.htmlElement?.nativeElement]);
+    }
+  }
+
+  public isLayered(): boolean {
+    return this.layered;
   }
 
   public isNested(): boolean {

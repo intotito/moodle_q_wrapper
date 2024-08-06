@@ -9,16 +9,15 @@
         </div>
         <div class="row flex-grow-1">
             <div class="col-10 offset-1">
-                <div class="form-inline py-4 bg-warning mt-5" action="#">
-                    <div class="input-group">   
-                        <!-- Make label h1 text-->
-                        <label for="question" class="h5 px-4">Import XML</label>
-                        <input type="file" class="file-upload hidden" onchange="console.log(event.target.files)" accept=".xml" (change)="onFileSelected($event)" #browseFile>
+                <div class="form-inline p-3 mt-5 transparent-bg" action="#">
+                    <div class="input-group px-2">   
+                        <input type="file" class="file-uploxxad hidden" onchange="console.log(event.target.files)" accept=".xml" (change)="onFileSelected($event)" #browseFile>
                         <input type="text" class="form-control" id="question" placeholder="Enter XML URI" [(ngModel)]="msg" name="fileInput">
-                        <button type="button" class="btn btn-success mx-4" (click)="browseFile.click()">Browse</button>
+                        <a class="btn btn-success" (click)="browseFile.click()">File</a>
+                        <a class="btn btn-info" routerLink="/web-viewer">Repo</a>
                     </div>
                     <div class="input-group d-flex justify-content-center mt-4">
-                        <button type="submit" class="btn btn-primary px-4" [disabled]="!xml" (click)="loadXML($event)">Import</button>
+                        <button type="submit" class="btn btn-primary px-4" [disabled]="!msg" (click)="loadXML($event)">Import</button>
                     </div>
                 </div>
             </div>

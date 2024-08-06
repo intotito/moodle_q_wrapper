@@ -15,6 +15,10 @@ export class PrettyPipe implements PipeTransform {
     ['penalty', 'Penalty'],
     ['varsglobal', 'Global Variables'],
     ['varsrandom', 'Random Variables'],
+    ['answernumbering', 'Numbering'],
+    ['none', 'None - [No Numbering]'],
+    ['abc', 'abc - [Alphabetical]'],
+    ['123', '123 - [Numerical]'],
   ]);
   transform(value: unknown, ...args: unknown[]): unknown {
     // check if value is an index in the map and return the corresponding value

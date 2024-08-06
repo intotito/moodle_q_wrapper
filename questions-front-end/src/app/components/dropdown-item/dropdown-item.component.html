@@ -1,0 +1,14 @@
+<div class="row">
+    <h5 class="card-title col-4 px-4 py-3 m_foreground">
+        {{element.tagName | pretty}}
+    </h5>
+
+    <div class="card-body py-1 col-8">
+        <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" (change)="selectionChanged($event)">
+            @for(item of options; track item){
+            <option value="{{item}}">{{item | pretty}}</option>
+            }
+        </select>
+
+    </div>
+</div>
