@@ -8,5 +8,13 @@ import { Component } from '@angular/core';
   styleUrl: './header.component.css'
 })
 export class HeaderComponent {
-
+  ngOnInit() {
+    // set element with id sidebarToggle to display none
+    if(document){
+      let element = document.getElementById('sidebarToggle');
+      if(element){
+        element.style.display = 'none';
+      }
+    }
+  }
 }

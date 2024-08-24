@@ -1,0 +1,18 @@
+<!-- Create a list of items in the question array, don't use ngFor instead use @for -->
+<div class="repo-viewer card m-2">
+  <div class="card-header h3">
+    Repo Viewer
+  </div>
+  <div class="card-body bg-dark scrollable">
+    <div class="list-group">
+      @for (question of questions; track question){
+        <button type="button" class="list-group-item list-group-item-action h5 py-3" (click)="itemClicked(question)">{{ question.name.text }}</button>
+      }
+    </div>
+  </div>
+  <div class="card-footer text-center">
+    <span class="text-muted">
+      Moodle Formula Questions
+    </span>
+  </div>
+</div>

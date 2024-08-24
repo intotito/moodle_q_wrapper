@@ -32,7 +32,7 @@ export class AnswerItemComponent {
   }
 
   public getNodeValue(nodeName: string): any {
-  //  console.log('getNodeValue:', nodeName);
+    console.log('getNodeValue:', nodeName);
     return this.element.getElementsByTagName(nodeName).item(0).firstElementChild.textContent.trim();
   }
 

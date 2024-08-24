@@ -1,0 +1,16 @@
+.repo-viewer {
+    border-radius: 15px;
+  }
+  .list-group-item:hover {
+    background-color: #202DF2; /* Stylish purple on hover */
+    color: #fff;
+  }
+
+  .scrollable{
+    /* make the list scrollable with fixed size of 75% of the screen*/
+    height: 75vh;
+    overflow-y: auto;
+
+    
+
+  }

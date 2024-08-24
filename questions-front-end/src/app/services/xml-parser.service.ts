@@ -106,7 +106,7 @@ export class XmlParserService {
     }
   }
 
-  private byPassHTMLSecurity(text: any): any {
+  public byPassHTMLSecurity(text: any): any {
     return this.sanitizer.bypassSecurityTrustHtml(text);
   }
 }

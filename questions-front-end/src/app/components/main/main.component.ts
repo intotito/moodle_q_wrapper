@@ -8,6 +8,9 @@ import { DropdownItemComponent } from '../dropdown-item/dropdown-item.component'
 import { InputPipe } from "../../pipes/input.pipe";
 import { PlaceholderPipe } from "../../pipes/placeholder.pipe";
 import { ValidationService } from '../../services/validation.service';
+import { HtmlSanitizePipe } from "../../pipes/html-sanitize.pipe";
+import { query } from 'express';
+import { RestService } from '../../services/rest.service';
 declare var MathJax: any;  // Declare MathJax if included via CDN
 
 @Component({
@@ -15,7 +18,7 @@ declare var MathJax: any;  // Declare MathJax if included via CDN
   standalone: true,
   templateUrl: './main.component.html',
   styleUrl: './main.component.css',
-  imports: [ItemComponent, AnswerItemComponent, DropdownItemComponent, InputPipe, PlaceholderPipe]
+  imports: [ItemComponent, AnswerItemComponent, DropdownItemComponent, InputPipe, PlaceholderPipe, HtmlSanitizePipe]
 })
 export class MainComponent {
   public elements: any[] = [];
@@ -23,6 +26,14 @@ export class MainComponent {
   public currentItem: any = null;
   public lastItem: any = null;
   private xmlDocument: any = null;
+  public report: string[] = [];
+  private header = `<div class="row px-0 mx-0 px-0">
+                              <span class="d-none d-md-block col-md-1 px-0 text-info">S/N</span>
+                              <span class="col-4 col-md-3 col-lg-2 px-0 text-primary">Title</span>
+                              <span class="d-none d-lg-block col-lg-5 px-0 text-primary">Description</span>
+                              <span class="col-6 col-lg-3 px-0 text-primary">Summary</span>
+                              <span class="col-2 col-md-2 col-lg-1 px-0 text-primary">Status</span>
+                            </div>`;
 
   @ViewChild('htmlElement')
   htmlElement: ElementRef | undefined;
@@ -33,7 +44,48 @@ export class MainComponent {
   @ViewChild('answerElement')
   answerElement: ElementRef | undefined;
 
-  constructor(private router: Router, private sanitizer: DomSanitizer, private xmlService: XmlParserService, private valService: ValidationService) {
+
+  private getFAIcon(status: string): string {
+    if (status == 'success') {
+      return '<i class="fa-solid fa-circle-check" style="color:#28A745;font-size:32px"></i>';
+    } else if (status == 'warning') {
+      return '<i class="fa-solid fa-circle-exclamation" style="color:#FFC107;font-size:32px"></i>';
+    } else if (status == 'danger') {
+      return '<i class="fa-solid fa-circle-xmark" style="color:#DC3545;font-size:32px"></i>';
+    } else {
+      return '<i class="fa-solid fa-circle-question" style="color:#6C757D;font-size:32px"></i>';
+    }
+  }
+
+  // toggle .summary element hidden
+  public hideSummary(event: any): void {
+    const target = event.target;
+    const currentTarget = event.currentTarget;
+    console.log('Hide Summary:', target.getAttribute('name'), currentTarget.getAttribute('name'), currentTarget?.name);
+    if (currentTarget.name == 'summary' || target.getAttribute('name') == 'summary') {
+      const modal = document.querySelector('.summary') as HTMLElement;
+      modal.style.display = "none";
+    }
+  }
+
+  public showSummary(event: any): void {
+    const modal = document.querySelector('.summary') as HTMLElement;
+    modal.style.display = "block";
+  }
+
+  public appendReport(report: any): void {
+    const html = `<div class="row px-0 mx-0 px-0">
+                    <span class="d-none d-md-block col-md-1 px-0">${this.report.length}</span>
+                    <span span class="col-4 col-md-3 col-lg-2 px-0"><span class="badge bg-dark">${report.title}</span></span>
+                    <span class="d-none d-lg-block col-lg-5 px-0">${report.desc}</span>
+                    <span class="col-6 col-lg-3 px-0">${report.summary}</span>
+                    <span class="col-2 col-md-2 col-lg-1 px-0">${this.getFAIcon(report.status)}</i></span>
+                  </div>`;
+    this.report.push(html);
+  }
+
+  constructor(private router: Router, private sanitizer: DomSanitizer, private xmlService: XmlParserService, 
+    private restService: RestService, private valService: ValidationService) {
     const navigation = this.router.getCurrentNavigation();
     if (navigation?.extras.state) {
       const xml = navigation.extras.state['xml'];
@@ -46,6 +98,16 @@ export class MainComponent {
       // Handle the case where no state is passed
       console.log('No XML state passed');
     }
+    const rport = {
+      title: 'questiontext',
+      desc: 'CSData Section was found to be present.',
+      summary: 'CSData Section.',
+      status: 'danger'
+    };
+    this.report.push(this.header);
+    this.appendReport(rport);
+    this.appendReport(rport);
+    this.appendReport(rport);
   }
 
   public getElementValue(tagName: string): any {
@@ -68,46 +130,32 @@ export class MainComponent {
     }
   }
   ngOnInit(): void {
-    /*
-     var toggler = document?.getElementsByClassName("caret");
-   //  console.log('Toggler:', toggler);
-     var i: number;
- 
-     for (i = 0; i < toggler.length; i++) {
-       toggler[i].addEventListener("click", (event: any) => {
-         const target = event.currentTarget as HTMLElement;
-         console.log('Clicked', 'Awumen O');
-         target.parentElement?.querySelector(".nested")?.classList?.toggle("active");
-         target.classList?.toggle("caret-down");
-         if (this.lastItem != null && this.lastItem != target) {
-           this.lastItem.classList?.remove("selected");
-         }
-         if (this.lastItem != target) {
-           target.classList?.toggle("selected");
-         }
-         if (target.textContent?.trim() == 'Question') {
-           this.currentItem = this.elements;
-         } else {
-           this.currentItem = this.answers;
-         }
-         this.lastItem = target;
-       });
-     }
- 
-     
- 
- */
-
+    if (document) {
+      let element = document.getElementById('sidebarToggle');
+      if (element) {
+        element.style.display = 'block';
+      }
+    }
     document.getElementById('sidebarToggle')?.addEventListener('click', function () {
       document.getElementById('sidebar')?.classList.toggle('active');
       document.getElementById('main')?.classList.toggle('active');
-  });
+    });
+
 
     const exp: any = document.getElementById('export');
     exp.addEventListener('click', (event: any) => {
       console.log('Export Clicked:', event);
       this.exportXML(event.currentTarget);
     });
+
+    const save: any = document.getElementById('save');
+    save.addEventListener('click', (event: any) => {
+      this.save();
+    });
+  }
+
+  private save() : void {
+    this.restService.saveQuestion(this.xmlDocument.firstElementChild?.firstElementChild);
   }
 
   answerClicked(event: any, index: any): void {
@@ -341,26 +389,31 @@ export class MainComponent {
     a.remove();
   }
 
-  public validate(event: any) : void{
+  public validate(event: any): void {
     const target = event.currentTarget;
     const grandParent = target.parentElement.parentElement;
     // get element with class progress
     const progress = grandParent.querySelector('.progress');
     console.log('Progress', progress.parentElement);
- //   progress.parentElement.classList.remove('active');
+    //   progress.parentElement.classList.remove('active');
     progress.parentElement.classList.toggle('nested');
     target.classList.toggle('disabled');
-
-    // wait 4 seconds and toggle target class disabled
+    // delete everything from report list except the first element
+    this.report.splice(1, this.report.length - 1);
+    // append report returned from validation service to report list
+    this.valService.validateDocument(this.xmlDocument).forEach((report : any) => {
+      this.appendReport(report);
+    });
 
     setTimeout(() => {
       target.classList.toggle('disabled');
       progress.parentElement.classList.toggle('nested');
-
-    }, 4000);
+      this.showSummary(null);
+    }, 1000);
   }
 
-  public addAnswer(event: any): void{
+  public addAnswer(event: any): void {
     this.answers = this.valService.addAnswer(this.xmlDocument);
   }
 }
+

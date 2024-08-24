@@ -11,10 +11,10 @@
             <div class="col-10 offset-1">
                 <div class="form-inline p-3 mt-5 transparent-bg" action="#">
                     <div class="input-group px-2">   
-                        <input type="file" class="file-uploxxad hidden" onchange="console.log(event.target.files)" accept=".xml" (change)="onFileSelected($event)" #browseFile>
+                        <input type="file" class="file-upload hidden" onchange="console.log(event.target.files)" accept=".xml" (change)="onFileSelected($event)" #browseFile>
                         <input type="text" class="form-control" id="question" placeholder="Enter XML URI" [(ngModel)]="msg" name="fileInput">
                         <a class="btn btn-success" (click)="browseFile.click()">File</a>
-                        <a class="btn btn-info" routerLink="/web-viewer">Repo</a>
+                        <a class="btn btn-info" routerLink="/repo-viewer">Repo</a>
                     </div>
                     <div class="input-group d-flex justify-content-center mt-4">
                         <button type="submit" class="btn btn-primary px-4" [disabled]="!msg" (click)="loadXML($event)">Import</button>

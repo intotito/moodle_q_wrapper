@@ -1,0 +1,670 @@
+<quiz>
+	<question type="formula">
+		<name>
+			<text>
+				Titration week 6 post Lab question finished
+			</text>
+		</name>
+		<questiontext>
+			<text>
+				<![CDATA[ <p>{#a}</p><p>{#b}</p><p>{#e}</p><p>{#f}<br></p><p>{#c}</p><p>{#d}<br></p> ]]>
+			</text>
+		</questiontext>
+		<generalfeedback>
+			<text>
+			</text>
+		</generalfeedback>
+		<defaultgrade>
+			7.5
+		</defaultgrade>
+		<penalty>
+			0.333333
+		</penalty>
+		<hidden>
+			0
+		</hidden>
+		<idnumber>
+			repo-1
+		</idnumber>
+		<correctfeedback>
+			<text>
+				<![CDATA[ Your answer is correct.<br> ]]>
+			</text>
+		</correctfeedback>
+		<partiallycorrectfeedback>
+			<text>
+				<![CDATA[ Your answer is partially correct. ]]>
+			</text>
+		</partiallycorrectfeedback>
+		<incorrectfeedback>
+			<text>
+				<![CDATA[ Your answer is incorrect. ]]>
+			</text>
+		</incorrectfeedback>
+		<varsrandom>
+			<text>
+				<![CDATA[ ]]>
+			</text>
+		</varsrandom>
+		<varsglobal>
+			<text>
+				<![CDATA[ a = ["standard"] ]]>
+			</text>
+		</varsglobal>
+		<answernumbering>
+			<text>
+				none
+			</text>
+		</answernumbering>
+		<answers>
+			<partindex>
+				<text>
+					0
+				</text>
+			</partindex>
+			<placeholder>
+				<text>
+					#a
+				</text>
+			</placeholder>
+			<answermark>
+				<text>
+					2.5
+				</text>
+			</answermark>
+			<answertype>
+				<text>
+					0
+				</text>
+			</answertype>
+			<numbox>
+				<text>
+					4
+				</text>
+			</numbox>
+			<vars1>
+				<text>
+					<![CDATA[ ]]>
+				</text>
+			</vars1>
+			<vars2>
+				<text>
+					<![CDATA[
+					criterion1 = abs(_0-_1) < 0.11;
+					criterion2 = abs(_0-_2) < 0.11;
+					criterion3 = abs(_1-_2) < 0.11;
+					criterion4 = abs(_3 - ((_0+_1+_2)/3)) < 0.08;
+					]]>
+				</text>
+			</vars2>
+			<correctness>
+				<text>
+					<![CDATA[ max((_relerr < 2 && criterion1 && criterion2 && criterion3 && criterion4),0.5*(_relerr < 2 && criterion4)) ]]>
+				</text>
+			</correctness>
+			<unitpenalty>
+				<text>
+					1
+				</text>
+			</unitpenalty>
+			<postunit>
+				<text>
+				</text>
+			</postunit>
+			<ruleid>
+				<text>
+					1
+				</text>
+			</ruleid>
+			<otherrule>
+				<text>
+				</text>
+			</otherrule>
+			<subqtext format="html">
+				<text>
+					<![CDATA[ <p>What were your three precise titration values? <br></p><p>{_0} mL, {_1}mL, {_2} mL</p><p><br></p><p>What is the average titre value? {_3} mL<br></p><p><br></p> ]]>
+				</text>
+			</subqtext>
+			<feedback format="html">
+				<text>
+					<![CDATA[ ]]>
+				</text>
+			</feedback>
+			<correctfeedback format="html">
+				<text>
+					<![CDATA[ Correct, you have achieved a precise titre.<br> ]]>
+				</text>
+			</correctfeedback>
+			<partiallycorrectfeedback format="html">
+				<text>
+					<![CDATA[
+					<p>You will need to improve your technique to get the required precision -
+					ask your lecturer to troubleshoot your technique if you are finding it
+					hard to get precise results.<br></p>
+					]]>
+				</text>
+			</partiallycorrectfeedback>
+			<incorrectfeedback format="html">
+				<text>
+					<![CDATA[ <p>Check your calculations - did you correctly calculate the average of the three results?<br></p> ]]>
+				</text>
+			</incorrectfeedback>
+		</answers>
+		<answers>
+			<partindex>
+				<text>
+					1
+				</text>
+			</partindex>
+			<placeholder>
+				<text>
+					#b
+				</text>
+			</placeholder>
+			<answermark>
+				<text>
+					0.5
+				</text>
+			</answermark>
+			<answertype>
+				<text>
+					0
+				</text>
+			</answertype>
+			<numbox>
+				<text>
+					1
+				</text>
+			</numbox>
+			<vars1>
+				<text>
+					<![CDATA[ ]]>
+				</text>
+			</vars1>
+			<vars2>
+				<text>
+					<![CDATA[ criterion1 = _0 == 0.1; ]]>
+				</text>
+			</vars2>
+			<correctness>
+				<text>
+					<![CDATA[ _relerr < 0.001 && criterion1 ]]>
+				</text>
+			</correctness>
+			<unitpenalty>
+				<text>
+					1
+				</text>
+			</unitpenalty>
+			<postunit>
+				<text>
+				</text>
+			</postunit>
+			<ruleid>
+				<text>
+					1
+				</text>
+			</ruleid>
+			<otherrule>
+				<text>
+				</text>
+			</otherrule>
+			<subqtext format="html">
+				<text>
+					<![CDATA[ <p>Was the liquid you dispensed into the conical flask with the pipette the analyte or the standard?<br></p><p>If it was the standard, what was its concentration? {_0} M</p><br> ]]>
+				</text>
+			</subqtext>
+			<feedback format="html">
+				<text>
+					<![CDATA[ <p>The liquid you dispensed by pipette was the standard 0.1 M nitric acid solution. <br></p> ]]>
+				</text>
+			</feedback>
+			<correctfeedback format="html">
+				<text>
+					<![CDATA[ ]]>
+				</text>
+			</correctfeedback>
+			<partiallycorrectfeedback format="html">
+				<text>
+					<![CDATA[ ]]>
+				</text>
+			</partiallycorrectfeedback>
+			<incorrectfeedback format="html">
+				<text>
+					<![CDATA[ <p></p><p>You will always know or be able to calculate the concentration of the standard before the titration starts. This week it was on the side of the bottle.<br></p><br><p></p> ]]>
+				</text>
+			</incorrectfeedback>
+		</answers>
+		<answers>
+			<partindex>
+				<text>
+					2
+				</text>
+			</partindex>
+			<placeholder>
+				<text>
+					#e
+				</text>
+			</placeholder>
+			<answermark>
+				<text>
+					0.5
+				</text>
+			</answermark>
+			<answertype>
+				<text>
+					0
+				</text>
+			</answertype>
+			<numbox>
+				<text>
+					1
+				</text>
+			</numbox>
+			<vars1>
+				<text>
+					<![CDATA[ ]]>
+				</text>
+			</vars1>
+			<vars2>
+				<text>
+					<![CDATA[ ]]>
+				</text>
+			</vars2>
+			<correctness>
+				<text>
+					<![CDATA[ _err < 0.0001 ]]>
+				</text>
+			</correctness>
+			<unitpenalty>
+				<text>
+					1
+				</text>
+			</unitpenalty>
+			<postunit>
+				<text>
+				</text>
+			</postunit>
+			<ruleid>
+				<text>
+					1
+				</text>
+			</ruleid>
+			<otherrule>
+				<text>
+				</text>
+			</otherrule>
+			<subqtext format="html">
+				<text>
+					<![CDATA[ <p></p><p>What volume of liquid did you dispense from the pipette? {_0} L<br></p><p></p> ]]>
+				</text>
+			</subqtext>
+			<feedback format="html">
+				<text>
+					<![CDATA[ ]]>
+				</text>
+			</feedback>
+			<correctfeedback format="html">
+				<text>
+					<![CDATA[ ]]>
+				</text>
+			</correctfeedback>
+			<partiallycorrectfeedback format="html">
+				<text>
+					<![CDATA[ ]]>
+				</text>
+			</partiallycorrectfeedback>
+			<incorrectfeedback format="html">
+				<text>
+					<![CDATA[ <p>The units required are liters - 25 mL is 0.025 liters</p><p>The pipette can only deliver a fixed volume and the pipette used in this experiment was a 25 mL pipette.<br></p> ]]>
+				</text>
+			</incorrectfeedback>
+		</answers>
+		<answers>
+			<partindex>
+				<text>
+					3
+				</text>
+			</partindex>
+			<placeholder>
+				<text>
+					#f
+				</text>
+			</placeholder>
+			<answermark>
+				<text>
+					1.5
+				</text>
+			</answermark>
+			<answertype>
+				<text>
+					0
+				</text>
+			</answertype>
+			<numbox>
+				<text>
+					1
+				</text>
+			</numbox>
+			<vars1>
+				<text>
+					<![CDATA[ ]]>
+				</text>
+			</vars1>
+			<vars2>
+				<text>
+					<![CDATA[ ]]>
+				</text>
+			</vars2>
+			<correctness>
+				<text>
+					<![CDATA[ _err < 0.00001 ]]>
+				</text>
+			</correctness>
+			<unitpenalty>
+				<text>
+					1
+				</text>
+			</unitpenalty>
+			<postunit>
+				<text>
+				</text>
+			</postunit>
+			<ruleid>
+				<text>
+					1
+				</text>
+			</ruleid>
+			<otherrule>
+				<text>
+				</text>
+			</otherrule>
+			<subqtext format="html">
+				<text>
+					<![CDATA[ <p></p><p><br></p><p>What number of moles of HNO<sub>3</sub> were contained in the liquid which you dispensed ? {_0} mol</p><p>(Remember M = molarity = moles per liter)</p><br><p></p> ]]>
+				</text>
+			</subqtext>
+			<feedback format="html">
+				<text>
+					<![CDATA[ ]]>
+				</text>
+			</feedback>
+			<correctfeedback format="html">
+				<text>
+					<![CDATA[ ]]>
+				</text>
+			</correctfeedback>
+			<partiallycorrectfeedback format="html">
+				<text>
+					<![CDATA[ ]]>
+				</text>
+			</partiallycorrectfeedback>
+			<incorrectfeedback format="html">
+				<text>
+					<![CDATA[ <p></p><p>number of moles = molarity x volume</p><p><br></p><p>You should have gotten 0.0025</p><br><p></p> ]]>
+				</text>
+			</incorrectfeedback>
+		</answers>
+		<answers>
+			<partindex>
+				<text>
+					4
+				</text>
+			</partindex>
+			<placeholder>
+				<text>
+					#c
+				</text>
+			</placeholder>
+			<answermark>
+				<text>
+					1.0
+				</text>
+			</answermark>
+			<answertype>
+				<text>
+					0
+				</text>
+			</answertype>
+			<numbox>
+				<text>
+					2
+				</text>
+			</numbox>
+			<vars1>
+				<text>
+					<![CDATA[ ]]>
+				</text>
+			</vars1>
+			<vars2>
+				<text>
+					<![CDATA[ criterion1 = _0==1; ]]>
+				</text>
+			</vars2>
+			<correctness>
+				<text>
+					<![CDATA[ max((_err < 0.00001),0.25*criterion1) ]]>
+				</text>
+			</correctness>
+			<unitpenalty>
+				<text>
+					1
+				</text>
+			</unitpenalty>
+			<postunit>
+				<text>
+				</text>
+			</postunit>
+			<ruleid>
+				<text>
+					1
+				</text>
+			</ruleid>
+			<otherrule>
+				<text>
+				</text>
+			</otherrule>
+			<subqtext format="html">
+				<text>
+					<![CDATA[ <p>&nbsp;Examining the equation for the reaction of NaOH and HNO<sub>3</sub>, what is the ratio of the reaction between them? {_0}:1<br></p><p>Therefore, assuming that the endpoint is when enough Sodium Hydroxide (NaOH)) has been added to use up all of the Nitric Acid (HNO<sub>3</sub>) but no more, how many moles of NaOH have been added to the flask? {_1} mol&nbsp;<br></p> ]]>
+				</text>
+			</subqtext>
+			<feedback format="html">
+				<text>
+					<![CDATA[ ]]>
+				</text>
+			</feedback>
+			<correctfeedback format="html">
+				<text>
+					<![CDATA[ <p>Correct<br></p> ]]>
+				</text>
+			</correctfeedback>
+			<partiallycorrectfeedback format="html">
+				<text>
+					<![CDATA[ <p>You have shown that the ratio of HNO₃ to NaOH is one to one, therefore there must be the same number of molecules of HNO₃ as NaOH i.e. 0.0025 moles of molecules!<br></p> ]]>
+				</text>
+			</partiallycorrectfeedback>
+			<incorrectfeedback format="html">
+				<text>
+					<![CDATA[ <p>The reaction ratio was 1:1 therefore there was 0.0025 moles of NaOH dispensed from the burette when the endpoint was reached.<br></p> ]]>
+				</text>
+			</incorrectfeedback>
+		</answers>
+		<answers>
+			<partindex>
+				<text>
+					5
+				</text>
+			</partindex>
+			<placeholder>
+				<text>
+					#d
+				</text>
+			</placeholder>
+			<answermark>
+				<text>
+					1.5
+				</text>
+			</answermark>
+			<answertype>
+				<text>
+					10
+				</text>
+			</answertype>
+			<numbox>
+				<text>
+					3
+				</text>
+			</numbox>
+			<vars1>
+				<text>
+					<![CDATA[ ]]>
+				</text>
+			</vars1>
+			<vars2>
+				<text>
+					<![CDATA[
+					criterion1 = abs(20-_0) < 15;
+					criterion2a = _1==(_0*0.001);
+					criterion2b = abs(_1-(_0*0.001)) < 0.001;
+					criterion3 = 0.01 > abs(_2-(0.0025/_1));
+					]]>
+				</text>
+			</vars2>
+			<correctness>
+				<text>
+					<![CDATA[ max((_relerr < 1 &&criterion1 && criterion2a && criterion3),(0.8*(_relerr < 1 &&criterion1 && criterion2b && criterion3))) ]]>
+				</text>
+			</correctness>
+			<unitpenalty>
+				<text>
+					1
+				</text>
+			</unitpenalty>
+			<postunit>
+				<text>
+				</text>
+			</postunit>
+			<ruleid>
+				<text>
+					1
+				</text>
+			</ruleid>
+			<otherrule>
+				<text>
+				</text>
+			</otherrule>
+			<subqtext format="html">
+				<text>
+					<![CDATA[ <p>Going back to your earlier value for the average titre: {_0} mL, what is the average titre in liters? {_1} L</p><p><br></p><p>Therefore, what is the concentration of your Sodium Hydroxide Solution? {_2} M<br></p> ]]>
+				</text>
+			</subqtext>
+			<feedback format="html">
+				<text>
+					<![CDATA[ ]]>
+				</text>
+			</feedback>
+			<correctfeedback format="html">
+				<text>
+					<![CDATA[ ]]>
+				</text>
+			</correctfeedback>
+			<partiallycorrectfeedback format="html">
+				<text>
+					<![CDATA[ <p>Significant figures are important!<br></p> ]]>
+				</text>
+			</partiallycorrectfeedback>
+			<incorrectfeedback format="html">
+				<text>
+					<![CDATA[ <p>Remember Molarity = moles per liter!<br></p> ]]>
+				</text>
+			</incorrectfeedback>
+		</answers>
+		<answers>
+			<partindex>
+				<text>
+					6
+				</text>
+			</partindex>
+			<placeholder>
+				<text>
+					#g
+				</text>
+			</placeholder>
+			<answermark>
+				<text>
+					1.25
+				</text>
+			</answermark>
+			<answertype>
+				<text>
+					0
+				</text>
+			</answertype>
+			<numbox>
+				<text />
+			</numbox>
+			<vars1>
+				<text>
+					<![CDATA[]]>
+				</text>
+			</vars1>
+			<vars2>
+				<text>
+					<![CDATA[]]>
+				</text>
+			</vars2>
+			<correctness>
+				<text>
+					<![CDATA[]]>
+				</text>
+			</correctness>
+			<unitpenalty>
+				<text>
+					1
+				</text>
+			</unitpenalty>
+			<postunit>
+				<text>
+				</text>
+			</postunit>
+			<ruleid>
+				<text />
+			</ruleid>
+			<otherrule>
+				<text>
+				</text>
+			</otherrule>
+			<subqtext format="html">
+				<text>
+					<![CDATA[]]>
+				</text>
+			</subqtext>
+			<feedback format="html">
+				<text>
+					<![CDATA[]]>
+				</text>
+			</feedback>
+			<correctfeedback format="html">
+				<text>
+					<![CDATA[Correct, you have achieved a precise titre.<br>]]>
+				</text>
+			</correctfeedback>
+			<partiallycorrectfeedback format="html">
+				<text>
+					<![CDATA[
+					<p>You will need to improve your technique to get the required precision -
+					ask your lecturer to troubleshoot your technique if you are finding it
+					hard to get precise results.<br></p>
+					]]>
+				</text>
+			</partiallycorrectfeedback>
+			<incorrectfeedback format="html">
+				<text>
+					<![CDATA[<p>Check your calculations - did you correctly calculate the average of the three results?<br></p>]]>
+				</text>
+			</incorrectfeedback>
+		</answers>
+		<shownumcorrect />
+	</question>
+</quiz>
