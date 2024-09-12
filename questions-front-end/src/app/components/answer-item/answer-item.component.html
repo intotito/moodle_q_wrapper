@@ -105,8 +105,10 @@
             </div>
             <select name="answertype" class="form-select form-select-md mb-3 col-12"
                 aria-label=".form-select-lg example" (change)="inputValueChanged($event)">
-                <option value="0" [selected]="getNodeValue('answertype') == 0">Numeric</option>
-                <option value="1000" [selected]="getNodeValue('answertype') == 1000">Algebraic</option>
+                <option value="0" [selected]="getNodeValue('answertype') == 0">Number</option>
+                <option value="10" [selected]="getNodeValue('answertype') == 10">Numeric</option>
+                <option value="100" [selected]="getNodeValue('answertype') == 100">Numeric Formula</option>
+                <option value="1000" [selected]="getNodeValue('answertype') == 1000">Algebraic Formula</option>
             </select>
 
         </div>

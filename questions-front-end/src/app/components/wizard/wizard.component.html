@@ -1,0 +1,146 @@
+<div class="container mt-5">
+    <div class="wizard">
+        <div class="card m-2 px-4 py-2">
+            <!-- Form Steps -->
+            <div class="card-header">
+                <h4>{{stepDefinitions[currentStep - 1].title}}</h4>
+            </div>
+            <div class="card-body">
+                <form id="wizardForm" class="mt-4">
+                    <div class="container form-step {{currentStep == 1 ? 'active' : ''}}">
+                        <a data-toggle="collapse" href="#show-tip" role="button" aria-expanded="false"
+                            aria-controls="show-tip">
+                            <i class="fa fa-lightbulb" style="font-size:32px;color:orange"></i>
+                        </a>
+                        <div class="collapse" id="show-tip">
+                            <div class="alert alert-light" role="alert">
+                                {{stepDefinitions[currentStep - 1].tip}}
+                            </div>
+                        </div>
+                        <div class="alert alert-light" role="alert">
+                            {{stepDefinitions[currentStep - 1].description}}
+                        </div>
+                        <div class="py-2 row align-items-center">
+                            <span class="col-4 form-label bg-info text-dark fw-bold px-3 mt-1 py-2 rounded">
+                                {{stepDefinitions[currentStep - 1].summary}}
+                            </span>
+                            <div class="col mb-1">
+                                <input type="text" class="form-control" id="name" required>
+                            </div>
+                        </div>
+                        <div class="text-center">
+                            <button type="button" class="btn btn-primary next-btn"
+                                (click)="nextStep($event)">Next</button>
+                        </div>
+                    </div>
+
+                    <div class="container form-step {{currentStep == 2 ? 'active' : ''}}">
+                        <a data-toggle="collapse" href="#show-tip2" role="button" aria-expanded="false"
+                            aria-controls="show-tip2">
+                            <i class="fa fa-lightbulb" style="font-size:32px;color:orange"></i>
+                        </a>
+                        <div class="collapse" id="show-tip2">
+                            <div class="alert alert-light" role="alert">
+                                {{stepDefinitions[currentStep - 1].tip}}
+                            </div>
+                        </div>
+                        <div class="alert alert-light" role="alert">
+                            {{stepDefinitions[currentStep - 1].description}}
+                        </div>
+                        <div class="py-2 row align-items-center">
+                            <span class="col-4 bg-info text-dark fw-bold px-3 py-2 rounded">
+                                {{stepDefinitions[currentStep - 1].summary}}</span>
+                            <div class="col">
+                                <select class="form-select my-1" aria-label=".form-select-lg example">
+                                    @for(i of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]; track i){
+                                    <option class="form-control" [selected]="questionParts == i" value="{{i}}">{{i}}
+                                    </option>
+                                    }
+                                </select>
+                            </div>
+                            <span class="col-4 bg-info text-dark fw-bold px-3 py-2 rounded">Ordering</span>
+                            <div class="col">
+                                <select class="form-select my-1" aria-label=".form-select-lg example">
+                                    @for(order of ['none', 'abc', '123']; track order){
+                                    <option class="form-control" value="{{order}}">{{order}}
+                                    </option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-between px-5">
+                            <button type="button" class="btn btn-secondary prev-btn" (click)="previousStep($event)">Previous</button>
+                            <button type="button" class="btn btn-primary next-btn" (click)="nextStep($event)">Next</button>
+                        </div>
+                    </div>
+                    <div class="container form-step {{currentStep == 3 ? 'active' : ''}}">
+                        <a data-toggle="collapse" href="#show-tip2" role="button" aria-expanded="false"
+                            aria-controls="show-tip2">
+                            <i class="fa fa-lightbulb" style="font-size:32px;color:orange"></i>
+                        </a>
+                        <div class="collapse" id="show-tip2">
+                            <div class="alert alert-light" role="alert">
+                                {{stepDefinitions[currentStep - 1].tip}}
+                            </div>
+                        </div>
+                        <div class="alert alert-light" role="alert">
+                            {{stepDefinitions[currentStep - 1].description}}
+                        </div>
+                        <div class="py-2 row align-items-center">
+                            <app-editor [index]='2' [tools]="['range', 'array']" #editor2></app-editor>
+                        </div>
+                        <div class="d-flex justify-content-between px-5">
+                            <button type="button" class="btn btn-secondary prev-btn" (click)="previousStep($event)">Previous</button>
+                            <button type="button" class="btn btn-primary next-btn" (click)="nextStep($event)">Next</button>
+                        </div>
+                    </div>
+                    <div class="form-step {{currentStep == 4 ? 'active' : ''}}">
+                        <a data-toggle="collapse" href="#show-tip3" role="button" aria-expanded="false"
+                            aria-controls="show-tip3">
+                            <i class="fa fa-lightbulb" style="font-size:32px;color:orange"></i>
+                        </a>
+                        <div class="collapse" id="show-tip3">
+                            <div class="alert alert-light" role="alert">
+                                {{stepDefinitions[currentStep - 1].tip}}
+                            </div>
+                        </div>
+                        <div class="alert alert-light" role="alert">
+                            {{stepDefinitions[currentStep - 1].description}}
+                        </div>
+                        <div class="py-2 row align-items-center">
+                            <app-editor [index]='3' [show]="'paragraph'" [tools]="['header', 'list', 'table', 'delimiter', 'checklist', 'code', 'answer']" #editor3></app-editor>
+                        </div>
+
+                        <div class="d-flex justify-content-between px-5">
+                            <button type="button" class="btn btn-secondary prev-btn" (click)="previousStep($event)">Previous</button>
+                            <button type="button" class="btn btn-primary next-btn" (click)="nextStep($event)">Next</button>
+                        </div>
+                    </div>
+
+                    <div class="form-step">
+                        <h4>Step 4: Confirm & Submit</h4>
+                        <p>Review your details before submitting the form.</p>
+                        <button type="button" class="btn btn-secondary prev-btn">Previous</button>
+                        <button type="submit" class="btn btn-success">Submit</button>
+                    </div>
+                </form>
+            </div>
+            <div class="card-footer py-4 mt-3   ">
+
+                <!-- Progress Line with Steps -->
+                <div class="d-flex justify-content-between position-relative">
+                    <div class="line"></div>
+                    <div class="progress-bar-line" [style.width.%]="((currentStep - 1) / stepDefinitions.length) * 100">
+                    </div>
+                    @for(step of stepDefinitions; track step; let i = $index){
+                    <div class="step {{i == (currentStep - 1) ? 'active': ''}}">
+                        <span class="circle">{{i + 1}}</span>
+                        <div class="step-title">Step {{i + 1}}</div>
+                    </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

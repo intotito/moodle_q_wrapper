@@ -8,10 +8,12 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import atu.moodle.question.QuestionFactory;
 import atu.moodle.question.model.FormulaQuestion;
 import atu.moodle.question.model.QuestionListWrapper;
 import atu.moodle.question.services.QuestionService;
@@ -34,13 +36,24 @@ public class FormulaQuestionController {
 		return new QuestionListWrapper(questionService.getQuestionById(id));
 	}
 	
+	@GetMapping(path="/questions/blank")
+	public QuestionListWrapper getBlankQuestion() {
+        return new QuestionListWrapper(new QuestionFactory().build());
+	}
+	
 	@PostMapping("/questions/create")
 	public ResponseEntity<String> createQuestion(@RequestBody FormulaQuestion question) {
 //		System.out.println(repository.getQuestions().getQuestions().get(0));
-		System.out.println("Create Question method is called " + question);
-		//repository.createQuestion(question);
+//		System.out.println("Create Question method is called " + question);
 		questionService.saveQuestion(question.asEntity());
 		 return ResponseEntity.status(HttpStatus.CREATED)
                  .body("{\"message\": \"Question created successfully\"}");
+	}
+	
+	@PutMapping("/questions/update/{id}")
+	public ResponseEntity<String> updateQuestion(@PathVariable String id, @RequestBody FormulaQuestion question) {
+		System.out.println("Update Question method is called " + question);
+		questionService.updateQuestion(id, question);
+		return ResponseEntity.status(HttpStatus.OK).body("{\"message\": \"Question updated successfully\"}");
 	}
 }

@@ -4,43 +4,48 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class ValidationService {
+  private _symbol_replace: Map<string, string> = new Map([
+    ['¨', '"'],
+    ['«', '<'],
+    ['»', '>'],
+  ]);
   private _question_structure: any = {
-    'name': { nested: true, cdata: false, html: false, nullable: false, string: true },
-    'questiontext': { nested: true, cdata: true, html: true, nullable: true, string: true },
-    'generalfeedback': { nested: true, cdata: true, html: true, nullable: true, string: true },
-    'defaultgrade': { nested: false, cdata: false, html: false, nullable: false, string: false },
-    'penalty': { nested: false, cdata: false, html: false, nullable: false, string: false },
-    'hidden': { nested: false, cdata: false, html: false, nullable: false, string: false },
-    'idnumber': { nested: false, cdata: false, html: false, nullable: true, string: true },
-    'correctfeedback': { nested: true, cdata: true, html: true, nullable: true, string: true },
-    'partiallycorrectfeedback': { nested: true, cdata: true, html: true, nullable: true, string: true },
-    'incorrectfeedback': { nested: true, cdata: true, html: true, nullable: true, string: true },
-    'shownumcorrect': { nested: false, cdata: false, html: false, nullable: true, string: true },
-    'varsrandom': { nested: true, cdata: true, html: false, nullable: true, string: true },
-    'varsglobal': { nested: true, cdata: true, html: false, nullable: true, string: true },
-    'answernumbering': { nested: true, cdata: false, html: false, nullable: true, string: true },
-    'hint': { nested: true, cdata: false, html: true, nullable: true, string: true },
+    'name': { nested: true, cdata: false, html: false, nullable: false, string: true, symbol: false },
+      'questiontext': { nested: true, cdata: true, html: true, nullable: true, string: true, symbol: true },
+    'generalfeedback': { nested: true, cdata: true, html: true, nullable: true, string: true, symbol: false },
+    'defaultgrade': { nested: false, cdata: false, html: false, nullable: false, string: false, symbol: false },
+    'penalty': { nested: false, cdata: false, html: false, nullable: false, string: false, symbol: false },
+    'hidden': { nested: false, cdata: false, html: false, nullable: false, string: false, symbol: false },
+    'idnumber': { nested: false, cdata: false, html: false, nullable: true, string: true, symbol: false },
+    'correctfeedback': { nested: true, cdata: true, html: true, nullable: true, string: true, symbol: false },
+    'partiallycorrectfeedback': { nested: true, cdata: true, html: true, nullable: true, string: true, symbol: false },
+    'incorrectfeedback': { nested: true, cdata: true, html: true, nullable: true, string: true, symbol: false },
+    'shownumcorrect': { nested: false, cdata: false, html: false, nullable: true, string: true, symbol: false },
+    'varsrandom': { nested: true, cdata: true, html: false, nullable: true, string: true, symbol: false },
+    'varsglobal': { nested: true, cdata: true, html: false, nullable: true, string: true, symbol: false },
+    'answernumbering': { nested: true, cdata: false, html: false, nullable: true, string: true, symbol: false },
+    'hint': { nested: true, cdata: false, html: true, nullable: true, string: true, symbol: false },
   };
 
   private _answer_structure: any = {
-    'partindex': { nested: true, cdata: false, html: false, nullable: false, string: false },
-    'placeholder': { nested: true, cdata: false, html: false, nullable: true, string: true },
-    'answermark': { nested: true, cdata: false, html: false, nullable: false, string: false },
-    'answertype': { nested: true, cdata: false, html: false, nullable: false, string: false },
-    'numbox': { nested: true, cdata: false, html: false, nullable: false, string: false },
-    'vars1': { nested: true, cdata: true, html: false, nullable: true, string: true },
-    'vars2': { nested: true, cdata: true, html: false, nullable: true, string: true },
-    'correctness': { nested: true, cdata: true, html: false, nullable: true, string: true },
-    'unitpenalty': { nested: true, cdata: false, html: false, nullable: false, string: false },
-    'postunit': { nested: true, cdata: false, html: false, nullable: true, string: true },
-    'ruleid': { nested: true, cdata: false, html: false, nullable: true, string: true },
-    'otherrule': { nested: true, cdata: false, html: false, nullable: true, string: true },
-    'subqtext': { nested: true, cdata: true, html: true, nullable: true, string: true },
-    'feedback': { nested: true, cdata: true, html: true, nullable: true, string: true },
-    'correctfeedback': { nested: true, cdata: true, html: true, nullable: true, string: true },
-    'partiallycorrectfeedback': { nested: true, cdata: true, html: true, nullable: true, string: true },
-    'incorrectfeedback': { nested: true, cdata: true, html: true, nullable: true, string: true },
-    'answer': { nested: true, cdata: true, html: false, nullable: false, string: true },
+    'partindex': { nested: true, cdata: false, html: false, nullable: false, string: false, symbol: false },
+    'placeholder': { nested: true, cdata: false, html: false, nullable: true, string: true, symbol: false },
+    'answermark': { nested: true, cdata: false, html: false, nullable: false, string: false, symbol: false },
+    'answertype': { nested: true, cdata: false, html: false, nullable: false, string: false, symbol: false },
+    'numbox': { nested: true, cdata: false, html: false, nullable: false, string: false, symbol: false },
+    'vars1': { nested: true, cdata: true, html: false, nullable: true, string: true, symbol: false },
+    'vars2': { nested: true, cdata: true, html: false, nullable: true, string: true, symbol: false },
+    'correctness': { nested: true, cdata: true, html: false, nullable: true, string: true, symbol: false },
+    'unitpenalty': { nested: true, cdata: false, html: false, nullable: false, string: false, symbol: false },
+    'postunit': { nested: true, cdata: false, html: false, nullable: true, string: true, symbol: false },
+    'ruleid': { nested: true, cdata: false, html: false, nullable: true, string: true, symbol: false },
+    'otherrule': { nested: true, cdata: false, html: false, nullable: true, string: true, symbol: false },
+    'subqtext': { nested: true, cdata: true, html: true, nullable: true, string: true, symbol: true },
+    'feedback': { nested: true, cdata: true, html: true, nullable: true, string: true, symbol: false },
+    'correctfeedback': { nested: true, cdata: true, html: true, nullable: true, string: true, symbol: false },
+    'partiallycorrectfeedback': { nested: true, cdata: true, html: true, nullable: true, string: true, symbol: false },
+    'incorrectfeedback': { nested: true, cdata: true, html: true, nullable: true, string: true, symbol: false },
+    'answer': { nested: true, cdata: true, html: false, nullable: false, string: true, symbol: false },
   }
   constructor() { }
 
@@ -146,7 +151,7 @@ export class ValidationService {
         if (node.nodeName == 'answers') {
           let answer = node.childNodes;
           const badge = `<span span class="col-4 col-md-3 col-lg-2 px-0"><span class="badge bg-secondary">
-                  answer-${node.getElementsByTagName('partindex')[0].firstElementChild.textContent.trim()}
+                  part-${Number(node.getElementsByTagName('partindex')[0].firstElementChild.textContent.trim()) + 1}
                   </span></span> `;
           answer.forEach((answerNode: any) => {
             if(answerNode.nodeType == 1) {
@@ -179,7 +184,12 @@ export class ValidationService {
                   summary: `${badge}Value is not a number.`,
                   status: 'danger'
                 });
-              } 
+              } if(property.symbol == true && value.length > 0){
+                let rp = this.validateSymbol(value, answerNode);
+                rp.summary = badge + rp.summary;
+                rp.desc = badge + rp.desc;
+                report.push(rp);
+              }
             }
           });
           
@@ -218,6 +228,8 @@ export class ValidationService {
                 status: 'danger'
               });
             }
+          } if(property.symbol == true && value.length > 0){
+            report.push(this.validateSymbol(value, node));
           }
         }
       }
@@ -239,6 +251,25 @@ export class ValidationService {
     return sum == value;
   }
 
+  private validateSymbol(value: any, node: any): any{
+    let report: any = {
+      title: node.nodeName,
+      desc: 'No Illegal Symbol present.',
+      summary: 'No Illegal Symbol present.',
+      status: 'success'
+    };
+    let containsSymbol : boolean = false;
+    for (let [key, val] of this._symbol_replace){
+      if(value.includes(key)){
+        containsSymbol = true;
+        report.desc = `Illegal Symbol ${key} found. Replace with ${val}`;
+        report.summary = `Illegal Symbol ${key} found.`;
+        report.status = 'danger';
+        break;
+      }
+    }
+    return report;
+  }
   private validateHTML(value: any, node: any): any {
     let report: any = {};
     // check if node contains attribute format=html

@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { ItemComponent } from "../item/item.component";
@@ -11,6 +11,8 @@ import { ValidationService } from '../../services/validation.service';
 import { HtmlSanitizePipe } from "../../pipes/html-sanitize.pipe";
 import { query } from 'express';
 import { RestService } from '../../services/rest.service';
+import { State } from '../../state';
+import { title } from 'node:process';
 declare var MathJax: any;  // Declare MathJax if included via CDN
 
 @Component({
@@ -20,7 +22,8 @@ declare var MathJax: any;  // Declare MathJax if included via CDN
   styleUrl: './main.component.css',
   imports: [ItemComponent, AnswerItemComponent, DropdownItemComponent, InputPipe, PlaceholderPipe, HtmlSanitizePipe]
 })
-export class MainComponent {
+export class MainComponent implements OnInit {
+  public state: State = State.FROM_NEW;
   public elements: any[] = [];
   public answers: any[] = [];
   public currentItem: any = null;
@@ -35,6 +38,7 @@ export class MainComponent {
                               <span class="col-2 col-md-2 col-lg-1 px-0 text-primary">Status</span>
                             </div>`;
 
+
   @ViewChild('htmlElement')
   htmlElement: ElementRef | undefined;
 
@@ -43,6 +47,14 @@ export class MainComponent {
 
   @ViewChild('answerElement')
   answerElement: ElementRef | undefined;
+  State: any;
+
+  public isEnabled(): boolean {
+    if (this.state == State.FROM_REPO) {
+      return true;
+    }
+    return false;
+  }
 
 
   private getFAIcon(status: string): string {
@@ -52,6 +64,12 @@ export class MainComponent {
       return '<i class="fa-solid fa-circle-exclamation" style="color:#FFC107;font-size:32px"></i>';
     } else if (status == 'danger') {
       return '<i class="fa-solid fa-circle-xmark" style="color:#DC3545;font-size:32px"></i>';
+    } else if (status == 'save') {
+      return '<i class="fa-solid fa-save" style="color:#28A745;font-size:32px"></i>';
+    } else if (status == 'upload') {
+      return '<i class="fa-solid fa-upload" style="color:#007BFF;font-size:32px"></i>';
+    } else if (status == 'download') {
+      return '<i class="fa-solid fa-download" style="color:#007BFF;font-size:32px"></i>';
     } else {
       return '<i class="fa-solid fa-circle-question" style="color:#6C757D;font-size:32px"></i>';
     }
@@ -73,6 +91,45 @@ export class MainComponent {
     modal.style.display = "block";
   }
 
+  public showWorking(desc: { title: any, status: any, message: any }): void {
+    const modal = document.getElementById('action-modal') as HTMLElement;
+    const content = modal.querySelector('.modal-content') as HTMLElement;
+    const progressBar = modal.querySelector('.modal-progress-bar') as HTMLElement;
+    const modalConfirm = modal.querySelector('.modal-confirm') as HTMLElement;
+    let html = `
+                    ${this.getFAIcon(desc.status)}
+                    <span id="modal-message">${desc.title}</span>
+                  `
+    content.innerHTML = html;
+    modal.style.display = "flex";
+
+
+    let progress = 0;
+    const interval = setInterval(() => {
+      progress += 2.5;
+      progressBar.style.width = `${progress}%`;
+      if (progress >= 100) {
+        progressBar.style.width = `100%`;
+        html = `
+                    ${this.getFAIcon(desc.status)}
+                    <span id="modal-message">${desc.message}</span>`
+                    content.innerHTML = html;
+        clearInterval(interval);
+        setTimeout(() => {
+          //modal.style.display = 'none';
+          modalConfirm.style.display = 'block';
+          const btn = modalConfirm.querySelector('button') as HTMLButtonElement;
+          btn.addEventListener('click', (event: any) => {
+            modalConfirm.style.display = 'none';
+            modal.style.display = 'none';
+            btn.removeEventListener('click', () => { });
+            progressBar.style.width = `0%`;
+          });
+        }, 10);
+      }
+    }, 50);
+  }
+
   public appendReport(report: any): void {
     const html = `<div class="row px-0 mx-0 px-0">
                     <span class="d-none d-md-block col-md-1 px-0">${this.report.length}</span>
@@ -84,11 +141,12 @@ export class MainComponent {
     this.report.push(html);
   }
 
-  constructor(private router: Router, private sanitizer: DomSanitizer, private xmlService: XmlParserService, 
+  constructor(private router: Router, private sanitizer: DomSanitizer, private xmlService: XmlParserService,
     private restService: RestService, private valService: ValidationService) {
     const navigation = this.router.getCurrentNavigation();
     if (navigation?.extras.state) {
       const xml = navigation.extras.state['xml'];
+      this.state = navigation.extras.state['state'];
       const xmlData = this.xmlService.processXML(xml);
       this.xmlDocument = xmlData.document;
       this.elements = xmlData.elements;
@@ -124,7 +182,7 @@ export class MainComponent {
     this.renderMath();
   }
 
-  renderMath() {
+  private renderMath() {
     if (MathJax) {
       MathJax.typesetPromise([this.htmlElement?.nativeElement]);
     }
@@ -141,21 +199,67 @@ export class MainComponent {
       document.getElementById('main')?.classList.toggle('active');
     });
 
+    // initialize event listeners for save, 
 
-    const exp: any = document.getElementById('export');
+    const exp: any = document.getElementById('download');
+    exp.parentElement?.classList.toggle('hidden');
+    console.log('State:', this.state);
+    if (this.state == State.FROM_REPO) {
+      const save: any = document.getElementById('save');
+      save.parentElement?.classList.toggle('hidden');
+      save.addEventListener('click', (event: any) => {
+        console.log('Save Clicked:', event);
+        this.save();
+      });
+    } else if (this.state == State.FROM_FILE) {
+      const upload: any = document.getElementById('upload');
+      console.log('Upload:', upload);
+      upload.parentElement?.classList.toggle('hidden');
+      upload.addEventListener('click', (event: any) => {
+        this.upload();
+      });
+    } else if (this.state == State.FROM_WIZARD) {
+      const wizard: any = document.getElementById('wizard');
+      wizard.parentElement?.classList.toggle('hidden');
+      const download: any = document.getElementById('download');
+      download.parentElement?.classList.toggle('hidden');
+    }
+
     exp.addEventListener('click', (event: any) => {
       console.log('Export Clicked:', event);
       this.exportXML(event.currentTarget);
     });
 
-    const save: any = document.getElementById('save');
-    save.addEventListener('click', (event: any) => {
-      this.save();
-    });
+
   }
 
-  private save() : void {
-    this.restService.saveQuestion(this.xmlDocument.firstElementChild?.firstElementChild);
+  private upload(): void {
+    const desc = {title: 'Uploading Question to Repository...', status: 'upload', message: 'Question uploaded to Repository.'};
+    this.showWorking(desc);
+    this.restService.uploadQuestion(this.xmlDocument.firstElementChild?.firstElementChild);
+  }
+
+  private save(): void {
+    const desc = {title: 'Saving Question to Repository...', status: 'save', message: 'Question saved to Repository.'};
+    this.showWorking(desc);
+    this.restService.saveQuestion(this.getElementValue('idnumber'), this.xmlDocument.firstElementChild?.firstElementChild);
+  }
+
+  exportXML(target: any): void {
+    const desc = {title: 'Saving Question to Disk...', status: 'download', message: 'Question saved to Disk.'};
+    this.showWorking(desc);
+    console.log('Exporting XML:', target);
+    const serializer = new XMLSerializer();
+    const xml = serializer.serializeToString(this.xmlDocument);
+    console.log('XML:', xml);
+    const blob = new Blob([xml], { type: 'text/xml' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = this.getElementValue('name').replace(/ /g, '_') + '.xml';
+    a.click();
+    // remove a from the dom
+    a.remove();
   }
 
   answerClicked(event: any, index: any): void {
@@ -374,20 +478,7 @@ export class MainComponent {
     }
   }
 
-  exportXML(target: any): void {
-    console.log('Exporting XML:', target);
-    const serializer = new XMLSerializer();
-    const xml = serializer.serializeToString(this.xmlDocument);
-    console.log('XML:', xml);
-    const blob = new Blob([xml], { type: 'text/xml' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'export.xml';
-    a.click();
-    // remove a from the dom
-    a.remove();
-  }
+
 
   public validate(event: any): void {
     const target = event.currentTarget;
@@ -401,7 +492,7 @@ export class MainComponent {
     // delete everything from report list except the first element
     this.report.splice(1, this.report.length - 1);
     // append report returned from validation service to report list
-    this.valService.validateDocument(this.xmlDocument).forEach((report : any) => {
+    this.valService.validateDocument(this.xmlDocument).forEach((report: any) => {
       this.appendReport(report);
     });
 

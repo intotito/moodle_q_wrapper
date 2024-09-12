@@ -11,6 +11,52 @@ public class AnswerEntity {
 	@Id @GeneratedValue(strategy = GenerationType.AUTO) private Integer id;
 	private Integer partIndex;
 	private String placeHolder;
+	private Double answerMark;
+	private Integer answerType;
+	private Integer numberOfBox;
+	private String variable1;
+	private String answer;
+	private String variable2;
+	private String correctness;
+	private Double unitPenalty;
+	private String postUnit;
+	private Integer ruleId;
+	private String otherRule;
+	@Column(length = 2048)
+	private String subQuestionText;
+	private String feedback;
+	private String correctFeedback;
+	private String partiallyCorrectFeedback;
+	private String incorrectFeedback;
+	private String questionId;
+	
+	public AnswerEntity() {}
+	
+	public AnswerEntity(Integer partIndex, String placeHolder, Double answerMark, Integer answerType,
+			Integer numberOfBox, String variable1, String answer, String variable2, String correctness, Double unitPenalty,
+			String postUnit, Integer ruleId, String otherRule, String subQuestionText, String feedback,
+			String correctFeedback, String partiallyCorrectFeedback, String incorrectFeedback) {
+		this.partIndex = partIndex;
+		this.placeHolder = placeHolder;
+		this.answerMark = answerMark;
+		this.answerType = answerType;
+		this.numberOfBox = numberOfBox;
+		this.variable1 = variable1;
+		this.setAnswer(answer);
+		this.variable2 = variable2;
+		this.correctness = correctness;
+		this.unitPenalty = unitPenalty;
+		this.postUnit = postUnit;
+		this.ruleId = ruleId;
+		this.otherRule = otherRule;
+		this.subQuestionText = subQuestionText;
+		this.feedback = feedback;
+		this.correctFeedback = correctFeedback;
+		this.partiallyCorrectFeedback = partiallyCorrectFeedback;
+		this.incorrectFeedback = incorrectFeedback;
+	}
+	
+	
 	public Integer getId() {
 		return id;
 	}
@@ -163,48 +209,13 @@ public class AnswerEntity {
 		this.questionId = questionId;
 	}
 
-	private Double answerMark;
-	private Integer answerType;
-	private Integer numberOfBox;
-	private String variable1;
-	private String answer;
-	private String variable2;
-	private String correctness;
-	private Double unitPenalty;
-	private String postUnit;
-	private Integer ruleId;
-	private String otherRule;
-	@Column(length = 2048)
-	private String subQuestionText;
-	private String feedback;
-	private String correctFeedback;
-	private String partiallyCorrectFeedback;
-	private String incorrectFeedback;
-	private String questionId;
-	
-	public AnswerEntity() {}
-	
-	public AnswerEntity(Integer partIndex, String placeHolder, Double answerMark, Integer answerType,
-			Integer numberOfBox, String variable1, String answer, String variable2, String correctness, Double unitPenalty,
-			String postUnit, Integer ruleId, String otherRule, String subQuestionText, String feedback,
-			String correctFeedback, String partiallyCorrectFeedback, String incorrectFeedback) {
-		this.partIndex = partIndex;
-		this.placeHolder = placeHolder;
-		this.answerMark = answerMark;
-		this.answerType = answerType;
-		this.numberOfBox = numberOfBox;
-		this.variable1 = variable1;
-		this.answer = answer;
-		this.variable2 = variable2;
-		this.correctness = correctness;
-		this.unitPenalty = unitPenalty;
-		this.postUnit = postUnit;
-		this.ruleId = ruleId;
-		this.otherRule = otherRule;
-		this.subQuestionText = subQuestionText;
-		this.feedback = feedback;
-		this.correctFeedback = correctFeedback;
-		this.partiallyCorrectFeedback = partiallyCorrectFeedback;
-		this.incorrectFeedback = incorrectFeedback;
+	public String getAnswer() {
+		return answer;
 	}
+
+	public void setAnswer(String answer) {
+		this.answer = answer;
+	}
+
+
 }

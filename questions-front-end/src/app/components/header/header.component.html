@@ -10,18 +10,20 @@
     <span class="navbar-toggler-icon"></span>
   </button>
   <div class="navbar-collapse collapse" id="navbarCollapse">
-    <ul class="navbar-nav mr-auto">
+    <ul class="navbar-nav  mr-auto">
 
-      <li class="nav-item">
+      <li class="nav-item hidden">
         <a id="save" class="nav-link">Save</a>
       </li>
-      <li class="nav-item">
-        <a id="export" class="nav-link">Export</a>
+      <li class="nav-item hidden">
+        <a id="download" class="nav-link">Download</a>
+      </li>
+      <li class="nav-item hidden">
+        <a class="nav-link" id="upload">Upload</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link">From Template</a>
+        <a class="nav-link" id="wizard" (click)="startWizard($event)">Wizard</a>
       </li>
-
     </ul>
   </div>
 </nav>

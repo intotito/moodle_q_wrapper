@@ -1,0 +1,21 @@
+.editor-container {
+    position: relative;
+    padding-top: 50px; /* Ensure content doesn't overlap the toolbar */
+}
+  
+  .Editor-toolbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: #fff;
+    border-bottom: 1px solid #ddd;
+    z-index: 1000; /* Make sure it is on top of the editor content */
+  }
+  
+  .editorjs {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 10px;
+  }
+

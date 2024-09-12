@@ -226,3 +226,54 @@ a.disabled {
     width: 95%;
   }
 
+  .action-modal {
+    display: none;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0px;
+    left: 0px;
+    
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+
+    justify-content: center;
+    align-items: center;
+  }
+
+  .model-body{
+    width: auto;
+    height: auto;
+    margin: auto;
+    padding-left: 50px;
+    padding-right: 50px;
+    padding-top: 20px;
+    padding-bottom: 10px;
+    position:fixed;
+    background-color: #fefefe;
+  }
+  
+  .modal-content {
+    text-align: center;
+  }
+
+  .modal-progress {
+    background-color: #f3f3f3;
+    border-radius: 5px;
+    overflow: hidden;
+    margin: 20px 0;
+    height: 20px;
+  }
+
+  .modal-progress-bar {
+    height: 100%;
+    background-color: #4caf50;
+    transition: width 0.4s;
+  }
+
+  .modal-confirm{
+    display: none;
+  }

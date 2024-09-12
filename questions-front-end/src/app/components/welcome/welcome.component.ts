@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { WebViewerComponent } from '../web-viewer/web-viewer.component';
+import { State } from '../../state';
 
 
 @Component({
@@ -44,16 +45,19 @@ export class WelcomeComponent {
   async loadXML(event: any) {
     const uri = new URL(this.msg);
     console.log('URI', uri);
+    let state : any = null;
     if (uri.protocol === 'file:') {
       this.xml = await this.file.text();
+      state = State.FROM_FILE;
     } else if (uri.protocol === 'http:' || uri.protocol === 'https:') {
       const response = await fetch(this.msg);
       this.xml = await response.text();
+      state = State.FROM_REPO;
     } else {
       // invalid protocol
       console.log('Invalid protocol');
       return;
     }
-    this.router.navigate(['/main'], { state: { xml: this.xml } });
+    this.router.navigate(['/main'], { state: { xml: this.xml, state: state } });
   }
 }

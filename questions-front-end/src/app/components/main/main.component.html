@@ -9,7 +9,8 @@
             </div>
             <ul class="list-unstyled components mb-5">
                 <li>
-                    <a class="selected" name="question" (click)="itemXClicked($event)"><i class="fa fa-clipboard"></i> Question</a>
+                    <a class="selected" name="question" (click)="itemXClicked($event)"><i class="fa fa-clipboard"></i>
+                        Question</a>
                 </li>
                 <li>
                     <a name="answers" (click)="itemXClicked($event)"><span class="notif"><span
@@ -19,8 +20,9 @@
                 <li class="divider pb-2"></li>
                 @for (answer of answers; track answer){
                 <li class="sub">
-                    <a (click)="answerXClicked($event, answer)"> Answer -
-                        {{answer.getElementsByTagName('partindex').item(0).firstElementChild.textContent.trim()}}</a>
+                    <a (click)="answerXClicked($event, answer)"> Part -
+                        {{+answer.getElementsByTagName('partindex').item(0).firstElementChild.textContent.trim() +
+                        1}}</a>
                 </li>
                 }
                 <li class="btn-bar">
@@ -30,25 +32,39 @@
                 </li>
                 <li class="nested">
                     <div class="progress">
-                        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
-                      </div>
+                        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
+                            aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
+                    </div>
                 </li>
             </ul>
         </nav>
         <main id="main" role="main" class="col-9 pt-3 px-auto bg-dark">
             <!-- <button id="sidebarToggle" class="btn btn-primary d-md-none mt-5">☰</button>  Sidebar Toggle Button -->
-             <div name="summary" class="summary container-fluid" (click)="hideSummary($event)">
+            <div name="summary" class="summary container-fluid" (click)="hideSummary($event)">
                 <div class="card m-2">
                     <div class="card-header d-flex justify-content-between bg-info">
                         <h4>Validation Summary</h4>
-                        <a class="pt-1" name="summary" (click)="hideSummary($event)"><i class="fa fa-close" style="font-size:24px"></i></a>
+                        <a class="pt-1" name="summary" (click)="hideSummary($event)"><i class="fa fa-close"
+                                style="font-size:24px"></i></a>
                     </div>
                     <div class="card-body bg-light px-0">
                         <div class="summary-content bg-light" [innerHTML]="report.join('<hr/>') | sanitize">
                         </div>
                     </div>
                 </div>
-             </div>
+            </div>
+            <div id="action-modal" name="action-modal" class="action-modal container-fluid">
+                <div class="model-body">
+                    <div class="modal-content">
+                    </div>
+                    <div class="modal-progress">
+                        <div class="modal-progress-bar" style="width: 0%;"></div>
+                    </div>
+                    <div class="modal-confirm text-center">
+                        <button class="btn btn-success ">Close</button>
+                    </div>
+                </div>
+            </div>
             <div class="card col-sm-12 mb-2 active" #questionElement>
                 <div class="card-header d-flex justify-content-between">
                     <h4 class="naming">{{this.getName()}}</h4>
@@ -76,7 +92,7 @@
                                 ID Number
                             </div>
                             <input class="col-12" type="text" name="idnumber" value="{{getElementValue('idnumber')}}"
-                                (change)="inputValueChanged($event)">
+                                [disabled]="isEnabled()" (change)="inputValueChanged($event)">
                         </div>
                         <div class="card col-4 px-1">
                             <div class="card-header py-0">
@@ -175,7 +191,7 @@
                 </div>
                 <div class="card-body py-1">
                     @for (answer of currentItem; track answer){
-                        <app-answer-item [element]="answer" (event)="answerValueChanged($event)"></app-answer-item>
+                    <app-answer-item [element]="answer" (event)="answerValueChanged($event)"></app-answer-item>
                     }
                 </div>
             </div>

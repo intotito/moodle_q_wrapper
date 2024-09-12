@@ -23,7 +23,9 @@ public class QuestionEntity {
 	private String correctFeedback;
 	private String partiallyCorrectFeedback;
 	private String incorrectFeedback;
+	@Column(length = 2048)
 	private String randomVariables;
+	@Column(length = 2048)
 	private String globalVariables;
 	private String answerNumbering;
 	@OneToMany(cascade = CascadeType.ALL) @JoinColumn(name = "questionId")	

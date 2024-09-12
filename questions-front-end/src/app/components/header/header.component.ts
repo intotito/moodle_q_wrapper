@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -8,6 +9,9 @@ import { Component } from '@angular/core';
   styleUrl: './header.component.css'
 })
 export class HeaderComponent {
+  constructor(private router: Router){
+    
+  }
   ngOnInit() {
     // set element with id sidebarToggle to display none
     if(document){
@@ -16,5 +20,10 @@ export class HeaderComponent {
         element.style.display = 'none';
       }
     }
+  }
+
+  public startWizard(event: any){
+    console.log('Starting wizard');
+    this.router.navigate(['/wizard']);
   }
 }

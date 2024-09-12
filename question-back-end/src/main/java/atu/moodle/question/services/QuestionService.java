@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import atu.moodle.question.QuestionFactory;
 import atu.moodle.question.model.FormulaQuestion;
 import atu.moodle.question.model.QuestionEntity;
 import atu.moodle.question.model.QuestionListWrapper;
@@ -29,8 +30,21 @@ public class QuestionService {
 	}
 	
 	public FormulaQuestion getQuestionById(String id) {
-		var qs = questionRepository.findQuestionById(id).orElseThrow();
+		System.out.println("id: " + id);
+		FormulaQuestion qs = questionRepository.findQuestionById(id).orElseThrow();
 		questionRepository.findAllAnswers(id).forEach(qs.answers()::add);
 		return qs;
+	}
+	
+	public FormulaQuestion updateQuestion(String id, FormulaQuestion question) {
+//		System.out.println("Formula Question: " + question);
+		QuestionEntity q = questionRepository.findById(id).orElseThrow();
+		System.out.println("Update Question -------------------------------------------- " + q.getAnswers().size());
+
+		QuestionFactory.updateQuestion(q, question);
+		System.out.println("Update Question -------------------------------------------- " + q.getAnswers().size());
+//		q.setGeneralFeedback("Gwo gwo gwo gwo!");
+		questionRepository.save(q);
+		return question;
 	}
 }
