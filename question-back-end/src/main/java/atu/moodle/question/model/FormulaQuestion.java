@@ -56,7 +56,7 @@ public record FormulaQuestion(@JacksonXmlProperty(localName = "name") Text<Strin
 				Text.of(answerNumbering), 
 				answers, 
 				null, 
-				"formula"
+				"formulas"
 			);
 	}
 	
@@ -89,7 +89,7 @@ public record FormulaQuestion(@JacksonXmlProperty(localName = "name") Text<Strin
 			Text.of(answerNumbering)
 			, new ArrayList<Answer>(),
 			null,
-			"formula"
+			"formulas"
 		);
 	}
 	

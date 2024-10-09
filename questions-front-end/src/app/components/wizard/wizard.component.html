@@ -33,7 +33,6 @@
                                 (click)="nextStep($event)">Next</button>
                         </div>
                     </div>
-
                     <div class="container form-step {{currentStep == 2 ? 'active' : ''}}">
                         <a data-toggle="collapse" href="#show-tip2" role="button" aria-expanded="false"
                             aria-controls="show-tip2">
@@ -51,7 +50,8 @@
                             <span class="col-4 bg-info text-dark fw-bold px-3 py-2 rounded">
                                 {{stepDefinitions[currentStep - 1].summary}}</span>
                             <div class="col">
-                                <select class="form-select my-1" aria-label=".form-select-lg example">
+                                <select (change)="selectQuestionParts($event)" class="form-select my-1"
+                                    aria-label=".form-select-lg example">
                                     @for(i of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]; track i){
                                     <option class="form-control" [selected]="questionParts == i" value="{{i}}">{{i}}
                                     </option>
@@ -70,31 +70,143 @@
                         </div>
 
                         <div class="d-flex justify-content-between px-5">
-                            <button type="button" class="btn btn-secondary prev-btn" (click)="previousStep($event)">Previous</button>
-                            <button type="button" class="btn btn-primary next-btn" (click)="nextStep($event)">Next</button>
+                            <button type="button" class="btn btn-secondary prev-btn"
+                                (click)="previousStep($event)">Previous</button>
+                            <button type="button" class="btn btn-primary next-btn"
+                                (click)="nextStep($event)">Next</button>
                         </div>
                     </div>
-                    <div class="container form-step {{currentStep == 3 ? 'active' : ''}}">
-                        <a data-toggle="collapse" href="#show-tip2" role="button" aria-expanded="false"
-                            aria-controls="show-tip2">
-                            <i class="fa fa-lightbulb" style="font-size:32px;color:orange"></i>
-                        </a>
-                        <div class="collapse" id="show-tip2">
-                            <div class="alert alert-light" role="alert">
-                                {{stepDefinitions[currentStep - 1].tip}}
+                    <div class="form-step {{currentStep == 5 ? 'active' : ''}}">
+                        @for(part of partsDefinitions; track part; let i = $index){
+                        <div class="form-step {{currentPart == (i + 1) ? 'active' : ''}}">
+                            <a data-toggle="collapse" [href]="'#show-tip'+$index" role="button" aria-expanded="false"
+                                [attr.aria-controls]="'show-tip'+$index">
+                                <i class="fa fa-lightbulb" style="font-size:32px;color:orange"></i>
+                            </a>
+                            <div class="collapse" [id]="'show-tip'+$index">
+                                <div class="alert alert-light" role="alert">
+                                    {{part.tip}}
+                                </div>
+                            </div>
+                            <div class="alert alert-light" role="alert" [innerHTML]="part.description">
+                            </div>
+                            <div class="container">
+                                <ul class="nav nav-pills py-0">
+                                    <li class="nav-item border border-bottom-0 border-secondary rounded-top"><a
+                                            class="nav-link active h6" data-toggle="pill" [href]="'#home'+$index">Question</a></li>
+                                    <li class="nav-item border border-bottom-0 border-secondary rounded-top my-0"><a
+                                            class="nav-link h6" data-toggle="pill" [href]="'#menu'+$index">Answer</a></li>
+                                    <li class="nav-item border border-bottom-0 border-secondary rounded-top"><a
+                                            class="nav-link h6" data-toggle="pill" [href]="'#menu1'+$index">Feedback</a></li>
+                                </ul>
+
+                                <div class="tab-content">
+                                    <div [id]="'home'+$index" class="tab-pane fade show active">
+                                        <div class="p-3 row align-items-center">
+                                            <div class="card-header h6 bg-info">
+                                                Question Text
+                                            </div>
+                                            <div class="bg-white py-3 border border-dark">
+                                                <app-editor [id]="'editor'+(11+$index)" [index]='11+$index'
+                                                (event)="editorEvent($event)" [tunes]="['answer-tune']"
+                                                [show]="'paragraph'"
+                                                    [tools]="['list', 'code', 'checklist', 'delimiter', 'header', 'answer-tune']"></app-editor>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-12 col-lg-4 mb-3">
+                                                <div class="card-header h6 bg-info py-2">
+                                                    Placeholder
+                                                </div>
+                                                <input class="col-12" type="text" name="placeholder" value="">
+                                            </div>
+                                            <div class="col-12 col-lg-4 mb-3 px-2">
+                                                <div class="card-header h6 bg-info py-2">
+                                                    Marks
+                                                </div>
+                                                <input class="col-12" type="number" name="answermark" value="">
+                                            </div>
+                                            <div class="col-12 col-lg-4 mb-3">
+                                                <div class="card-header h6 bg-info py-2">
+                                                    Penalty
+                                                </div>
+                                                <input class="col-12" type="number" name="unitpenalty" value="">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div [id]="'menu'+$index" class="tab-pane fade">
+                                        <div class="p-3 row align-items-center mb-2">
+                                            <div class="card-header h6 bg-info">
+                                                Grading Variables
+                                            </div>
+                                            <div class="bg-white py-3 border border-dark mb-3">
+                                                <app-editor [id]="'editor'+(21+$index)" [index]='21+$index'
+                                                (event)="editorEvent($event)"
+                                                    [tools]="['raw', 'variable', 'list-variable', 'undeclared']" [show]="'raw'"></app-editor>
+                                            </div>
+                                            <div class="card-header h6 bg-info">
+                                                Grading Criteria
+                                            </div>
+                                            <div class="bg-white py-3 border border-dark">
+                                                <app-editor [id]="'editor'+(31+$index)" [index]='31+$index'
+                                                (event)="editorEvent($event)"
+                                                    [tools]="['criterion', 'raw']" [show]="'raw'"></app-editor>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-12 col-lg-7 mb-3">
+                                                <div class="card-header h6 bg-info">
+                                                    Answer
+                                                </div>
+                                                <input class="col-12" type="text" name="answer" value="">
+                                            </div>
+                                            <div class="col-12 col-lg-5 mb-3">
+                                                <div class="card-header h6 bg-info">
+                                                    Answer Type
+                                                </div>
+                                                <select name="answertype" class="form-select form-select-md mb-3 col-12"
+                                                    aria-label=".form-select-lg example">
+                                                    <option value="0">Number</option>
+                                                    <option value="10">Numeric</option>
+                                                    <option value="100">Numeric Formula</option>
+                                                    <option value="1000">Algebraic Formula</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div [id]="'menu1'+$index" class="tab-pane fade">
+                                        <div class="align-items-center mb-3">
+                                            <div class="card-header h6 bg-info">
+                                                Correct Feedback
+                                            </div>
+                                            <textarea class="col-12" type="text" name="correctfeedback"
+                                                ></textarea>
+                                        </div>
+                                        <div class="align-items-center mb-3">
+                                            <div class="card-header h6 bg-info">
+                                                Partially Correct Feedback
+                                            </div>
+                                            <textarea class="col-12" type="text" name="partiallycorrectfeedback"
+                                                ></textarea>
+                                        </div>
+                                        <div class="align-items-center">
+                                            <div class="card-header h6 bg-info">
+                                                Incorrect Feedback
+                                            </div>
+                                            <textarea class="col-12" type="text" name="incorrectfeedback"
+                                               ></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="text-center pt-3">
+                                <button type="button" class="btn btn-primary next-btn"
+                                    (click)="nextStep($event)">Next</button>
                             </div>
                         </div>
-                        <div class="alert alert-light" role="alert">
-                            {{stepDefinitions[currentStep - 1].description}}
-                        </div>
-                        <div class="py-2 row align-items-center">
-                            <app-editor [index]='2' [tools]="['range', 'array']" #editor2></app-editor>
-                        </div>
-                        <div class="d-flex justify-content-between px-5">
-                            <button type="button" class="btn btn-secondary prev-btn" (click)="previousStep($event)">Previous</button>
-                            <button type="button" class="btn btn-primary next-btn" (click)="nextStep($event)">Next</button>
-                        </div>
-                    </div>
+                        }
+                    </div>                    
                     <div class="form-step {{currentStep == 4 ? 'active' : ''}}">
                         <a data-toggle="collapse" href="#show-tip3" role="button" aria-expanded="false"
                             aria-controls="show-tip3">
@@ -109,15 +221,40 @@
                             {{stepDefinitions[currentStep - 1].description}}
                         </div>
                         <div class="py-2 row align-items-center">
-                            <app-editor [index]='3' [show]="'paragraph'" [tools]="['header', 'list', 'table', 'delimiter', 'checklist', 'code', 'answer']" #editor3></app-editor>
+                            <app-editor [index]='2' [tools]="['raw', 'variable', 'list-variable']" [show]="'raw'" (event)="editorEvent($event)"
+                                [randomVariables]="randomVariables" #editor2></app-editor>
                         </div>
-
                         <div class="d-flex justify-content-between px-5">
-                            <button type="button" class="btn btn-secondary prev-btn" (click)="previousStep($event)">Previous</button>
-                            <button type="button" class="btn btn-primary next-btn" (click)="nextStep($event)">Next</button>
+                            <button type="button" class="btn btn-secondary prev-btn"
+                                (click)="previousStep($event)">Previous</button>
+                            <button type="button" class="btn btn-primary next-btn"
+                                (click)="nextStep($event)">Next</button>
                         </div>
                     </div>
+                    <div class="container form-step {{currentStep == 3 ? 'active' : ''}}">
+                        <a data-toggle="collapse" href="#show-tip2" role="button" aria-expanded="false"
+                            aria-controls="show-tip2">
+                            <i class="fa fa-lightbulb" style="font-size:32px;color:orange"></i>
+                        </a>
+                        <div class="collapse" id="show-tip2">
+                            <div class="alert alert-light" role="alert"
+                                [innerHTML]="stepDefinitions[currentStep - 1].tip">
 
+                            </div>
+                        </div>
+                        <div class="alert alert-light" role="alert">
+                            {{stepDefinitions[currentStep - 1].description}}
+                        </div>
+                        <div class="py-2 row align-items-center">
+                            <app-editor [index]='1' [tools]="['raw', 'set', 'shuffle', 'sequence']" [show]="'raw'"(event)="editorEvent($event)" #editor1></app-editor>
+                        </div>
+                        <div class="d-flex justify-content-between px-5">
+                            <button type="button" class="btn btn-secondary prev-btn"
+                                (click)="previousStep($event)">Previous</button>
+                            <button type="button" class="btn btn-primary next-btn"
+                                (click)="nextStep($event)">Next</button>
+                        </div>
+                    </div>
                     <div class="form-step">
                         <h4>Step 4: Confirm & Submit</h4>
                         <p>Review your details before submitting the form.</p>

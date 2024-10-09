@@ -1,61 +1,80 @@
 .wizard {
-    width: 100%;
-    margin: 20px auto;
-  }
+  width: 100%;
+  margin: 20px auto;
+}
 
-  .step {
-    text-align: center;
-    width: 100%;
-    position: relative;
-  }
+.step {
+  text-align: center;
+  width: 100%;
+  position: relative;
+}
 
-  .step .circle {
-    width: 30px;
-    height: 30px;
-    background: #ddd;
-    border-radius: 50%;
-    display: inline-block;
-    line-height: 30px;
-    font-size: 16px;
-    color: #fff;
-  }
+.step .circle {
+  width: 30px;
+  height: 30px;
+  background: #ddd;
+  border-radius: 50%;
+  display: inline-block;
+  line-height: 30px;
+  font-size: 16px;
+  color: #fff;
+}
 
-  .active .circle {
-    background: #007bff;
-  }
+.active .circle {
+  background: #007bff;
+}
 
-  .step .completed .circle {
-    background: #28a745;
-  }
+.step .completed .circle {
+  background: #28a745;
+}
 
-  .step-title {
-    font-size: 14px;
-    margin-top: 5px;
-  }
+.step-title {
+  font-size: 14px;
+  margin-top: 5px;
+}
 
-  .line {
-    height: 2px;
-    background: #ddd;
-    position: absolute;
-    top: 15px;
-    left: 0;
-    right: 0;
-    z-index: 0;
-  }
+.line {
+  height: 2px;
+  background: #ddd;
+  position: absolute;
+  top: 15px;
+  left: 0;
+  right: 0;
+  z-index: 0;
+}
 
-  .progress-bar-line {
-    height: 2px;
-    background: #007bff;
-    position: absolute;
-    top: 15px;
-    z-index: 0;
-  }
+.progress-bar-line {
+  height: 2px;
+  background: #007bff;
+  position: absolute;
+  top: 15px;
+  z-index: 0;
+}
 
-  /* Form steps styling */
-  .form-step {
-    display: none;
-  }
+/* Form steps styling */
+.form-step {
+  display: none;
+}
 
-  .form-step.active {
-    display: block;
-  }
+.form-step.active {
+  display: block;
+}
+.nav-pills .nav-link {
+  color: #007bff; /* Text color */
+  background-color: transparent; /* No background */
+}
+
+.nav-pills .nav-link.active {
+  background-color: #007bff; /* Active tab background color */
+  color: white; /* Text color for active tab */
+}
+
+.nav-pills .nav-link:hover {
+  background-color: #e6f0ff; /* Light blue background on hover */
+}
+
+.tab-content {
+  padding: 0px 0px 0px 0px;
+  background-color: #f8f9fa;
+  border: 1px solid #ddd;
+}
