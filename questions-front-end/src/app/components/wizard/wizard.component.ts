@@ -2,10 +2,13 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
 import { EditorComponent } from "../editor/editor.component";
 import EditorJS from '@editorjs/editorjs';
 import { XmlBuilderService } from '../../services/xml-builder.service';
+import { HtmlSanitizePipe } from "../../pipes/html-sanitize.pipe";
+import { Router } from '@angular/router';
+import { State } from '../../state';
 @Component({
   selector: 'app-wizard',
   standalone: true,
-  imports: [EditorComponent],
+  imports: [EditorComponent, HtmlSanitizePipe],
   templateUrl: './wizard.component.html',
   styleUrl: './wizard.component.css'
 })
@@ -72,10 +75,18 @@ export class WizardComponent {
       tip: 'Use widgets provided to format the answer text.',
       icon: 'fa fa-user'
     },
+    {
+      title: 'Step 6: Question Preview',
+      description: `End User Question Preview. The Preview shows the output of the question to the final users. 
+                    You can preview the question before saving it or Choose to Modify the Main Question Text.`,
+      summary: 'Preview',
+      tip: 'Save or Modify Main Question Text.',
+      icon: 'fa fa-user'
+    }
   ];
 
-  constructor(private xmlBuilder: XmlBuilderService) {
 
+  constructor(private xmlBuilder: XmlBuilderService, private router: Router) {
   }
   private createSteps(): any {
     console.log('Question parts:', this.questionParts);
@@ -102,17 +113,57 @@ export class WizardComponent {
   public selectQuestionParts(event: any) {
     this.questionParts = event.target.value;
   }
-  public nextStep(event: any) {
+
+  private getValue(divId: string, elementName: string, elementType: string): string {
+    let element: HTMLElement | null = document.getElementById(divId);
+    if (element) {
+      let input: any = element.querySelector(`${elementType}[name=${elementName}]`);
+      if (elementType === 'input' || elementType === 'textarea' || elementType === 'select') {
+        return input?.value;
+      }
+    }
+    return '';
+  }
+  public async nextStep(event: any) {
     console.log('Next step');
     if (this.currentStep === 5) {
+      this.xmlBuilder.setPartElement(this.currentPart, 'partindex', this.currentPart - 1);
+      let qEdt: EditorJS = this.qTextEditors[this.currentPart - 1];
+      let qTOutput: any = await this.saveEditor(qEdt);
+      this.xmlBuilder.setPartElement(this.currentPart, 'subqtext', qTOutput.html);
+      let gVarOutput: any = await this.saveEditor(this.gVarEditors[this.currentPart - 1]);
+      this.xmlBuilder.setPartElement(this.currentPart, 'vars2', gVarOutput.html);
+      let gCritOutput: any = await this.saveEditor(this.gCritEditors[this.currentPart - 1]);
+      console.log('Grading Criteria:', gCritOutput);
+      this.xmlBuilder.setPartElement(this.currentPart, 'correctness', gCritOutput.html);
+
+      let answerParts: any[] = [
+        { id: `home${this.currentPart - 1}`, name: 'placeholder', type: 'input' },
+        { id: `home${this.currentPart - 1}`, name: 'answermark', type: 'input' },
+        { id: `home${this.currentPart - 1}`, name: 'unitpenalty', type: 'input' },
+        { id: `menu${this.currentPart - 1}`, name: 'answer', type: 'input' },
+        { id: `menu${this.currentPart - 1}`, name: 'answertype', type: 'select' },
+        { id: `menu1${this.currentPart - 1}`, name: 'correctfeedback', type: 'textarea' },
+        { id: `menu1${this.currentPart - 1}`, name: 'partiallycorrectfeedback', type: 'textarea' },
+        { id: `menu1${this.currentPart - 1}`, name: 'incorrectfeedback', type: 'textarea' },
+      ];
+      answerParts.forEach((part: any) => {
+        this.xmlBuilder.setPartElement(this.currentPart, part.name, this.getValue(part.id, part.name, part.type));
+      });
       this.currentPart++;
-      if (this.currentPart > this.questionParts) {
+      this.xmlBuilder.toString();
+      if (this.currentPart > this.questionParts) { // Last Part
         this.currentPart = 1;
-      } else {
+      } else { // More Parts to traverse
         return;
       }
     }
     this.processStep(this.currentStep++);
+  }
+
+  public questionTextChanged(event: any){
+    this.xmlBuilder.setElement('questiontext', event.target.value);
+    this.xmlBuilder.toString();
   }
 
   public previousStep(event: any) {
@@ -122,14 +173,14 @@ export class WizardComponent {
     }
   }
 
-  public finish(event: any) {
+  public finish() : string {
     console.log('Finish');
     this.currentStep = 1;
+    let output = this.xmlBuilder.build();
+    console.log('Output:', output);
+    return output;
   }
 
-  public questionTextChanged(event: any, index: number) {
-    console.log('Question Text Changed', event, index);
-  }
 
   public initializeEditors(index: number, component: EditorJS) {
     if (index < 10) {
@@ -254,6 +305,9 @@ export class WizardComponent {
     });
   }
 
+  public getQuestionTexts(){
+    return this.xmlBuilder.getQuestionTexts();
+  }
   private processStep(step: number) {
     switch (step) {
       case 1:
@@ -263,14 +317,16 @@ export class WizardComponent {
         break;
       case 2:
         console.log('Step 2');
-        for(let i = 0; i < this.questionParts - 1; i++){
+        for (let i = 0; i < this.questionParts - 1; i++) {
           this.xmlBuilder.addPart();
         }
         this.createSteps();
+        this.xmlBuilder.setElement('answernumbering', this.getValue('numbering', 'answernumbering', 'select'));
         this.xmlBuilder.toString();
         break;
       case 5:
         console.log('Step 5');
+        console.log('Step', step, 'Current Step', this.currentStep);
         break;
       case 4:
         console.log('Step 4');
@@ -304,6 +360,10 @@ export class WizardComponent {
           this.xmlBuilder.toString();
           // this.gloVarEditor.reload(this.randomVariables);
         });
+        break;
+        case 6:
+        let xml = this.finish();  
+        this.router.navigate(['/main'], { state: { xml: xml, state: State.FROM_FILE } });
         break;
       default:
         console.log('Invalid step');
@@ -366,10 +426,10 @@ export class WizardComponent {
         str = str.replace(/{_}/g, `{_${answerCount++}}`);
         html = html.substring(0, position) + str + html.substring(position);
       } else if (block.type === 'variable' || block.type === 'list-variable' || block.type === 'set' || block.type === 'shuffle' ||
-        block.type === 'sequence') {
+        block.type === 'sequence' || block.type === 'criterion') {
         html += `${block.data.text}\n`;
         variables.push(block.data.variable);
-      } else if (block.type === 'raw'){
+      } else if (block.type === 'raw') {
         html += `${block.data.text}\n`;
         variables = variables.concat(block.data.variable);
       }

@@ -8,11 +8,11 @@
             <div class="card-body">
                 <form id="wizardForm" class="mt-4">
                     <div class="container form-step {{currentStep == 1 ? 'active' : ''}}">
-                        <a data-toggle="collapse" href="#show-tip" role="button" aria-expanded="false"
-                            aria-controls="show-tip">
+                        <a data-toggle="collapse" href="#show-tip1" role="button" aria-expanded="false"
+                            aria-controls="show-tip1">
                             <i class="fa fa-lightbulb" style="font-size:32px;color:orange"></i>
                         </a>
-                        <div class="collapse" id="show-tip">
+                        <div class="collapse" id="show-tip1">
                             <div class="alert alert-light" role="alert">
                                 {{stepDefinitions[currentStep - 1].tip}}
                             </div>
@@ -59,8 +59,9 @@
                                 </select>
                             </div>
                             <span class="col-4 bg-info text-dark fw-bold px-3 py-2 rounded">Ordering</span>
-                            <div class="col">
-                                <select class="form-select my-1" aria-label=".form-select-lg example">
+                            <div id="numbering" class="col">
+                                <select class="form-select my-1" aria-label=".form-select-lg example"
+                                    name="answernumbering">
                                     @for(order of ['none', 'abc', '123']; track order){
                                     <option class="form-control" value="{{order}}">{{order}}
                                     </option>
@@ -79,11 +80,11 @@
                     <div class="form-step {{currentStep == 5 ? 'active' : ''}}">
                         @for(part of partsDefinitions; track part; let i = $index){
                         <div class="form-step {{currentPart == (i + 1) ? 'active' : ''}}">
-                            <a data-toggle="collapse" [href]="'#show-tip'+$index" role="button" aria-expanded="false"
-                                [attr.aria-controls]="'show-tip'+$index">
+                            <a data-toggle="collapse" [href]="'#show-tip5'+$index" role="button" aria-expanded="false"
+                                [attr.aria-controls]="'show-tip5'+$index">
                                 <i class="fa fa-lightbulb" style="font-size:32px;color:orange"></i>
                             </a>
-                            <div class="collapse" [id]="'show-tip'+$index">
+                            <div class="collapse" [id]="'show-tip5'+$index">
                                 <div class="alert alert-light" role="alert">
                                     {{part.tip}}
                                 </div>
@@ -93,11 +94,14 @@
                             <div class="container">
                                 <ul class="nav nav-pills py-0">
                                     <li class="nav-item border border-bottom-0 border-secondary rounded-top"><a
-                                            class="nav-link active h6" data-toggle="pill" [href]="'#home'+$index">Question</a></li>
+                                            class="nav-link active h6" data-toggle="pill"
+                                            [href]="'#home'+$index">Question</a></li>
                                     <li class="nav-item border border-bottom-0 border-secondary rounded-top my-0"><a
-                                            class="nav-link h6" data-toggle="pill" [href]="'#menu'+$index">Answer</a></li>
+                                            class="nav-link h6" data-toggle="pill" [href]="'#menu'+$index">Answer</a>
+                                    </li>
                                     <li class="nav-item border border-bottom-0 border-secondary rounded-top"><a
-                                            class="nav-link h6" data-toggle="pill" [href]="'#menu1'+$index">Feedback</a></li>
+                                            class="nav-link h6" data-toggle="pill" [href]="'#menu1'+$index">Feedback</a>
+                                    </li>
                                 </ul>
 
                                 <div class="tab-content">
@@ -108,8 +112,8 @@
                                             </div>
                                             <div class="bg-white py-3 border border-dark">
                                                 <app-editor [id]="'editor'+(11+$index)" [index]='11+$index'
-                                                (event)="editorEvent($event)" [tunes]="['answer-tune']"
-                                                [show]="'paragraph'"
+                                                    (event)="editorEvent($event)" [tunes]="['answer-tune']"
+                                                    [show]="'paragraph'"
                                                     [tools]="['list', 'code', 'checklist', 'delimiter', 'header', 'answer-tune']"></app-editor>
                                             </div>
                                         </div>
@@ -141,16 +145,17 @@
                                             </div>
                                             <div class="bg-white py-3 border border-dark mb-3">
                                                 <app-editor [id]="'editor'+(21+$index)" [index]='21+$index'
-                                                (event)="editorEvent($event)"
-                                                    [tools]="['raw', 'variable', 'list-variable', 'undeclared']" [show]="'raw'"></app-editor>
+                                                    (event)="editorEvent($event)"
+                                                    [tools]="['raw', 'variable', 'list-variable', 'undeclared']"
+                                                    [show]="'raw'"></app-editor>
                                             </div>
                                             <div class="card-header h6 bg-info">
                                                 Grading Criteria
                                             </div>
                                             <div class="bg-white py-3 border border-dark">
                                                 <app-editor [id]="'editor'+(31+$index)" [index]='31+$index'
-                                                (event)="editorEvent($event)"
-                                                    [tools]="['criterion', 'raw']" [show]="'raw'"></app-editor>
+                                                    (event)="editorEvent($event)" [tools]="['criterion', 'raw']"
+                                                    [show]="'raw'"></app-editor>
                                             </div>
                                         </div>
                                         <div class="row">
@@ -180,22 +185,20 @@
                                             <div class="card-header h6 bg-info">
                                                 Correct Feedback
                                             </div>
-                                            <textarea class="col-12" type="text" name="correctfeedback"
-                                                ></textarea>
+                                            <textarea class="col-12" type="text" name="correctfeedback"></textarea>
                                         </div>
                                         <div class="align-items-center mb-3">
                                             <div class="card-header h6 bg-info">
                                                 Partially Correct Feedback
                                             </div>
-                                            <textarea class="col-12" type="text" name="partiallycorrectfeedback"
-                                                ></textarea>
+                                            <textarea class="col-12" type="text"
+                                                name="partiallycorrectfeedback"></textarea>
                                         </div>
                                         <div class="align-items-center">
                                             <div class="card-header h6 bg-info">
                                                 Incorrect Feedback
                                             </div>
-                                            <textarea class="col-12" type="text" name="incorrectfeedback"
-                                               ></textarea>
+                                            <textarea class="col-12" type="text" name="incorrectfeedback"></textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -206,13 +209,13 @@
                             </div>
                         </div>
                         }
-                    </div>                    
+                    </div>
                     <div class="form-step {{currentStep == 4 ? 'active' : ''}}">
-                        <a data-toggle="collapse" href="#show-tip3" role="button" aria-expanded="false"
-                            aria-controls="show-tip3">
+                        <a data-toggle="collapse" href="#show-tip4" role="button" aria-expanded="false"
+                            aria-controls="show-tip4">
                             <i class="fa fa-lightbulb" style="font-size:32px;color:orange"></i>
                         </a>
-                        <div class="collapse" id="show-tip3">
+                        <div class="collapse" id="show-tip4">
                             <div class="alert alert-light" role="alert">
                                 {{stepDefinitions[currentStep - 1].tip}}
                             </div>
@@ -221,8 +224,8 @@
                             {{stepDefinitions[currentStep - 1].description}}
                         </div>
                         <div class="py-2 row align-items-center">
-                            <app-editor [index]='2' [tools]="['raw', 'variable', 'list-variable']" [show]="'raw'" (event)="editorEvent($event)"
-                                [randomVariables]="randomVariables" #editor2></app-editor>
+                            <app-editor [index]='2' [tools]="['raw', 'variable', 'list-variable']" [show]="'raw'"
+                                (event)="editorEvent($event)" [randomVariables]="randomVariables" #editor2></app-editor>
                         </div>
                         <div class="d-flex justify-content-between px-5">
                             <button type="button" class="btn btn-secondary prev-btn"
@@ -232,11 +235,11 @@
                         </div>
                     </div>
                     <div class="container form-step {{currentStep == 3 ? 'active' : ''}}">
-                        <a data-toggle="collapse" href="#show-tip2" role="button" aria-expanded="false"
-                            aria-controls="show-tip2">
+                        <a data-toggle="collapse" href="#show-tip3" role="button" aria-expanded="false"
+                            aria-controls="show-tip3">
                             <i class="fa fa-lightbulb" style="font-size:32px;color:orange"></i>
                         </a>
-                        <div class="collapse" id="show-tip2">
+                        <div class="collapse" id="show-tip3">
                             <div class="alert alert-light" role="alert"
                                 [innerHTML]="stepDefinitions[currentStep - 1].tip">
 
@@ -246,13 +249,51 @@
                             {{stepDefinitions[currentStep - 1].description}}
                         </div>
                         <div class="py-2 row align-items-center">
-                            <app-editor [index]='1' [tools]="['raw', 'set', 'shuffle', 'sequence']" [show]="'raw'"(event)="editorEvent($event)" #editor1></app-editor>
+                            <app-editor [index]='1' [tools]="['raw', 'set', 'shuffle', 'sequence']" [show]="'raw'"
+                                (event)="editorEvent($event)" #editor1></app-editor>
                         </div>
                         <div class="d-flex justify-content-between px-5">
                             <button type="button" class="btn btn-secondary prev-btn"
                                 (click)="previousStep($event)">Previous</button>
                             <button type="button" class="btn btn-primary next-btn"
                                 (click)="nextStep($event)">Next</button>
+                        </div>
+                    </div>
+                    <div class="container form-step {{currentStep == 6 ? 'active' : ''}}">
+                        <a data-toggle="collapse" href="#show-tip6" role="button" aria-expanded="false"
+                            aria-controls="show-tip6">
+                            <i class="fa fa-lightbulb" style="font-size:32px;color:orange"></i>
+                        </a>
+                        <div class="collapse" id="show-tip6">
+                            <div class="alert alert-light" role="alert">
+                                {{stepDefinitions[currentStep - 1].tip}}
+                            </div>
+                        </div>
+                        <div class="alert alert-light" role="alert">
+                            {{stepDefinitions[currentStep - 1].description}}
+                        </div>
+                        <div id="questiontext" class="py-2 row align-items-center">
+                            <div class="card-header h6 bg-info">
+                                Question Text
+                            </div>
+                            <textarea class="col-12" type="text"
+                                (change)="questionTextChanged($event)"
+                            name="questiontext">
+
+                            </textarea>    
+                        </div>
+                        <div class="py-2 row align-items-center">
+                            <div class="card-header h6 bg-info">
+                                {{stepDefinitions[currentStep - 1].summary}}
+                            </div>
+                            <div class="bg-light py-2" [innerHTML]="getQuestionTexts() | sanitize"></div>
+                        </div>
+                        <div class="d-flex justify-content-around">
+                            <button type="button" class="btn btn-secondary next-btn"
+                            (click)="previousStep($event)">Previous</button>
+                                
+                                <button type="button" class="btn btn-primary next-btn"
+                                (click)="nextStep($event)">Finish & Download</button>
                         </div>
                     </div>
                     <div class="form-step">
@@ -264,7 +305,6 @@
                 </form>
             </div>
             <div class="card-footer py-4 mt-3   ">
-
                 <!-- Progress Line with Steps -->
                 <div class="d-flex justify-content-between position-relative">
                     <div class="line"></div>

@@ -9,10 +9,8 @@ import { InputPipe } from "../../pipes/input.pipe";
 import { PlaceholderPipe } from "../../pipes/placeholder.pipe";
 import { ValidationService } from '../../services/validation.service';
 import { HtmlSanitizePipe } from "../../pipes/html-sanitize.pipe";
-import { query } from 'express';
 import { RestService } from '../../services/rest.service';
 import { State } from '../../state';
-import { title } from 'node:process';
 declare var MathJax: any;  // Declare MathJax if included via CDN
 
 @Component({
