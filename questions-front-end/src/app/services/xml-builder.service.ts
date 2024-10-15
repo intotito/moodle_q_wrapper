@@ -244,7 +244,8 @@ export class XmlBuilderService {
         matches.forEach(match => {
           questionPart = questionPart.replace(match, `<input size="5" type="text">`);
         });
-      } else{
+      } else {
+        // populate according to numbox
         questionPart += '<input size="5" type="text">';
       }
       let placeholder = this.getPartElement(i + 1, 'placeholder');
@@ -261,31 +262,31 @@ export class XmlBuilderService {
     return questionText;
   }
 
-  private validateFormulas(){
-    const replacements = [{from: '&lt;', to: '<'}, {from: '&gt;', to: '>'}];
+  private validateFormulas() {
+    const replacements = [{ from: '&lt;', to: '<' }, { from: '&gt;', to: '>' }];
     let ranVar = this.getElement('varsrandom');
     let globVar = this.getElement('varsglobal');
     replacements.forEach(replacement => {
       ranVar = ranVar.replace(replacement.from, replacement.to);
       globVar = globVar.replace(replacement.from, replacement.to);
     });
-    if(ranVar){
+    if (ranVar) {
       this.setElement('varsrandom', ranVar);
     }
-    if(globVar){
+    if (globVar) {
       this.setElement('varsglobal', globVar);
     }
-    for(let i = 0; i < this.getPartsCount(); i++){
+    for (let i = 0; i < this.getPartsCount(); i++) {
       let var2 = this.getPartElement(i + 1, 'vars2');
       let gradCrit = this.getPartElement(i + 1, 'correctness');
       replacements.forEach(replacement => {
         var2 = var2.replace(replacement.from, replacement.to);
         gradCrit = gradCrit.replace(replacement.from, replacement.to);
       });
-      if(var2){
+      if (var2) {
         this.setPartElement(i + 1, 'vars2', var2);
       }
-      if(gradCrit){
+      if (gradCrit) {
         this.setPartElement(i + 1, 'correctness', gradCrit);
       }
     }
@@ -310,9 +311,9 @@ export class XmlBuilderService {
     }
   }
 
-  private validateHidden(){
+  private validateHidden() {
     let hidden = this.getElement('hidden');
-    if(hidden.trim() == ''){
+    if (hidden.trim() == '') {
       this.setElement('hidden', 0);
     }
   }
@@ -343,7 +344,7 @@ export class XmlBuilderService {
     this.setPartElement(part, 'unitpenalty', unitpenalty);
   }
 
-  protected validateXML(): void{
+  protected validateXML(): void {
     this.validateMarks();
     this.validateID();
     this.validatePenalty();
@@ -356,11 +357,22 @@ export class XmlBuilderService {
     }
   }
 
+  public getPlaceholders(): { part: number, placeholder: string }[] {
+    let placeholders: { part: number, placeholder: string }[] = [];
+    let qParts = this.getPartsCount();
+    for (let i = 0; i < qParts; i++) {
+      let placeholder = this.getPartElement(i + 1, 'placeholder') || '';
+      placeholders.push({ part: i + 1, placeholder: placeholder.trim() });
+    }
+    return placeholders
+  }
+
   public build(): string {
     if (!this.xmlDocument) {
       return '';
     }
     this.validateXML();
+    this.injectUserResponse();
     const serializer = new XMLSerializer();
     const xml = serializer.serializeToString(this.xmlDocument);
     console.log('XML:', xml);
@@ -372,5 +384,57 @@ export class XmlBuilderService {
     a.click();
     a.remove();
     return xml;
+  }
+
+  private injectUserResponse(): void {
+    console.log('Injecting User Response');
+    let partCount = this.getPartsCount();
+    let globals =  this.getElement('varsglobal') + `\n# **** Auto-Generated Variables ****\n`;
+    let willInject: boolean = false;
+    for (let i = 0; i < partCount; i++) {
+      let inPart: boolean = false;
+      let feedbacks = [
+        { tag: 'correctfeedback', feedback: this.getPartElement(i + 1, 'correctfeedback') },
+        { tag: 'partiallycorrectfeedback', feedback: this.getPartElement(i + 1, 'partiallycorrectfeedback')},
+        { tag: 'incorrectfeedback', feedback: this.getPartElement(i + 1, 'incorrectfeedback')}
+      ];
+      feedbacks.forEach((feedback : {tag: string, feedback: string}) => {
+        const regex = /\{\*response\_[0-9]+\}/gm;
+        let fBack = feedback.feedback;
+        let matches = fBack.match(regex);
+        if (!matches) return;
+        matches.forEach(match => {
+          // replace {*response_1} with {atu_input1[0]}
+          let index = Number(match.match(/\d+/));
+          fBack = fBack.replace(match, `{atu_input${i + 1}[${index - 1}]}`);
+          this.setPartElement(i + 1, feedback.tag, fBack);
+        });
+        willInject = true;
+        let numbox = parseFloat(this.getPartElement(i + 1, 'numbox'));
+        if (!inPart) { // if automated variables have not been created for this part
+          // Create a global variable to hold user's response
+          let gVariable = `atu_input${i + 1} = [`; // global variable
+          let locals = this.getPartElement(i + 1, 'vars2').trim() + `\n# **** Auto-Generated Variables ****\n`;
+          for (let j = 0; j < numbox; j++) {
+            let lVariable = `atu_input${i + 1}[${j}] = _r[${j}];\n`; // local variable
+            gVariable += '0';
+            if (j < numbox - 1) {
+              gVariable += ', ';
+            }
+            locals += lVariable;
+          }
+          locals += `# **** End of Auto-Generated Variables ****`;
+          this.setPartElement(i + 1, 'vars2', locals);
+          gVariable += '];\n';
+          globals += gVariable;
+          inPart = true;
+        }
+        inPart = true;
+      });     
+    }
+    if(willInject) {
+      globals += `# **** End of Auto-Generated Variables ****`;
+      this.setElement('varsglobal', globals);
+    }
   }
 }

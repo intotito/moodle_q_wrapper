@@ -17,15 +17,23 @@ export default class AnswerTune {
             this.config.randomVariables = event.detail.randomVariables;
             console.log('Answer-Tune Updated:', event, this.api);
         });
-        if(this.config.index > 10 && this.config.index < 20){
+
+
+        document.addEventListener('global-variable-update', (event: any) => {
+            this.config.globalVariables = event.detail.globalVariables;
+            console.log('Answer-Tune Updated: Global Variable(s):', event, this.api);
+        });
+
+
+   //     if (this.config.index > 10 && this.config.index < 20) {
             // definitely a sub question text editor
             document.addEventListener(`local-variable-update-${this.config.index - 11}`, (event: any) => {
                 console.log('Event:', event);
                 this.config.localVariables = event.detail.localVariables;
                 console.log('Answer-Tune Updated:', event, this.config);
             });
-        }
-        
+   //     }
+
     }
     static get isTune() {
         return true;
@@ -51,8 +59,9 @@ export default class AnswerTune {
                 }
             }
         });
-        
+
     }
+
     render() {
         return {
             // svg with text 'H' and 2point round rectangle
@@ -76,7 +85,7 @@ export default class AnswerTune {
                     {
                         icon: '<span  class="fa fa-bell"></span>',
                         title: 'Variable',
-                        children:{
+                        children: {
                             items: this.getAllVariables()
                         }
                     }

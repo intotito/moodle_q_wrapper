@@ -114,7 +114,7 @@
                                                 <app-editor [id]="'editor'+(11+$index)" [index]='11+$index'
                                                     (event)="editorEvent($event)" [tunes]="['answer-tune']"
                                                     [show]="'paragraph'"
-                                                    [tools]="['list', 'code', 'checklist', 'delimiter', 'header', 'answer-tune']"></app-editor>
+                                                    [tools]="['paragraph', 'header', 'image', 'list', 'code', 'checklist', 'delimiter', 'answer-tune']"></app-editor>
                                             </div>
                                         </div>
                                         <div class="row">
@@ -181,24 +181,44 @@
 
                                     </div>
                                     <div [id]="'menu1'+$index" class="tab-pane fade">
-                                        <div class="align-items-center mb-3">
+                                        <div class="py-2 align-items-center mb-3">
                                             <div class="card-header h6 bg-info">
                                                 Correct Feedback
                                             </div>
-                                            <textarea class="col-12" type="text" name="correctfeedback"></textarea>
+                                            <div class="bg-white py-3 border border-dark">
+                                                <app-editor [id]="'editor'+(41+$index)" [index]='41+$index'
+                                                    (event)="editorEvent($event)"
+                                                    [show]="'paragraph'"
+                                                    [tunes] = "['user-input']"
+                                                    [tools]="[ 'paragraph', 'header', 'user-input', 'image', 'list', 'code', 'checklist', 'delimiter']"></app-editor>
+                                            </div>
                                         </div>
-                                        <div class="align-items-center mb-3">
+                                        <div class="py-2 align-items-center mb-3">
+
                                             <div class="card-header h6 bg-info">
                                                 Partially Correct Feedback
                                             </div>
-                                            <textarea class="col-12" type="text"
-                                                name="partiallycorrectfeedback"></textarea>
+                                            <div class="bg-white py-3 border border-dark">
+                                                <app-editor [id]="'editor'+(51+$index)" [index]='51+$index'
+                                                    (event)="editorEvent($event)"
+                                                    [show]="'paragraph'"
+                                                    [tunes] = "[ 'user-input' ]"
+                                                    [tools]="[ 'paragraph', 'header', 'user-input', 'image', 'list', 'code', 'checklist', 'delimiter']"></app-editor>
+                                            </div>
                                         </div>
-                                        <div class="align-items-center">
+                                        <div class="py-2 align-items-center">
+
                                             <div class="card-header h6 bg-info">
                                                 Incorrect Feedback
                                             </div>
-                                            <textarea class="col-12" type="text" name="incorrectfeedback"></textarea>
+                                            <div class="bg-white py-3 border border-dark">
+                                                <app-editor [id]="'editor'+(61+$index)" [index]='61+$index'
+                                                    (event)="editorEvent($event)"
+                                                    [show]="'paragraph'"
+                                                    [tunes] = "[ 'user-input' ]"
+                                                    [tools]="[ 'paragraph', 'header', 'user-input', 'image', 'list', 'code', 'checklist', 'delimiter']"></app-editor>
+                                            </div>
+
                                         </div>
                                     </div>
                                 </div>
@@ -224,7 +244,7 @@
                             {{stepDefinitions[currentStep - 1].description}}
                         </div>
                         <div class="py-2 row align-items-center">
-                            <app-editor [index]='2' [tools]="['raw', 'variable', 'list-variable']" [show]="'raw'"
+                            <app-editor [index]='2' [tools]="['paragraph', 'raw', 'variable', 'list-variable']" [show]="'raw'"
                                 (event)="editorEvent($event)" [randomVariables]="randomVariables" #editor2></app-editor>
                         </div>
                         <div class="d-flex justify-content-between px-5">
@@ -249,7 +269,7 @@
                             {{stepDefinitions[currentStep - 1].description}}
                         </div>
                         <div class="py-2 row align-items-center">
-                            <app-editor [index]='1' [tools]="['raw', 'set', 'shuffle', 'sequence']" [show]="'raw'"
+                            <app-editor [index]='1' [tools]="['paragraph', 'raw', 'set', 'shuffle', 'sequence']" [show]="'raw'"
                                 (event)="editorEvent($event)" #editor1></app-editor>
                         </div>
                         <div class="d-flex justify-content-between px-5">
@@ -273,14 +293,18 @@
                             {{stepDefinitions[currentStep - 1].description}}
                         </div>
                         <div id="questiontext" class="py-2 row align-items-center">
-                            <div class="card-header h6 bg-info">
-                                Question Text
-                            </div>
-                            <textarea class="col-12" type="text"
-                                (change)="questionTextChanged($event)"
-                            name="questiontext">
 
-                            </textarea>    
+                            <div class="p-3 row align-items-center">
+                                <div class="card-header h6 bg-info">
+                                    Main Question Text
+                                </div>
+                                <div class="bg-white py-3 border border-dark">
+                                    <app-editor [id]="'editor'+(0)" [index]='0' (event)="editorEvent($event)"
+                                        [tunes]="['answer-tune', 'placeholder-tune']" [show]="'paragraph'"
+                                        [tools]="['paragraph', 'header', 'image', 'list', 'code', 'checklist', 'delimiter',
+                                         'answer-tune', 'placeholder-tune']"></app-editor>
+                                </div>
+                            </div>
                         </div>
                         <div class="py-2 row align-items-center">
                             <div class="card-header h6 bg-info">
@@ -290,10 +314,10 @@
                         </div>
                         <div class="d-flex justify-content-around">
                             <button type="button" class="btn btn-secondary next-btn"
-                            (click)="previousStep($event)">Previous</button>
-                                
-                                <button type="button" class="btn btn-primary next-btn"
-                                (click)="nextStep($event)">Finish & Download</button>
+                                (click)="previousStep($event)">Previous</button>
+
+                            <button type="button" class="btn btn-primary next-btn" (click)="nextStep($event)">Finish &
+                                Download</button>
                         </div>
                     </div>
                     <div class="form-step">

@@ -94,14 +94,18 @@ class VariableBlock extends AbstractGlobalVariable {
         { name: 'atanh', argz: 1 },
         { name: 'atan', argz: 1 },
         { name: 'atan2', argz: 2 },
+        {name: 'bindec', argz: 1},
         { name: 'ceil', argz: 1 },
         { name: 'cos', argz: 1 },
         { name: 'cosh', argz: 1 },
+        {name: 'decbin', argz: 1},
+        {name: 'decoct', argz: 1},
         { name: 'exp', argz: 1 },
         { name: 'floor', argz: 1 },
         { name: 'log', argz: 1 },
         { name: 'max', argz: 2 },
         { name: 'min', argz: 2 },
+        { name: 'octdec', argz: 1 },    
         { name: 'pow', argz: 2 },
         { name: 'random', argz: 0 },
         { name: 'round', argz: 1 },
@@ -156,10 +160,17 @@ class VariableBlock extends AbstractGlobalVariable {
             });
         });
         console.log(this.data);
-        this.data?.globalVariables.forEach((variable: { name: string, isList: boolean }, index: number, array: any[]) => {
+        this.config?.globalVariables.forEach((variable: { name: string, isList: boolean }, index: number, array: any[]) => {
             if (index == 0 && this.config?.randomVariables.length > 0) {
                 items.push({ type: 'separator' });
             }
+            items.push({
+                icon: '<span class="fa fa-cogs"></span>',
+                title: variable.name,
+                onActivate: () => this.onActivate(`${variable.name}:${variable.isList ? 'list' : 'var'}`)
+            });
+        });
+        this.data?.declaredVariables.forEach((variable: { name: string, isList: boolean }, index: number, array: any[]) => {
             items.push({
                 icon: '<span class="fa fa-cogs"></span>',
                 title: variable.name,

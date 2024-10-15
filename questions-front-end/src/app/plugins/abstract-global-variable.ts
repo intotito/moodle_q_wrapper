@@ -9,24 +9,32 @@ export abstract class AbstractGlobalVariable extends AbstractVariableBlock {
         super();
         this.api = api;
         this.data = data;
-        this.data.globalVariables = api ? this.getGlobalVariables() : [];
+        this.data.declaredVariables = api ? this.getDeclaredVariables() : [];
+    //    this.data.globalVariables = [];
         this.block = block;
         this.config = config;
+        console.log("check this out", this.config, this.data);
         document.addEventListener('random-variable-update', (event: any) => {
             this.config.randomVariables = event.detail.randomVariables;
-            console.log('Global Variable(s) Updated:', event, this.api);
+            console.log('Random Variable(s) Updated:', event, this.api);
         });
-        
+        if (this.config.index > 20 && this.config.index < 30) { // a local variable editor
+            document.addEventListener('global-variable-update', (event: any) => {
+                this.config.globalVariables = event.detail.globalVariables;
+                console.log('Global Variable(s) Updated:', event, this.api);
+            });
+        }
+
     }
     /**
      * This method provides the functionality for retrieving the preceding global variables declared before this
      * block. 
      * @returns A list of declared global variables.
      */
-    protected getGlobalVariables(): { name: string, indexed: boolean }[] {
+    protected getDeclaredVariables(): { name: string, indexed: boolean }[] {
         let variables: any[] = [];
         let blockCount = this.api.blocks.getBlocksCount();
-//        console.log('Block Count:', blockCount);
+        //        console.log('Block Count:', blockCount);
         for (let i = 0; i < blockCount; i++) {
             let block = this.api.blocks.getBlockByIndex(i);
             if (block.name === 'variable' || block.name === 'list-variable') {
@@ -34,11 +42,11 @@ export abstract class AbstractGlobalVariable extends AbstractVariableBlock {
                 let type = block.holder.children[0].children[0].children[1].textContent.trim();
                 let pattern = /=\s*?\[/;
                 let isList = pattern.test(type);
-  //              console.log('Testing', type, 'Pattern', pattern, 'Result:', isList);
+                //              console.log('Testing', type, 'Pattern', pattern, 'Result:', isList);
                 variables.push({ name: variable, isList: isList });
             }
         }
-  //      console.log('Global Variables:', variables);
+        //      console.log('Global Variables:', variables);
         return variables;
     }
 
@@ -58,12 +66,16 @@ export abstract class AbstractGlobalVariable extends AbstractVariableBlock {
         const id: string = Math.floor(Math.random() * 0xFFFFFF).toString(16);
         let html: string = `<input list='${id}' style='width:50px;' onchange="this.style.width = ((this.value.length + 2) * 1) + 'ch';"/>`;
         html += `<datalist id="${id}" style="padding: 0px 10px;">`;
-        html += `<option value="--Global--" disabled></option>`;
-        this.data.globalVariables.forEach((option: { name: string, indexed: boolean }) => {
-            html += `<option value="${option.name}">${option.name}</option>`;
-        });
         html += `<option value="--Random--" disabled></option>`;
         this.getRandomVariables().forEach((option: { name: string, indexed: boolean }) => {
+            html += `<option value="${option.name}">${option.name}</option>`;
+        });
+        html += `<option value="--Global--" disabled></option>`;
+        this.config.globalVariables.forEach((option: { name: string, indexed: boolean }) => {
+            html += `<option value="${option.name}">${option.name}</option>`;
+        });
+        html += `<option value="--Declared--" disabled></option>`;
+        this.data.declaredVariables.forEach((option: { name: string, indexed: boolean }) => {
             html += `<option value="${option.name}">${option.name}</option>`;
         });
         html += `</datalist>`;
@@ -84,27 +96,27 @@ export abstract class AbstractGlobalVariable extends AbstractVariableBlock {
     }
 
     protected onActivate(key: string): void {
-  //      console.log('OnActivate Called:', 'Key:', key);
+        //      console.log('OnActivate Called:', 'Key:', key);
         let grandChildDiv = this.block.holder.children[0].children[0];
         const lastChild = grandChildDiv.lastElementChild;
         grandChildDiv.removeChild(lastChild);
         if (key === 'add') {
-            const additional : string = this.getAdditionalElements();
+            const additional: string = this.getAdditionalElements();
             console.log('Add Item', additional);
             grandChildDiv.innerHTML += additional;
             this.data.items.splice(this.data.items.length - 1, 0, { tag: 'INPUT', text: '' });
             this.data.items.splice(this.data.items.length - 1, 0, { tag: 'DATALIST', text: '' });
             this.data.last = 'Item';
             this.api.toolbar.close();
-        } else if(key === 'add+') {
-            const additional : string = this.getAdditionalElements();
+        } else if (key === 'add+') {
+            const additional: string = this.getAdditionalElements();
             console.log('Add Item', additional);
             grandChildDiv.innerHTML += additional;
             this.data.items.splice(this.data.items.length - 1, 0, { tag: 'SPAN', text: this.separator });
             this.data.items.splice(this.data.items.length - 1, 0, { tag: 'INPUT', text: '' });
             this.data.items.splice(this.data.items.length - 1, 0, { tag: 'DATALIST', text: '' });
             this.data.last = 'Item';
-        } 
+        }
         else if (key === '+' || key === '-' || key === '*' || key === '/' || key === '%') {
             grandChildDiv.innerHTML += `<span class="px-3 h6">${key}</span>`;
             this.data.items.splice(this.data.items.length - 1, 0, { tag: 'SPAN', text: key });
@@ -114,8 +126,8 @@ export abstract class AbstractGlobalVariable extends AbstractVariableBlock {
             const indexed: boolean = key.split(':')[1] === 'list';
             const variable: string = key.split(':')[0];
             grandChildDiv.innerHTML += `<span class="px-2 h6">${variable}</span>`;
-            this.data.items.splice(this.data.items.length - 1, 0, { tag: 'SPAN', text: variable }); 
-            if(indexed){
+            this.data.items.splice(this.data.items.length - 1, 0, { tag: 'SPAN', text: variable });
+            if (indexed) {
                 grandChildDiv.innerHTML += `<span class="pr-2 h6">[</span>`;
                 grandChildDiv.innerHTML += this.getAdditionalElements();
                 grandChildDiv.innerHTML += `<span class="pl-2 h6">]</span>`;
@@ -129,7 +141,7 @@ export abstract class AbstractGlobalVariable extends AbstractVariableBlock {
         }
         grandChildDiv.appendChild(lastChild);
         this.refreshItems(grandChildDiv);
-//        this.itemsCount++;
+        //        this.itemsCount++;
     }
 
     /**

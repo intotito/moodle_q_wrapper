@@ -26,6 +26,10 @@ export class WizardComponent {
   qTextEditors!: EditorJS[];
   gVarEditors!: EditorJS[];
   gCritEditors!: EditorJS[];
+  cFeedbackEditors!: EditorJS[];
+  pFeedbackEditors!: EditorJS[];
+  iFeedbackEditors!: EditorJS[];
+  mQuestionEditor!: EditorJS;
   public partsDefinitions: any[] = [];
   public stepDefinitions: any[] = [
     {
@@ -94,6 +98,9 @@ export class WizardComponent {
     this.gVarEditors = new Array<EditorJS>(Number(this.questionParts));
     this.gCritEditors = new Array<EditorJS>(Number(this.questionParts));
     this.localVariables = new Array(Number(this.questionParts)).fill([]);
+    this.cFeedbackEditors = new Array<EditorJS>(Number(this.questionParts));
+    this.pFeedbackEditors = new Array<EditorJS>(Number(this.questionParts));
+    this.iFeedbackEditors = new Array<EditorJS>(Number(this.questionParts));
     // this.localVariables = 
     for (let i = 0; i < this.questionParts; i++) {
       this.partsDefinitions.push({
@@ -124,44 +131,8 @@ export class WizardComponent {
     }
     return '';
   }
-  public async nextStep(event: any) {
-    console.log('Next step');
-    if (this.currentStep === 5) {
-      this.xmlBuilder.setPartElement(this.currentPart, 'partindex', this.currentPart - 1);
-      let qEdt: EditorJS = this.qTextEditors[this.currentPart - 1];
-      let qTOutput: any = await this.saveEditor(qEdt);
-      this.xmlBuilder.setPartElement(this.currentPart, 'subqtext', qTOutput.html);
-      let gVarOutput: any = await this.saveEditor(this.gVarEditors[this.currentPart - 1]);
-      this.xmlBuilder.setPartElement(this.currentPart, 'vars2', gVarOutput.html);
-      let gCritOutput: any = await this.saveEditor(this.gCritEditors[this.currentPart - 1]);
-      console.log('Grading Criteria:', gCritOutput);
-      this.xmlBuilder.setPartElement(this.currentPart, 'correctness', gCritOutput.html);
 
-      let answerParts: any[] = [
-        { id: `home${this.currentPart - 1}`, name: 'placeholder', type: 'input' },
-        { id: `home${this.currentPart - 1}`, name: 'answermark', type: 'input' },
-        { id: `home${this.currentPart - 1}`, name: 'unitpenalty', type: 'input' },
-        { id: `menu${this.currentPart - 1}`, name: 'answer', type: 'input' },
-        { id: `menu${this.currentPart - 1}`, name: 'answertype', type: 'select' },
-        { id: `menu1${this.currentPart - 1}`, name: 'correctfeedback', type: 'textarea' },
-        { id: `menu1${this.currentPart - 1}`, name: 'partiallycorrectfeedback', type: 'textarea' },
-        { id: `menu1${this.currentPart - 1}`, name: 'incorrectfeedback', type: 'textarea' },
-      ];
-      answerParts.forEach((part: any) => {
-        this.xmlBuilder.setPartElement(this.currentPart, part.name, this.getValue(part.id, part.name, part.type));
-      });
-      this.currentPart++;
-      this.xmlBuilder.toString();
-      if (this.currentPart > this.questionParts) { // Last Part
-        this.currentPart = 1;
-      } else { // More Parts to traverse
-        return;
-      }
-    }
-    this.processStep(this.currentStep++);
-  }
-
-  public questionTextChanged(event: any){
+  private questionTextChanged(event: any) {
     this.xmlBuilder.setElement('questiontext', event.target.value);
     this.xmlBuilder.toString();
   }
@@ -173,22 +144,19 @@ export class WizardComponent {
     }
   }
 
-  public finish() : string {
-    console.log('Finish');
-    this.currentStep = 1;
-    let output = this.xmlBuilder.build();
-    console.log('Output:', output);
-    return output;
-  }
+
 
 
   public initializeEditors(index: number, component: EditorJS) {
     if (index < 10) {
-      if (index === 1) {
-        this.ranVarEditor = component;
-      } else if (index === 2) {
-        this.gloVarEditor = component;
-      }
+      if (index === 0) {
+        this.mQuestionEditor = component;
+      } else
+        if (index === 1) {
+          this.ranVarEditor = component;
+        } else if (index === 2) {
+          this.gloVarEditor = component;
+        }
     } else if (index < 20) {
       let partIndex: number = index - 10;
       this.qTextEditors[partIndex - 1] = component;
@@ -198,13 +166,35 @@ export class WizardComponent {
     } else if (index < 40) {
       let partIndex: number = index - 30;
       this.gCritEditors[partIndex - 1] = component;
+    } else if (index < 50) {
+      let partIndex: number = index - 40;
+      this.cFeedbackEditors[partIndex - 1] = component;
+    } else if (index < 60) {
+      let partIndex: number = index - 50;
+      this.pFeedbackEditors[partIndex - 1] = component;
+    } else if (index < 70) {
+      let partIndex: number = index - 60;
+      this.iFeedbackEditors[partIndex - 1] = component;
     }
+    // get editor dom
+    let editor = document.getElementById(`editorjs${index}`);
+    // set css z-index to index
+    let toolbar = editor?.querySelector('.codex-editor');
+    // set z-index to index
+    toolbar?.setAttribute('style', `z-index: ${100 - index}`);
+    console.log('Editor:', editor, 'Toolbar:', toolbar);
   }
 
   public editorEvent(event: any) {
     if (event.type === 'ready') {
       this.initializeEditors(event.index, event.component);
-    } else if (event.type === 'change') {
+    } else if (event.type === 'main-question-changed') {
+      this.saveEditor(this.mQuestionEditor).then((output: any) => {
+        this.xmlBuilder.setElement('questiontext', output.html);
+      });
+      console.log('Main Question Changed:', event);
+    }
+    else if (event.type === 'change') {
       console.log("Change Occurred in Editor", event);
     } else if (event.type == 'variable-injected') { // guaranteed to be a sub question editor
       console.log('Variable Injected:', event);
@@ -305,7 +295,7 @@ export class WizardComponent {
     });
   }
 
-  public getQuestionTexts(){
+  public getQuestionTexts() {
     return this.xmlBuilder.getQuestionTexts();
   }
   private processStep(step: number) {
@@ -345,7 +335,7 @@ export class WizardComponent {
         });
         break;
       case 3:
-        console.log('Step 3');
+        console.log('Step 3');  
         this.saveEditor(this.ranVarEditor).then((output: any) => {
           this.randomVariables = output.variables;
           this.xmlBuilder.setElement('varsrandom', output.html);
@@ -361,13 +351,74 @@ export class WizardComponent {
           // this.gloVarEditor.reload(this.randomVariables);
         });
         break;
-        case 6:
-        let xml = this.finish();  
-        this.router.navigate(['/main'], { state: { xml: xml, state: State.FROM_FILE } });
+      case 6:
+        console.log('Finish');
+        // get value from main question editor
+        this.saveEditor(this.mQuestionEditor).then((output: any) => {
+          this.xmlBuilder.setElement('questiontext', output.html);
+          console.log('Main Question Output:', output);
+          this.xmlBuilder.toString();
+          this.currentStep = 1;
+          let xml = this.xmlBuilder.build();
+          this.router.navigate(['/main'], { state: { xml: xml, state: State.FROM_FILE } });
+        });
         break;
       default:
         console.log('Invalid step');
     }
+  }
+
+  public async nextStep(event: any) {
+    console.log('Next step');
+    if (this.currentStep === 5) {
+      this.xmlBuilder.setPartElement(this.currentPart, 'partindex', this.currentPart - 1);
+      let qEdt: EditorJS = this.qTextEditors[this.currentPart - 1];
+      let qTOutput: any = await this.saveEditor(qEdt);
+      this.xmlBuilder.setPartElement(this.currentPart, 'subqtext', qTOutput.html);
+      let gVarOutput: any = await this.saveEditor(this.gVarEditors[this.currentPart - 1]);
+      this.xmlBuilder.setPartElement(this.currentPart, 'vars2', gVarOutput.html);
+      let gCritOutput: any = await this.saveEditor(this.gCritEditors[this.currentPart - 1]);
+      this.xmlBuilder.setPartElement(this.currentPart, 'correctness', gCritOutput.html);
+      let cFeedbackOutput: any = await this.saveEditor(this.cFeedbackEditors[this.currentPart - 1]);
+      this.xmlBuilder.setPartElement(this.currentPart, 'correctfeedback', cFeedbackOutput.html);
+      let pFeedbackOutput: any = await this.saveEditor(this.pFeedbackEditors[this.currentPart - 1]);
+      this.xmlBuilder.setPartElement(this.currentPart, 'partiallycorrectfeedback', pFeedbackOutput.html);
+      let iFeedbackOutput: any = await this.saveEditor(this.iFeedbackEditors[this.currentPart - 1]);
+      this.xmlBuilder.setPartElement(this.currentPart, 'incorrectfeedback', iFeedbackOutput.html);
+
+      let answerParts: any[] = [
+        { id: `home${this.currentPart - 1}`, name: 'placeholder', type: 'input' },
+        { id: `home${this.currentPart - 1}`, name: 'answermark', type: 'input' },
+        { id: `home${this.currentPart - 1}`, name: 'unitpenalty', type: 'input' },
+        { id: `menu${this.currentPart - 1}`, name: 'answer', type: 'input' },
+        { id: `menu${this.currentPart - 1}`, name: 'answertype', type: 'select' },
+        //        { id: `menu1${this.currentPart - 1}`, name: 'correctfeedback', type: 'textarea' },
+        //        { id: `menu1${this.currentPart - 1}`, name: 'partiallycorrectfeedback', type: 'textarea' },
+        //        { id: `menu1${this.currentPart - 1}`, name: 'incorrectfeedback', type: 'textarea' },
+      ];
+      answerParts.forEach((part: any) => {
+        this.xmlBuilder.setPartElement(this.currentPart, part.name, this.getValue(part.id, part.name, part.type));
+      });
+      this.currentPart++;
+      this.xmlBuilder.toString();
+      if (this.currentPart > this.questionParts) { // Last Part
+        let placeholders = this.xmlBuilder.getPlaceholders()
+          .filter((placeholder: { part: number, placeholder: string }) => {
+            return placeholder.placeholder.length > 0;
+          });
+        const pEvent = new CustomEvent('placeholder-updated', {
+          detail: {
+            message: 'Placeholder Updated',
+            placeholders: placeholders
+          }
+        });
+        document.dispatchEvent(pEvent);
+        this.currentPart = 1;
+      } else { // More Parts to traverse
+        return;
+      }
+    }
+    this.processStep(this.currentStep++);
   }
 
   private async saveEditor(editor: EditorJS): Promise<any> {
@@ -432,6 +483,11 @@ export class WizardComponent {
       } else if (block.type === 'raw') {
         html += `${block.data.text}\n`;
         variables = variables.concat(block.data.variable);
+      } else if (block.type === 'image') {
+        html += `<div class="py-2">
+                <img src="${block.data.file.url}" alt="${block.data.caption}"/>
+                </div>\n
+                `;
       }
     });
     return { html: html, scripts: scripts, variables: variables };

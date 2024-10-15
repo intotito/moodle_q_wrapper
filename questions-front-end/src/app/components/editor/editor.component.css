@@ -10,7 +10,6 @@
     right: 0;
     background: #fff;
     border-bottom: 1px solid #ddd;
-    z-index: 1000; /* Make sure it is on top of the editor content */
   }
   
   .editorjs {

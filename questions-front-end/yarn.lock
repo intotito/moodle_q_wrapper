@@ -1345,6 +1345,13 @@
     "@codexteam/icons" "^0.0.5"
     "@editorjs/editorjs" "^2.29.1"
 
+"@editorjs/image@^2.9.3":
+  version "2.9.3"
+  resolved "https://registry.npmjs.org/@editorjs/image/-/image-2.9.3.tgz"
+  integrity sha512-hBOHuqvL/ovjrns+xLuBh/b3kqABDlLxlByWnSuKnE31O351NDrg9AXrB1yYo0yZerw5V591rP0US3PEzp7CzQ==
+  dependencies:
+    "@codexteam/icons" "^0.3.0"
+
 "@editorjs/list@^1.10.0":
   version "1.10.0"
   resolved "https://registry.npmjs.org/@editorjs/list/-/list-1.10.0.tgz"

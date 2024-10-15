@@ -9,9 +9,12 @@ import Checklist from '@editorjs/checklist'
 import CodeTool from '@editorjs/code';
 import { AnswerField } from '../../plugins/answer.field';
 import AnswerTune from '../../plugins/answer-tune';
+import ImageTool from '@editorjs/image';
 import { VariableBlock, ListVariable, UndeclaredVariable, GradingCriterion } from '../../plugins/global-variable-blocks';
 import { SetVariable, ShuffleVariable, SequenceVariable } from '../../plugins/random-variable-block';
 import { RawCode } from '../../plugins/raw-code-block';
+import PlaceholderTune from '../../plugins/placeholder-tune';
+import UserInputTune from '../../plugins/user-input-tune';
 
 
 @Component({
@@ -76,43 +79,54 @@ export class EditorComponent implements AfterViewInit {
       return GradingCriterion;
     } else if (tool === 'raw') {
       return RawCode;
+    } else if (tool === 'paragraph') {
+      return Paragraph;
+    } else if (tool === 'image') {
+      return ImageTool;
+    } else if (tool === 'placeholder-tune') {
+      return PlaceholderTune;
+    } else if (tool === 'user-input') {
+      return UserInputTune;
     }
-  }
-
-  private addRawCode(toolkit: any): any {
-    const pp: any = {
-      class: Paragraph,
-      toolbox: {
-        title: 'Raw Code',
-        icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="100" height="100">
-                <rect width="24" height="24" fill="none" />
-                <text x="11.5" y="18" font-size="16" font-family="Arial, sans-serif" text-anchor="middle" fill="gray" font-style="italic">
-                  R
-                </text>
-                <text x="12" y="18" font-size="16" font-family="Arial, sans-serif" text-anchor="middle" fill="black" font-style="italic">
-                  R
-                </text>
-              </svg>`,
-      }
-    };
-    toolkit['paragraph'] = pp;
-    return toolkit;
   }
 
   private getToolkit(): any {
     let toolkit: any = {};
     //   console.log('getToolkit', this.randomVariables);
     this.tools.forEach((tool: any) => {
-      toolkit[tool] = {
-        class: this.getClass(tool) as unknown as BlockToolConstructable,
-        inlineToolbar: true,
-        config: {
-          randomVariables: this.randomVariables,
-          index: this.index
+      if (tool === 'image') {
+        console.log('Odogwu:', tool);
+        toolkit[tool] = {
+          class: this.getClass(tool) as unknown as ToolConstructable,
+          config: {
+            endpoints: {
+              index: this.index,
+              byFile: 'http://zerofourtwo.net/api/upload/file', // Your backend file uploader endpoint
+              byUrl: 'http://zerofourtwo.net/api/upload/url', // Your endpoint that provides uploading by Url
+            }
+          }
+        };
+      } else if (tool === 'placeholder-tune') {
+        toolkit[tool] = {
+          class: this.getClass(tool) as unknown as BlockToolConstructable,
+          config: {
+            placeholders: []
+          }
         }
-      };
+      }
+      else {
+        toolkit[tool] = {
+          class: this.getClass(tool) as unknown as BlockToolConstructable,
+          inlineToolbar: true,
+          config: {
+            randomVariables: this.randomVariables,
+            globalVariables: this.globalVariables,
+            index: this.index
+          }
+        };
+      }
     });
-    console.log('Show us Toolkit:', 'Index', this.index, 'Toolkit:', toolkit);
+    //   console.log('Show us Toolkit:', 'Index', this.index, 'Toolkit:', toolkit);
     if (this.show === 'raw') {
       toolkit['paragraph'] = false;
     }
@@ -131,21 +145,30 @@ export class EditorComponent implements AfterViewInit {
     );
   }
 
+  // Check for variables in the text and disable block addition for grading criteria
   private editorChanged($event: any, api: any, type: string) {
     let currentBlock: any = api.blocks.getBlockByIndex(api.blocks.getCurrentBlockIndex());
     let blocksCount: number = api.blocks.getBlocksCount();
-    console.log('Current Block: ', currentBlock, 'Current Block Id', currentBlock.id);
-    console.log('Editor Changed:', 'Event:', $event, ' My Block index:', api.blocks.getCurrentBlockIndex(), 'Type:', type);
+    //    console.log('Current Block: ', currentBlock, 'Current Block Id', currentBlock.id);
+    //    console.log('Editor Changed:', 'Event:', $event, ' My Block index:', api.blocks.getCurrentBlockIndex(), 'Type:', type);
     // check if it is a text editor or a variable editor
     let $events = Array.isArray($event) ? $event : [$event];
     $events.forEach(($evt) => {
       if ($evt.type === 'block-changed') {
         console.log('my editor index:', this.index);
-        if (this.index > 10 && this.index < 20) {
-          let partIndex: number = this.index - 10 - 1;
+        if (this.index === 0) { // main question text editor
+          this.event.emit(
+            {
+              type: 'main-question-changed',
+              component: this.editor,
+              message: 'Main Question Text Changed',
+              index: this.index,
+            });
+          // check for automated response injection in the form of {*response1}, {*response2}, ...
+        } else if (this.index > 10 && this.index < 20) { // subquestiontext editor
+//          let partIndex: number = this.index - 10 - 1;
           // definitely a sub question editor
-          console.log('Block:', currentBlock.save().then((output: any) => {
-            console.log('Output:', output);
+          currentBlock.save().then((output: any) => {
             if (output.tool === 'paragraph') {
               let text: string = output.data.text;
               // search for symbols {*} in the text
@@ -171,12 +194,12 @@ export class EditorComponent implements AfterViewInit {
                   variables: variables
                 });
             }
-          }));
+          });
         } else if (this.index > 20 && this.index < 30) { // local variable editor
           let partIndex: number = this.index - 20 - 1;
           // definitely a local variable editor
-          let variables: {name: string, indexed: boolean}[] = [];
- //         let isList: boolean = false;
+          let variables: { name: string, indexed: boolean }[] = [];
+          //         let isList: boolean = false;
 
           if (currentBlock.name === 'variable' || currentBlock.name === 'list-variable') {
             let name = currentBlock.holder.children[0].children[0].children[0].value.trim();
