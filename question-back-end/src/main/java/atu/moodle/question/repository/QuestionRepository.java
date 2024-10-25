@@ -16,13 +16,13 @@ public interface QuestionRepository extends CrudRepository<QuestionEntity, Strin
 
 	@Query("SELECT new atu.moodle.question.model.FormulaQuestion(q.name, q.questionText, q.generalFeedback, q.defaultGrade, " 	
 			+ "q.penalty, q.hidden, q.idNumber, q.correctFeedback, q.partiallyCorrectFeedback, q.incorrectFeedback, q.randomVariables, "
-			+ "q.globalVariables, q.answerNumbering)"
+			+ "q.globalVariables, q.answerNumbering, q.nfqLevel, q.tags) "
 			+ "FROM QuestionEntity q ")
 	public List<FormulaQuestion> findAllQuestions();
 	
 	@Query("SELECT new atu.moodle.question.model.FormulaQuestion(q.name, q.questionText, q.generalFeedback, q.defaultGrade, " 	
 			+ "q.penalty, q.hidden, q.idNumber, q.correctFeedback, q.partiallyCorrectFeedback, q.incorrectFeedback, q.randomVariables, "
-			+ "q.globalVariables, q.answerNumbering) "
+			+ "q.globalVariables, q.answerNumbering, q.nfqLevel, q.tags) "
 			+ "FROM QuestionEntity q WHERE q.idNumber = :id")
 	public Optional<FormulaQuestion> findQuestionById(String id);
 	
@@ -32,6 +32,10 @@ public interface QuestionRepository extends CrudRepository<QuestionEntity, Strin
 			+ "a.subQuestionText, a.feedback, a.correctFeedback, a.partiallyCorrectFeedback, a.incorrectFeedback)"
 			+ "FROM AnswerEntity a WHERE a.questionId = :questionId)")
 	public List<Answer> findAllAnswers(String questionId);
+	
+	public List<QuestionEntity> findByNfqLevel(Integer level);
+	
+	public List<QuestionEntity> findByNfqLevelAndTagsContaining(Integer level, String tag);
 	
 	
 }

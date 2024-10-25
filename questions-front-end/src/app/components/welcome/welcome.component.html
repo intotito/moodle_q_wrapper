@@ -1,4 +1,7 @@
 <div class="container h-100 d-flex flex-column atu-img py-5">
+    <div class="position-absolute top-20 start-20">
+        <img src="NFQ.jpg" alt="ATU Logo" style="width: 250px; height: auto;">
+    </div>
         <div class="row h-25 mb-5">
             <div class="col-4 offset-4 my-3">
                 <img src="atu.png" alt="/assets/atu.png">
@@ -6,7 +9,7 @@
         </div>
         <div class="row flex-grow-1">
             <div class="col-10 offset-1">
-                <div class="form-inline p-3 mt-5 transparent-bg" action="#">
+                <div class="form p-3 mt-5 transparent-bg" action="#">
                     <div class="input-group px-2">   
                         <input type="file" class="file-upload hidden" onchange="console.log(event.target.files)" accept=".xml" (change)="onFileSelected($event)" #browseFile>
                         <input type="text" class="form-control" id="question" placeholder="Enter XML URI" [(ngModel)]="msg" name="fileInput">

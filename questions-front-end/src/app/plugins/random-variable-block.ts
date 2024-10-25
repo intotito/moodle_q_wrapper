@@ -73,11 +73,11 @@ class ShuffleVariable extends AbstractRandomVariable{
         }
     }
     protected override getStarterElements(): string {
-        const html: string = `<span class="px-2 h6">= [(</span>`;
+        const html: string = `<span class="px-2 h6">= shuffle([</span>`;
         return html;
     }
     protected override getClosureElements(): string {
-        const html: string = `<span class="px-2 h6">)];</span>`;
+        const html: string = `<span class="px-2 h6">]);</span>`;
         return html;
     }
 

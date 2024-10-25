@@ -114,7 +114,7 @@
                                                 <app-editor [id]="'editor'+(11+$index)" [index]='11+$index'
                                                     (event)="editorEvent($event)" [tunes]="['answer-tune']"
                                                     [show]="'paragraph'"
-                                                    [tools]="['paragraph', 'header', 'image', 'list', 'code', 'checklist', 'delimiter', 'answer-tune']"></app-editor>
+                                                    [tools]="['paragraph', 'header', 'image', 'list', 'code', 'table', 'checklist', 'delimiter', 'answer-tune']"></app-editor>
                                             </div>
                                         </div>
                                         <div class="row">
@@ -301,7 +301,7 @@
                                 <div class="bg-white py-3 border border-dark">
                                     <app-editor [id]="'editor'+(0)" [index]='0' (event)="editorEvent($event)"
                                         [tunes]="['answer-tune', 'placeholder-tune']" [show]="'paragraph'"
-                                        [tools]="['paragraph', 'header', 'image', 'list', 'code', 'checklist', 'delimiter',
+                                        [tools]="['paragraph', 'header', 'image', 'list', 'table',  'code', 'checklist', 'delimiter',
                                          'answer-tune', 'placeholder-tune']"></app-editor>
                                 </div>
                             </div>

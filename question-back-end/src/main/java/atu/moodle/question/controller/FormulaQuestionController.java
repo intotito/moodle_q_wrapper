@@ -31,6 +31,11 @@ public class FormulaQuestionController {
 		return questionService.getAllQuestions();
 	}
 	
+	@GetMapping(path = "/questions/nfq/{level}")
+	public QuestionListWrapper getQuestionsByNfqLevel(@PathVariable Integer level) {
+		return questionService.getQuestionsByNfqLevel(level);
+	}
+	
 	@GetMapping(path = "/questions/{id}")
 	public QuestionListWrapper getQuestionById(@PathVariable String id) {
 		return new QuestionListWrapper(questionService.getQuestionById(id));

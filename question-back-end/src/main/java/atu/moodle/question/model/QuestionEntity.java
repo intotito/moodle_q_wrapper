@@ -29,7 +29,10 @@ public class QuestionEntity {
 	private String globalVariables;
 	private String answerNumbering;
 	@OneToMany(cascade = CascadeType.ALL) @JoinColumn(name = "questionId")	
-	private List<AnswerEntity> answers;
+	private List<AnswerEntity> answers; 
+	@Column(columnDefinition = "integer default 7")
+	private Integer nfqLevel;
+	private String tags;
 	
 	public QuestionEntity() {}
 	
@@ -47,7 +50,9 @@ public class QuestionEntity {
 			String randomVariables, 
 			String globalVariables, 
 			String answerNumbering, 
-			List<AnswerEntity> answers) {
+			List<AnswerEntity> answers, 
+			Integer nfqLevel,
+			String tags) {
 		this.name = name;
 		this.questionText = questionText;
 		this.generalFeedback = generalFeedback;
@@ -62,6 +67,8 @@ public class QuestionEntity {
 		this.globalVariables = globalVariables;
 		this.answerNumbering = answerNumbering;
 		this.answers = answers;
+		this.nfqLevel = nfqLevel;
+		this.tags = tags;
 	}
 
 	public String getName() {
@@ -159,6 +166,22 @@ public class QuestionEntity {
 	public void setGlobalVariables(String globalVariables) {
 		this.globalVariables = globalVariables;
 	}
+	
+	public Integer getNfqLevel() {
+		return nfqLevel;
+	}
+	
+	public void setNfqLevel(Integer nfqLevel) {
+		this.nfqLevel = nfqLevel;
+	}
+	
+	public String getTags() {
+		return tags;
+	}
+	
+	public void setTags(String tags) {
+		this.tags = tags;
+	}
 
 	public String getAnswerNumbering() {
 		return answerNumbering;
@@ -174,5 +197,12 @@ public class QuestionEntity {
 
 	public void setAnswers(List<AnswerEntity> answers) {
 		this.answers = answers;
+	}
+	
+	public FormulaQuestion toFormulaQuestion() {
+		List<Answer> tAnswers = this.answers.stream().map(AnswerEntity::toAnswer).toList();
+		return new FormulaQuestion(name, questionText, generalFeedback, defaultGrade, penalty, hidden, idNumber,
+				correctFeedback, partiallyCorrectFeedback, incorrectFeedback, randomVariables, globalVariables,
+				answerNumbering, tAnswers, nfqLevel, tags);
 	}
 }

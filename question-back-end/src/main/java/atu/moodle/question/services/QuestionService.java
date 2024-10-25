@@ -24,9 +24,15 @@ public class QuestionService {
 	}
 	
 	public QuestionListWrapper getAllQuestions() {
-		var qs = questionRepository.findAllQuestions();
+		List<FormulaQuestion> qs = questionRepository.findAllQuestions();
 		qs.forEach(q -> questionRepository.findAllAnswers(q.idNumber()).forEach(q.answers()::add));
 		return new QuestionListWrapper(qs);
+	}
+	
+	public QuestionListWrapper getQuestionsByNfqLevel(Integer level) {
+		List<QuestionEntity> qs = questionRepository.findByNfqLevel(level);
+		List<FormulaQuestion> questions = qs.stream().map(QuestionEntity::toFormulaQuestion).toList();
+		return new QuestionListWrapper(questions);
 	}
 	
 	public FormulaQuestion getQuestionById(String id) {

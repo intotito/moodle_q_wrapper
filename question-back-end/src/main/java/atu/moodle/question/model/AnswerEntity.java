@@ -217,5 +217,10 @@ public class AnswerEntity {
 		this.answer = answer;
 	}
 
+	public Answer toAnswer() {
+		return new Answer(partIndex, placeHolder, answerMark, answerType, numberOfBox, variable1, answer, variable2,
+				correctness, unitPenalty, postUnit, ruleId, otherRule, subQuestionText, feedback, correctFeedback,
+				partiallyCorrectFeedback, incorrectFeedback);
+	}
 
 }

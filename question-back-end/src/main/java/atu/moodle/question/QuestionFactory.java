@@ -28,6 +28,8 @@ public class QuestionFactory {
 	String randomVariables; 
 	String globalVariables; 
 	String answerNumbering;
+	Integer nfqLevel;
+	String tags;
 	List<Answer> answers;
 	
 	public QuestionFactory withName(String name) {
@@ -99,6 +101,16 @@ public class QuestionFactory {
 		this.answers = answers;
 		return this;
 	}
+	
+	public QuestionFactory withNfqLevel(Integer nfqLevel) {
+		this.nfqLevel = nfqLevel;
+		return this;
+	}
+	
+	public QuestionFactory withTags(String tags) {
+		this.tags = tags;
+		return this;
+	}
 
 	
 	public FormulaQuestion build() {
@@ -107,7 +119,7 @@ public class QuestionFactory {
 		answers.add(a);
 		return new FormulaQuestion(name, questionText, generalFeedback, defaultGrade, penalty, 
 				hidden, idNumber, correctFeedback, partiallyCorrectFeedback, incorrectFeedback, 
-				randomVariables, globalVariables, answerNumbering, answers);
+				randomVariables, globalVariables, answerNumbering, answers, 7, "formulas");
 	}
 
 	public static AnswerEntity updateAnswer(AnswerEntity a, Answer ans) {
@@ -158,6 +170,10 @@ public class QuestionFactory {
 		System.out.println("Global Variables: " + fq.globalVariables().value());
 		q.setAnswerNumbering(fq.answerNumbering().value());
 		System.out.println("Answers: " + fq.answers().size());
+		q.setNfqLevel(fq.nfqLevel());
+		System.out.println("NFQ Level: " + fq.nfqLevel());
+		q.setTags(fq.tags());
+		System.out.println("Tags: " + fq.tags());
 		IntStream.range(0,  q.getAnswers().size()).forEach(i -> updateAnswer(q.getAnswers().get(i), fq.answers().get(i)));
 		return q;
 	}

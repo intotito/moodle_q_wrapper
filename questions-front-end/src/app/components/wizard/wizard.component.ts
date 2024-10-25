@@ -355,7 +355,7 @@ export class WizardComponent {
         console.log('Finish');
         // get value from main question editor
         this.saveEditor(this.mQuestionEditor).then((output: any) => {
-          this.xmlBuilder.setElement('questiontext', output.html);
+          this.xmlBuilder.setElement('questiontext', output.html + output.scripts);
           console.log('Main Question Output:', output);
           this.xmlBuilder.toString();
           this.currentStep = 1;
@@ -374,7 +374,7 @@ export class WizardComponent {
       this.xmlBuilder.setPartElement(this.currentPart, 'partindex', this.currentPart - 1);
       let qEdt: EditorJS = this.qTextEditors[this.currentPart - 1];
       let qTOutput: any = await this.saveEditor(qEdt);
-      this.xmlBuilder.setPartElement(this.currentPart, 'subqtext', qTOutput.html);
+      this.xmlBuilder.setPartElement(this.currentPart, 'subqtext', qTOutput.html + qTOutput.scripts);
       let gVarOutput: any = await this.saveEditor(this.gVarEditors[this.currentPart - 1]);
       this.xmlBuilder.setPartElement(this.currentPart, 'vars2', gVarOutput.html);
       let gCritOutput: any = await this.saveEditor(this.gCritEditors[this.currentPart - 1]);
@@ -468,7 +468,7 @@ export class WizardComponent {
         });
         html += `</ul>`;
       } else if (block.type === 'code') {
-        scripts += `<script>${block.data.code}</script>`;
+        scripts += block.data.code;
       } else if (block.type === 'answer') {
         // check if position of the last closing tag </*> in the html
         let position = html.lastIndexOf('</');

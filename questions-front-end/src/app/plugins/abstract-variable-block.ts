@@ -86,7 +86,7 @@ export abstract class AbstractVariableBlock {
         // For each line, split with = and get the first element
         for (let line of lines){
             let variable = line.split('=')[0].trim();
-            let pattern = /=\s*?\[/;
+            let pattern = /=\s*?.*?\[/;
             let isList = pattern.test(line);
             if(line.startsWith('#') || variable === '') continue;
             variables.push({name: variable, indexed: isList});

@@ -3,6 +3,7 @@ package atu.moodle.question.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlCData;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
@@ -22,7 +23,9 @@ public record FormulaQuestion(@JacksonXmlProperty(localName = "name") Text<Strin
 		@JacksonXmlProperty(localName = "answernumbering") Text<String> answerNumbering,
 		@JacksonXmlProperty(localName = "answers") @JacksonXmlElementWrapper(useWrapping = false) List<Answer> answers,
 		@JacksonXmlProperty(localName = "shownumcorrect") String showNumcorrect,
-		@JacksonXmlProperty(localName = "type", isAttribute = true) String type) {
+		@JacksonXmlProperty(localName = "type", isAttribute = true) String type,
+        @JsonProperty(access = JsonProperty.Access.WRITE_ONLY) Integer nfqLevel,
+        @JsonProperty(access = JsonProperty.Access.WRITE_ONLY) String tags){
 	
 	
 	public FormulaQuestion(
@@ -39,7 +42,9 @@ public record FormulaQuestion(@JacksonXmlProperty(localName = "name") Text<Strin
 			String randomVariables, 
 			String globalVariables, 
 			String answerNumbering,
-			List<Answer> answers) {
+			List<Answer> answers, 
+	        Integer nfqLevel, 
+	        String tags){
 		this(
 				Text.of(name), 
 				Text.of(questionText), 
@@ -56,7 +61,9 @@ public record FormulaQuestion(@JacksonXmlProperty(localName = "name") Text<Strin
 				Text.of(answerNumbering), 
 				answers, 
 				null, 
-				"formulas"
+				"formulas",
+				nfqLevel,
+				tags
 			);
 	}
 	
@@ -72,7 +79,9 @@ public record FormulaQuestion(@JacksonXmlProperty(localName = "name") Text<Strin
 			String incorrectFeedback, 
 			String randomVariables, 
 			String globalVariables, 
-			String answerNumbering) {
+			String answerNumbering, 
+			Integer nfqLevel,	
+			String tags) {
 		this(
 			Text.of(name), 
 			Text.of(questionText), 
@@ -89,7 +98,9 @@ public record FormulaQuestion(@JacksonXmlProperty(localName = "name") Text<Strin
 			Text.of(answerNumbering)
 			, new ArrayList<Answer>(),
 			null,
-			"formulas"
+			"formulas",
+			nfqLevel,
+			tags
 		);
 	}
 	
@@ -98,6 +109,6 @@ public record FormulaQuestion(@JacksonXmlProperty(localName = "name") Text<Strin
 		return new QuestionEntity(name.value(), questionText.value(), generalFeedback.value(), defaultGrade, penalty,
 				hidden, idNumber, correctFeedback.value(), partiallyCorrectFeedback.value(), incorrectFeedback.value(),
 				randomVariables.value(), globalVariables.value(), answerNumbering.value(),
-				answers.stream().map(Answer::asEntity).toList());
+				answers.stream().map(Answer::asEntity).toList(), nfqLevel, tags);
 	}
 }

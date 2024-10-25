@@ -3,10 +3,23 @@
   <div class="card-header h3">
     Repo Viewer
   </div>
+  <!-- Add Drop Down for NFQ Levels-->
+  <div class="d-flex p-2 justify-content-between bg-dark border border-secondary">
+    <select class="col-4 form-select form-select-lg bg-primary text-white h5 px-3"
+      aria-label=".form-select-lg example">
+      <option selected value="7">NFQ - 7</option>
+      <option value="8">NFQ - 8</option>
+      <option value="9">NFQ - 9</option>
+    </select>
+    <!-- Add search bar-->
+    <input class="col-6 form-control form-control-lg mb-3 bg-light text-primary h5 px-3" type="text"
+      placeholder="Search for tags" aria-label=".form-control-lg example">
+  </div>
   <div class="card-body bg-dark scrollable">
     <div class="list-group">
       @for (question of questions; track question){
-        <button type="button" class="list-group-item list-group-item-action h5 py-3" (click)="itemClicked(question)">{{ question.name.text }}</button>
+      <button type="button" class="list-group-item list-group-item-action h5 py-3" (click)="itemClicked(question)">{{
+        question.name.text }}</button>
       }
     </div>
   </div>

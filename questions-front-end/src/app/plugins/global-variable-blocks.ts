@@ -102,6 +102,8 @@ class VariableBlock extends AbstractGlobalVariable {
         {name: 'decoct', argz: 1},
         { name: 'exp', argz: 1 },
         { name: 'floor', argz: 1 },
+        { name: 'fmod', argz: 2 },
+        {name: 'join', argz: 3},
         { name: 'log', argz: 1 },
         { name: 'max', argz: 2 },
         { name: 'min', argz: 2 },
