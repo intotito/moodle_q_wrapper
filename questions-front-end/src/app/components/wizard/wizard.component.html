@@ -20,13 +20,30 @@
                         <div class="alert alert-light" role="alert">
                             {{stepDefinitions[currentStep - 1].description}}
                         </div>
-                        <div class="py-2 row align-items-center">
-                            <span class="col-4 form-label bg-info text-dark fw-bold px-3 mt-1 py-2 rounded">
-                                {{stepDefinitions[currentStep - 1].summary}}
-                            </span>
-                            <div class="col mb-1">
-                                <input type="text" class="form-control" id="name" required>
+                        <div class="row">
+                            <div class="py-2 row align-items-center col-12 col-lg-8">
+                                <span class="col-4 form-label bg-info text-dark fw-bold px-3 mt-1 py-2 rounded">
+                                    {{stepDefinitions[currentStep - 1].summary}}
+                                </span>
+                                <div class="col mb-1">
+                                    <input type="text" class="form-control" id="name" required>
+                                </div>
                             </div>
+                            <div class="py-2 row align-items-center col-12 col-lg-4">
+                                <!-- select for nfq level 7 to 10-->
+                                <span class="col-4 form-label bg-info text-dark fw-bold px-3 mt-1 py-2 rounded">
+                                    NFQ Level
+                                </span>
+                                <div class="col mb-1">
+                                    <select class="form-select" aria-label=".form-select-lg example">
+                                        @for(i of [7, 8, 9, 10]; track i){
+                                        <option class="form-control" value="{{i}}">{{i}}
+                                        </option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+
                         </div>
                         <div class="text-center">
                             <button type="button" class="btn btn-primary next-btn"
@@ -187,9 +204,8 @@
                                             </div>
                                             <div class="bg-white py-3 border border-dark">
                                                 <app-editor [id]="'editor'+(41+$index)" [index]='41+$index'
-                                                    (event)="editorEvent($event)"
-                                                    [show]="'paragraph'"
-                                                    [tunes] = "['user-input']"
+                                                    (event)="editorEvent($event)" [show]="'paragraph'"
+                                                    [tunes]="['user-input']"
                                                     [tools]="[ 'paragraph', 'header', 'user-input', 'image', 'list', 'code', 'checklist', 'delimiter']"></app-editor>
                                             </div>
                                         </div>
@@ -200,9 +216,8 @@
                                             </div>
                                             <div class="bg-white py-3 border border-dark">
                                                 <app-editor [id]="'editor'+(51+$index)" [index]='51+$index'
-                                                    (event)="editorEvent($event)"
-                                                    [show]="'paragraph'"
-                                                    [tunes] = "[ 'user-input' ]"
+                                                    (event)="editorEvent($event)" [show]="'paragraph'"
+                                                    [tunes]="[ 'user-input' ]"
                                                     [tools]="[ 'paragraph', 'header', 'user-input', 'image', 'list', 'code', 'checklist', 'delimiter']"></app-editor>
                                             </div>
                                         </div>
@@ -213,9 +228,8 @@
                                             </div>
                                             <div class="bg-white py-3 border border-dark">
                                                 <app-editor [id]="'editor'+(61+$index)" [index]='61+$index'
-                                                    (event)="editorEvent($event)"
-                                                    [show]="'paragraph'"
-                                                    [tunes] = "[ 'user-input' ]"
+                                                    (event)="editorEvent($event)" [show]="'paragraph'"
+                                                    [tunes]="[ 'user-input' ]"
                                                     [tools]="[ 'paragraph', 'header', 'user-input', 'image', 'list', 'code', 'checklist', 'delimiter']"></app-editor>
                                             </div>
 
@@ -244,8 +258,9 @@
                             {{stepDefinitions[currentStep - 1].description}}
                         </div>
                         <div class="py-2 row align-items-center">
-                            <app-editor [index]='2' [tools]="['paragraph', 'raw', 'variable', 'list-variable']" [show]="'raw'"
-                                (event)="editorEvent($event)" [randomVariables]="randomVariables" #editor2></app-editor>
+                            <app-editor [index]='2' [tools]="['paragraph', 'raw', 'variable', 'list-variable']"
+                                [show]="'raw'" (event)="editorEvent($event)" [randomVariables]="randomVariables"
+                                #editor2></app-editor>
                         </div>
                         <div class="d-flex justify-content-between px-5">
                             <button type="button" class="btn btn-secondary prev-btn"
@@ -269,8 +284,8 @@
                             {{stepDefinitions[currentStep - 1].description}}
                         </div>
                         <div class="py-2 row align-items-center">
-                            <app-editor [index]='1' [tools]="['paragraph', 'raw', 'set', 'shuffle', 'sequence']" [show]="'raw'"
-                                (event)="editorEvent($event)" #editor1></app-editor>
+                            <app-editor [index]='1' [tools]="['paragraph', 'raw', 'set', 'shuffle', 'sequence']"
+                                [show]="'raw'" (event)="editorEvent($event)" #editor1></app-editor>
                         </div>
                         <div class="d-flex justify-content-between px-5">
                             <button type="button" class="btn btn-secondary prev-btn"
@@ -300,8 +315,7 @@
                                 </div>
                                 <div class="bg-white py-3 border border-dark">
                                     <app-editor [id]="'editor'+(0)" [index]='0' (event)="editorEvent($event)"
-                                        [tunes]="['answer-tune', 'placeholder-tune']" [show]="'paragraph'"
-                                        [tools]="['paragraph', 'header', 'image', 'list', 'table',  'code', 'checklist', 'delimiter',
+                                        [tunes]="['answer-tune', 'placeholder-tune']" [show]="'paragraph'" [tools]="['paragraph', 'header', 'image', 'list', 'table',  'code', 'checklist', 'delimiter',
                                          'answer-tune', 'placeholder-tune']"></app-editor>
                                 </div>
                             </div>
