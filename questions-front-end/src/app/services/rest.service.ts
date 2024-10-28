@@ -24,6 +24,14 @@ export class RestService {
     return nfq;
   }
 
+  public getTag(id: string){
+    const headers = new HttpHeaders();
+    headers.append('Accept', 'application/json');
+    const tag: any = this.httpClient.get(`${this.origin}/api/questions/tag/${id}`, { headers: headers });
+    console.log(' #################### TAG:', tag);
+    return tag;
+  }
+
   public getQuestionsByNfqLevelAndTag(tags: string, nfqLevel: string) {
     const headers = new HttpHeaders();
     headers.append('Accept', 'application/json');

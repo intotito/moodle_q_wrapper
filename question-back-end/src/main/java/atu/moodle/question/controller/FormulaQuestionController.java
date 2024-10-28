@@ -44,6 +44,13 @@ public class FormulaQuestionController {
 		return questionService.getNfqLevelById(id);
 	}
 	
+	// endpoint to get a question tag by id
+	@GetMapping(path = "/questions/tag/{id}")
+	public ResponseEntity<String> getQuestionTagById(@PathVariable String id) {
+		return ResponseEntity.status(HttpStatus.ACCEPTED).body(
+				"{\"tag\": \"" + questionService.getTagById(id) + "\"}");
+	}
+	
 	
 	@GetMapping(path = "/questions/{id}")
 	public QuestionListWrapper getQuestionById(@PathVariable String id) {

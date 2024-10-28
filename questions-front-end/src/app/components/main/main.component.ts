@@ -244,7 +244,6 @@ export class MainComponent implements OnInit {
     // set nfq level from rest api origin/api/questions/nfq/${this.getElementValue('idnumber')} for input id = nfqLevel
     this.restService.getNfqLevel(this.getElementValue('idnumber')).subscribe((data: any) => {
       const nfqLevel = document.getElementById('nfqLevel') as HTMLInputElement;
-      console.log('* ###########################Data', data);
       nfqLevel.value = data;
       this.nfqLevel = data;
     });
@@ -253,9 +252,8 @@ export class MainComponent implements OnInit {
 
     this.restService.getTag(this.getElementValue('idnumber')).subscribe((data: any) => {
       const tag = document.getElementById('tag') as HTMLInputElement;
-      console.log('* ###########################Data', data);
-      tag.value = data;
-      this.tag = data;
+      tag.value = data.tag;
+      this.tag = data.tag;
     });
     
 

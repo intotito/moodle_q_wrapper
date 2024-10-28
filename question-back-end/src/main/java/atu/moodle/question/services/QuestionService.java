@@ -40,6 +40,10 @@ public class QuestionService {
 	public Integer getNfqLevelById(String id) {
 		return questionRepository.findQuestionById(id).orElseThrow().nfqLevel();
 	}
+	
+	public String getTagById(String id) {
+		return questionRepository.findQuestionById(id).orElseThrow().tags();
+	}
 
 	public QuestionListWrapper getQuestionsByNfqLevelAndTag(Integer level, String tag) {
 		System.out.println("************************ \tLevel: " + level + " Tag: " + tag.length());
