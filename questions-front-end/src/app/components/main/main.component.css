@@ -1,9 +1,9 @@
-
 /* Moodle Color theme */
 .m_background {
     background-color: #6666FF;
 }
-.m_foreground{
+
+.m_foreground {
     color: #F27F22;
 }
 
@@ -34,16 +34,19 @@
     text-align: justify;
     box-sizing: border-box;
 }
+
 .img {
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center center;
 }
+
 .bg-wrap {
     width: 100%;
     position: relative;
     z-index: 0;
 }
+
 .bg-wrap:after {
     z-index: -1;
     position: absolute;
@@ -76,18 +79,20 @@ body {
 }
 
 #sidebar.active {
-    left: 0; /* Visible when active */
+    left: 0;
+    /* Visible when active */
 }
 
 
 /* Styles for the toggle button */
 #sidebarToggle {
-    display: none; /* Hide by default */
+    display: none;
+    /* Hide by default */
 }
 
 @media (max-width: 768px) {
     #sidebar {
-        position:fixed;
+        position: fixed;
         height: 100%;
         left: -100%;
     }
@@ -97,18 +102,22 @@ body {
         height: 90%;
         overflow-x: hidden;
         overflow-y: auto;
-        left: 0; /* Show sidebar */
+        left: 0;
+        /* Show sidebar */
     }
 
     #sidebarToggle {
-        display: block; /* Show toggle button on mobile */
+        display: block;
+        /* Show toggle button on mobile */
         position: fixed;
         top: 0px;
         left: 0px;
-        z-index: 1000; /* Ensure it's above other content */
+        z-index: 1000;
+        /* Ensure it's above other content */
     }
-    #main{
-        width:100%;
+
+    #main {
+        width: 100%;
     }
 }
 
@@ -116,7 +125,7 @@ body {
 
     background-color: #2c2f34;
     padding-top: 20px;
-    
+
 }
 
 .sidebar ul {
@@ -148,7 +157,8 @@ body {
     position: absolute;
     top: 10px;
     right: 20px;
-    background-color: #3f307f; /* Notification badge background color */
+    background-color: #3f307f;
+    /* Notification badge background color */
     color: white;
     border-radius: 50%;
     padding: 2px 6px;
@@ -156,23 +166,28 @@ body {
 }
 
 .sidebar ul li.active a {
-    background-color: #4285f4; /* Highlight color for the active menu */
+    background-color: #4285f4;
+    /* Highlight color for the active menu */
 }
 
-.sidebar ul li.active a, .sidebar ul li.active a i {
+.sidebar ul li.active a,
+.sidebar ul li.active a i {
     color: white;
 }
 
 .sidebar ul li a:hover {
-    background-color: #1c1e22; /* Background color on hover */
-    color: #aaff; /* Text and icon color on hover */
+    background-color: #1c1e22;
+    /* Background color on hover */
+    color: #aaff;
+    /* Text and icon color on hover */
 }
 
 .sidebar ul li a:hover i {
-    color: #00aaff; /* Icon color on hover */
+    color: #00aaff;
+    /* Icon color on hover */
 }
 
-.sidebar ul .sub a{
+.sidebar ul .sub a {
     font-size: 16px;
     background-color: #2c2e32;
 
@@ -183,19 +198,21 @@ body {
     color: white;
     position: relative;
 }
-a{
+
+a {
     cursor: pointer;
 }
+
 .sidebar ul .btn-bar {
     background-color: #1c1e22;
     display: flex;
- 
+
     justify-content: space-between;
     align-items: center;
     padding: 5px;
 }
 
-.sidebar ul .btn-bar a:hover{
+.sidebar ul .btn-bar a:hover {
     background-color: #202DF2 !important;
 }
 
@@ -206,17 +223,25 @@ a.disabled {
 }
 
 .summary {
-    position: fixed; /* Stay in place */
-    z-index: 1000; /* Sit on top */
-    display: none; /* Hidden by default */
+    position: fixed;
+    /* Stay in place */
+    z-index: 1000;
+    /* Sit on top */
+    display: none;
+    /* Hidden by default */
     left: 0;
     top: 0;
-    width: 100%; /* Full width */
-    height: 100%; /* Full height */
-    overflow: auto; /* Enable scroll if needed */
-    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-  }
-  .summary-content {
+    width: 100%;
+    /* Full width */
+    height: 100%;
+    /* Full height */
+    overflow: auto;
+    /* Enable scroll if needed */
+    background-color: rgba(0, 0, 0, 0.4);
+    /* Black w/ opacity */
+}
+
+.summary-content {
     background-color: #fefefe;
     margin: auto;
     padding-top: 10px;
@@ -224,16 +249,16 @@ a.disabled {
     padding-left: 5px;
     padding-right: 5px;
     width: 95%;
-  }
+}
 
-  .action-modal {
+.action-modal {
     display: none;
     position: fixed;
     width: 100%;
     height: 100%;
     top: 0px;
     left: 0px;
-    
+
     background-color: rgba(0, 0, 0, 0.5);
     padding: 20px;
     border-radius: 10px;
@@ -242,9 +267,9 @@ a.disabled {
 
     justify-content: center;
     align-items: center;
-  }
+}
 
-  .model-body{
+.model-body {
     width: auto;
     height: auto;
     margin: auto;
@@ -252,28 +277,34 @@ a.disabled {
     padding-right: 50px;
     padding-top: 20px;
     padding-bottom: 10px;
-    position:fixed;
+    position: fixed;
     background-color: #fefefe;
-  }
-  
-  .modal-content {
-    text-align: center;
-  }
+}
 
-  .modal-progress {
+.modal-content {
+    text-align: center;
+}
+
+.modal-progress {
     background-color: #f3f3f3;
     border-radius: 5px;
     overflow: hidden;
     margin: 20px 0;
     height: 20px;
-  }
+}
 
-  .modal-progress-bar {
+.modal-progress-bar {
     height: 100%;
     background-color: #4caf50;
     transition: width 0.4s;
-  }
+}
 
-  .modal-confirm{
+.modal-confirm {
     display: none;
-  }
+}
+
+.icon-size {
+    width: 100px;
+    /* Adjust width as needed */
+    height: auto;
+}

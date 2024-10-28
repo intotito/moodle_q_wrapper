@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import atu.moodle.question.QuestionFactory;
@@ -31,10 +32,18 @@ public class FormulaQuestionController {
 		return questionService.getAllQuestions();
 	}
 	
-	@GetMapping(path = "/questions/nfq/{level}")
-	public QuestionListWrapper getQuestionsByNfqLevel(@PathVariable Integer level) {
-		return questionService.getQuestionsByNfqLevel(level);
+	@GetMapping(path = "/questions/search")
+	public QuestionListWrapper getQuestionsByNfqLevelAndTag(@RequestParam("level") Integer level, 
+			@RequestParam("tag") String tag) {
+		return questionService.getQuestionsByNfqLevelAndTag(level, tag);
 	}
+	
+	// endpoint to get nfq level for a given question id 
+	@GetMapping(path = "/questions/nfq/{id}")
+	public Integer getNfqLevelById(@PathVariable String id) {
+		return questionService.getNfqLevelById(id);
+	}
+	
 	
 	@GetMapping(path = "/questions/{id}")
 	public QuestionListWrapper getQuestionById(@PathVariable String id) {
@@ -56,9 +65,15 @@ public class FormulaQuestionController {
 	}
 	
 	@PutMapping("/questions/update/{id}")
-	public ResponseEntity<String> updateQuestion(@PathVariable String id, @RequestBody FormulaQuestion question) {
+	public ResponseEntity<String> updateQuestion(@PathVariable String id, @RequestBody FormulaQuestion question,
+			@RequestParam("level") String level, @RequestParam("tag") String tag) {
 		System.out.println("Update Question method is called " + question);
-		questionService.updateQuestion(id, question);
+		var qe = question.asEntity();
+		qe.setNfqLevel(Integer.parseInt(level));
+		qe.setTags(tag);
+		FormulaQuestion q = qe.toFormulaQuestion();
+		System.out.println("Checking question: " + q);
+		questionService.updateQuestion(id, q);
 		return ResponseEntity.status(HttpStatus.OK).body("{\"message\": \"Question updated successfully\"}");
 	}
 }

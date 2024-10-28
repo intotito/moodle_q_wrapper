@@ -21,6 +21,7 @@ declare var MathJax: any;  // Declare MathJax if included via CDN
   imports: [ItemComponent, AnswerItemComponent, DropdownItemComponent, InputPipe, PlaceholderPipe, HtmlSanitizePipe]
 })
 export class MainComponent implements OnInit {
+
   public state: State = State.FROM_NEW;
   public elements: any[] = [];
   public answers: any[] = [];
@@ -46,6 +47,18 @@ export class MainComponent implements OnInit {
   @ViewChild('answerElement')
   answerElement: ElementRef | undefined;
   State: any;
+  nfqLevel: any;
+  tag: any
+  
+  public tagValueChanged($event: any) {
+    console.log('Tag Changed: ', $event);
+    this.tag = $event.target.value;
+  }
+
+  public nfqLevelChanged($event: any): void {
+    console.log('NFQ Level Changed:', $event);
+    this.nfqLevel = $event.target.value;
+  }
 
   public isEnabled(): boolean {
     if (this.state == State.FROM_REPO) {
@@ -228,6 +241,27 @@ export class MainComponent implements OnInit {
       this.exportXML(event.currentTarget);
     });
 
+    // set nfq level from rest api origin/api/questions/nfq/${this.getElementValue('idnumber')} for input id = nfqLevel
+    this.restService.getNfqLevel(this.getElementValue('idnumber')).subscribe((data: any) => {
+      const nfqLevel = document.getElementById('nfqLevel') as HTMLInputElement;
+      console.log('* ###########################Data', data);
+      nfqLevel.value = data;
+      this.nfqLevel = data;
+    });
+
+    // set tag
+
+    this.restService.getTag(this.getElementValue('idnumber')).subscribe((data: any) => {
+      const tag = document.getElementById('tag') as HTMLInputElement;
+      console.log('* ###########################Data', data);
+      tag.value = data;
+      this.tag = data;
+    });
+    
+
+
+
+    
 
   }
 
@@ -240,7 +274,8 @@ export class MainComponent implements OnInit {
   private save(): void {
     const desc = {title: 'Saving Question to Repository...', status: 'save', message: 'Question saved to Repository.'};
     this.showWorking(desc);
-    this.restService.saveQuestion(this.getElementValue('idnumber'), this.xmlDocument.firstElementChild?.firstElementChild);
+    this.restService.saveQuestion(this.getElementValue('idnumber'), this.xmlDocument.firstElementChild?.firstElementChild,
+      this.nfqLevel, this.tag);
   }
 
   exportXML(target: any): void {

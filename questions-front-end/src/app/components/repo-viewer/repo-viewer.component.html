@@ -5,15 +5,17 @@
   </div>
   <!-- Add Drop Down for NFQ Levels-->
   <div class="d-flex p-2 justify-content-between bg-dark border border-secondary">
-    <select class="col-4 form-select form-select-lg bg-primary text-white h5 px-3"
-      aria-label=".form-select-lg example">
-      <option selected value="7">NFQ - 7</option>
+    <select class="col-4 form-select form-select-lg bg-primary text-white h5 px-3" id="nfqLevel" name="nfqLevel"
+      aria-label=".form-select-lg example" (change)="onNfqLevelChanged($event)">
+      <option selected value="all">NFQ - All</option>
+      <option value="7">NFQ - 7</option>
       <option value="8">NFQ - 8</option>
       <option value="9">NFQ - 9</option>
     </select>
     <!-- Add search bar-->
-    <input class="col-6 form-control form-control-lg mb-3 bg-light text-primary h5 px-3" type="text"
-      placeholder="Search for tags" aria-label=".form-control-lg example">
+    <input class="col-6 form-control form-control-lg mb-3 bg-light text-primary h5 px-3" type="text" id="tags"
+      name="tags" placeholder="Search for tags" aria-label=".form-control-lg example"
+      (change)="onTagChanged($event)">
   </div>
   <div class="card-body bg-dark scrollable">
     <div class="list-group">
