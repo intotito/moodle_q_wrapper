@@ -20,8 +20,8 @@
                         <div class="alert alert-light" role="alert">
                             {{stepDefinitions[currentStep - 1].description}}
                         </div>
-                        <div class="row">
-                            <div class="py-2 row align-items-center col-12 col-lg-8">
+                        <div class="row justify-content-around">
+                            <div class="py-2 row align-items-center col-12 col-lg-5">
                                 <span class="col-4 form-label bg-info text-dark fw-bold px-3 mt-1 py-2 rounded">
                                     {{stepDefinitions[currentStep - 1].summary}}
                                 </span>
@@ -31,11 +31,11 @@
                             </div>
                             <div class="py-2 row align-items-center col-12 col-lg-4">
                                 <!-- select for nfq level 7 to 10-->
-                                <span class="col-4 form-label bg-info text-dark fw-bold px-3 mt-1 py-2 rounded">
+                                <span class="col-4 form-label bg-warning text-dark fw-bold px-3 mt-1 py-2 rounded">
                                     NFQ Level
                                 </span>
                                 <div class="col mb-1">
-                                    <select class="form-select" aria-label=".form-select-lg example">
+                                    <select id="nfqLevel" class="form-select" aria-label=".form-select-lg example">
                                         @for(i of [7, 8, 9, 10]; track i){
                                         <option class="form-control" value="{{i}}">{{i}}
                                         </option>
@@ -43,7 +43,14 @@
                                     </select>
                                 </div>
                             </div>
-
+                            <div class="py-2 row align-items-center col-12 col-lg-3">
+                                <span class="col-4 form-label bg-primary text-dark fw-bold px-3 mt-1 py-2 rounded">
+                                    Tags
+                                </span>
+                                <div class="col mb-1">
+                                    <input type="text" class="form-control" id="tag" name="tag">
+                                </div>
+                            </div>
                         </div>
                         <div class="text-center">
                             <button type="button" class="btn btn-primary next-btn"

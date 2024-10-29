@@ -152,16 +152,19 @@ export class MainComponent implements OnInit {
     this.report.push(html);
   }
 
-  constructor(private router: Router, private sanitizer: DomSanitizer, private xmlService: XmlParserService,
+  constructor(private router: Router, private sanitizer: DomSanitizer, private xmlService: XmlParserService,  
     private restService: RestService, private valService: ValidationService) {
     const navigation = this.router.getCurrentNavigation();
     if (navigation?.extras.state) {
       const xml = navigation.extras.state['xml'];
       this.state = navigation.extras.state['state'];
+      this.tag = navigation.extras.state['tag'];
+      this.nfqLevel = navigation.extras.state['nfqLevel'];
       const xmlData = this.xmlService.processXML(xml);
       this.xmlDocument = xmlData.document;
       this.elements = xmlData.elements;
       this.answers = xmlData.answers;
+      console.log('State', navigation.extras.state);
       //      this.currentItem = this.elements;
     } else {
       // Handle the case where no state is passed
@@ -212,8 +215,8 @@ export class MainComponent implements OnInit {
 
     // initialize event listeners for save, 
 
-    const exp: any = document.getElementById('download');
-    exp.parentElement?.classList.toggle('hidden');
+    const download: any = document.getElementById('download');
+    download.parentElement?.classList.toggle('hidden');
     console.log('State:', this.state);
     if (this.state == State.FROM_REPO) {
       const save: any = document.getElementById('save');
@@ -221,6 +224,16 @@ export class MainComponent implements OnInit {
       save.addEventListener('click', (event: any) => {
         console.log('Save Clicked:', event);
         this.save();
+      });
+      this.restService.getTag(this.getElementValue('idnumber')).subscribe((data: any) => {
+//        const tag = document.getElementById('tag') as HTMLInputElement;
+//        tag.value = data.tag;
+        this.tag = data.tag;
+      });
+      this.restService.getNfqLevel(this.getElementValue('idnumber')).subscribe((data: any) => {
+//        const nfqLevel = document.getElementById('nfqLevel') as HTMLInputElement;
+//        nfqLevel.value = data;
+        this.nfqLevel = data;
       });
     } else if (this.state == State.FROM_FILE) {
       const upload: any = document.getElementById('upload');
@@ -232,29 +245,27 @@ export class MainComponent implements OnInit {
     } else if (this.state == State.FROM_WIZARD) {
       const wizard: any = document.getElementById('wizard');
       wizard.parentElement?.classList.toggle('hidden');
-      const download: any = document.getElementById('download');
-      download.parentElement?.classList.toggle('hidden');
+//      const download: any = document.getElementById('download');
+//      download.parentElement?.classList.toggle('hidden');
+      // make upload visible
+      const upload: any = document.getElementById('upload');
+      upload.parentElement?.classList.toggle('hidden');
+      upload.addEventListener('click', (event: any) => {
+        this.upload();
+      });
     }
 
-    exp.addEventListener('click', (event: any) => {
+    download.addEventListener('click', (event: any) => {
       console.log('Export Clicked:', event);
       this.exportXML(event.currentTarget);
     });
 
     // set nfq level from rest api origin/api/questions/nfq/${this.getElementValue('idnumber')} for input id = nfqLevel
-    this.restService.getNfqLevel(this.getElementValue('idnumber')).subscribe((data: any) => {
-      const nfqLevel = document.getElementById('nfqLevel') as HTMLInputElement;
-      nfqLevel.value = data;
-      this.nfqLevel = data;
-    });
+
 
     // set tag
 
-    this.restService.getTag(this.getElementValue('idnumber')).subscribe((data: any) => {
-      const tag = document.getElementById('tag') as HTMLInputElement;
-      tag.value = data.tag;
-      this.tag = data.tag;
-    });
+    
     
 
 

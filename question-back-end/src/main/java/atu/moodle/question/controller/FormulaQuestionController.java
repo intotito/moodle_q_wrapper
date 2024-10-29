@@ -47,8 +47,10 @@ public class FormulaQuestionController {
 	// endpoint to get a question tag by id
 	@GetMapping(path = "/questions/tag/{id}")
 	public ResponseEntity<String> getQuestionTagById(@PathVariable String id) {
+		String tag = questionService.getTagById(id);
+		tag = tag == null ? "" : tag;
 		return ResponseEntity.status(HttpStatus.ACCEPTED).body(
-				"{\"tag\": \"" + questionService.getTagById(id) + "\"}");
+				"{\"tag\": \"" + tag + "\"}");
 	}
 	
 	

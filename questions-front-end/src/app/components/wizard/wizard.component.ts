@@ -13,6 +13,8 @@ import { State } from '../../state';
   styleUrl: './wizard.component.css'
 })
 export class WizardComponent {
+  public nfqLevel: string = '';
+  public tag: string = '';
   public currentStep: number = 1;
   public questionParts: number = 1;
   public currentPart: number = 1;
@@ -143,9 +145,6 @@ export class WizardComponent {
       this.currentStep--;
     }
   }
-
-
-
 
   public initializeEditors(index: number, component: EditorJS) {
     if (index < 10) {
@@ -303,6 +302,9 @@ export class WizardComponent {
       case 1:
         let name: string = (document.getElementById('name') as HTMLInputElement).value || '';
         console.log("Name from DOM :", name);
+        this.nfqLevel = (document.getElementById('nfqLevel') as HTMLSelectElement)?.value || '';
+        this.tag = (document.getElementById('tag') as HTMLInputElement)?.value || '';
+        console.log('NFQ Level:', this.nfqLevel, 'Tag:', this.tag);
         this.xmlBuilder.createQuestion(name);
         break;
       case 2:
@@ -360,7 +362,9 @@ export class WizardComponent {
           this.xmlBuilder.toString();
           this.currentStep = 1;
           let xml = this.xmlBuilder.build();
-          this.router.navigate(['/main'], { state: { xml: xml, state: State.FROM_FILE } });
+          this.router.navigate(['/main'], { state: { xml: xml, state: State.FROM_WIZARD, 
+            nfqLevel: this.nfqLevel, tag: this.tag
+           } });
         });
         break;
       default:
